@@ -1,4 +1,6 @@
 
+using Academix.Helper;
+
 namespace Academix.WebAPI
 {
     public class Program
@@ -13,6 +15,8 @@ namespace Academix.WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<FileUploaderHelper>();
+
 
             var app = builder.Build();
 
