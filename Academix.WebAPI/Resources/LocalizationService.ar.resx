@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="OperationCompleted" xml:space="preserve">
+    <value>تمت العملية بنجاح</value>
+  </data>
+  <data name="ResourceCreated" xml:space="preserve">
+    <value>تم إنشاء المورد بنجاح</value>
+  </data>
+  <data name="ResourceUpdated" xml:space="preserve">
+    <value>تم تحديث المورد بنجاح</value>
+  </data>
+  <data name="ResourceNotFound" xml:space="preserve">
+    <value>المورد غير موجود</value>
+  </data>
+  <data name="InvalidRequest" xml:space="preserve">
+    <value>طلب غير صحيح</value>
+  </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>وصول غير مصرح به</value>
+  </data>
+  <data name="AccessForbidden" xml:space="preserve">
+    <value>الوصول محظور</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>خطأ داخلي في الخادم</value>
+  </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>فشل التحقق من الصحة</value>
+  </data>
+  <data name="StudentCreated" xml:space="preserve">
+    <value>تم إنشاء الطالب بنجاح</value>
+  </data>
+  <data name="StudentUpdated" xml:space="preserve">
+    <value>تم تحديث الطالب بنجاح</value>
+  </data>
+  <data name="StudentDeleted" xml:space="preserve">
+    <value>تم حذف الطالب بنجاح</value>
+  </data>
+  <data name="StudentNotFound" xml:space="preserve">
+    <value>الطالب غير موجود</value>
+  </data>
+  <data name="StudentRetrieved" xml:space="preserve">
+    <value>تم استرداد الطالب بنجاح</value>
+  </data>
+  <data name="FileUploaded" xml:space="preserve">
+    <value>تم رفع الملف بنجاح</value>
+  </data>
+  <data name="FileUploadFailed" xml:space="preserve">
+    <value>فشل رفع الملف</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>لم يتم اختيار ملف</value>
+  </data>
+  <data name="EmailAlreadyExists" xml:space="preserve">
+    <value>يوجد طالب بهذا البريد الإلكتروني بالفعل</value>
+  </data>
+  <data name="FirstNameRequired" xml:space="preserve">
+    <value>الاسم الأول مطلوب</value>
+  </data>
+  <data name="LastNameRequired" xml:space="preserve">
+    <value>اسم العائلة مطلوب</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>البريد الإلكتروني مطلوب</value>
+  </data>
+  <data name="EmailInvalid" xml:space="preserve">
+    <value>يجب أن يكون البريد الإلكتروني صحيحاً</value>
+  </data>
+  <data name="StudentNumberRequired" xml:space="preserve">
+    <value>رقم الطالب مطلوب</value>
+  </data>
+  <data name="StudentNumberInvalid" xml:space="preserve">
+    <value>يجب أن يكون رقم الطالب 8 أرقام بالضبط</value>
+  </data>
+  <data name="DateOfBirthRequired" xml:space="preserve">
+    <value>تاريخ الميلاد مطلوب</value>
+  </data>
+  <data name="AgeInvalid" xml:space="preserve">
+    <value>يجب أن يكون عمر الطالب بين 16 و 100 سنة</value>
+  </data>
+</root> 

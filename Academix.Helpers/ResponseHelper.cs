@@ -17,6 +17,13 @@ namespace Academix.Helpers
         public object? Data { get; set; }
         public Dictionary<string, List<string>>? Validation { get; set; }
         public DateTime DateTime { get; set; } = DateTime.Now.ToLocalTime();
+        public string Culture { get; set; } = "en";
+
+        public ResponseHelper WithMassage(string message)
+        {
+            Massage = message?.Trim() ?? string.Empty;
+            return this;
+        }
 
        
         public ResponseHelper()
@@ -28,11 +35,6 @@ namespace Academix.Helpers
         public ResponseHelper WithStatus(bool s)
         {
             status = s;
-            return this;
-        }
-        public ResponseHelper WithMassage(string massage)
-        {
-            Massage = massage.Trim();
             return this;
         }
         public ResponseHelper WithData(object viewModel)
@@ -78,80 +80,88 @@ namespace Academix.Helpers
         }
 
 
-        public ResponseHelper Success(object data = null)
+        public ResponseHelper Success(object data = null, string culture = "en")
         {
             status = true;
             StatusCode = 200;
-            Massage = "Operation completed successfully";
+            Culture = culture;
+            Massage = culture == "ar" ? "تمت العملية بنجاح" : "Operation completed successfully";
             Data = data;
             Validation = null;
             return this;
         }
 
-        public ResponseHelper Created(object data = null)
+        public ResponseHelper Created(object data = null, string culture = "en")
         {
             status = true;
             StatusCode = 201;
-            Massage = "Resource created successfully";
+            Culture = culture;
+            Massage = culture == "ar" ? "تم إنشاء المورد بنجاح" : "Resource created successfully";
             Data = data;
             Validation = null;
             return this;
         }
 
-        public ResponseHelper Updated(object data = null)
+        public ResponseHelper Updated(object data = null, string culture = "en")
         {
             status = true;
             StatusCode = 200;
-            Massage = "Resource updated successfully";
+            Culture = culture;
+            Massage = culture == "ar" ? "تم تحديث المورد بنجاح" : "Resource updated successfully";
             Data = data;
             Validation = null;
             return this;
         }
-        public ResponseHelper NotFound(string message = "Resource not found")
+        public ResponseHelper NotFound(string message = null, string culture = "en")
         {
             status = false;
             StatusCode = 404;
-            Massage = message;
+            Culture = culture;
+            Massage = message ?? (culture == "ar" ? "المورد غير موجود" : "Resource not found");
             Data = null;
             Validation = null;
             return this;
         }
 
-        public ResponseHelper BadRequest(string message = "Invalid request")
+        public ResponseHelper BadRequest(string message = null, string culture = "en")
         {
             status = false;
             StatusCode = 400;
-            Massage = message;
+            Culture = culture;
+            Massage = message ?? (culture == "ar" ? "طلب غير صحيح" : "Invalid request");
             Data = null;
             Validation = null;
             return this;
         }
 
-        public ResponseHelper Unauthorized(string message = "Unauthorized access")
+        public ResponseHelper Unauthorized(string message = null, string culture = "en")
         {
             status = false;
             StatusCode = 401;
-            Massage = message;
+            Culture = culture;
+            Massage = message ?? (culture == "ar" ? "وصول غير مصرح به" : "Unauthorized access");
             Data = null;
             Validation = null;
             return this;
         }
 
-        public ResponseHelper Forbidden(string message = "Access forbidden")
+        public ResponseHelper Forbidden(string message = null, string culture = "en")
         {
             status = false;
             StatusCode = 403;
-            Massage = message;
+            Culture = culture;
+            Massage = message ?? (culture == "ar" ? "الوصول محظور" : "Access forbidden");
             Data = null;
             Validation = null;
             return this;
         }
 
-        public ResponseHelper ServerError(string message = "Internal server error")
+        public ResponseHelper ServerError(string message = null, string culture = "en")
         {
             status = false;
             StatusCode = 500;
-            Massage = message;
+            Culture = culture;
+            Massage = message ?? (culture == "ar" ? "خطأ داخلي في الخادم" : "Internal server error");
             Data = null;
             Validation = null;
             return this;

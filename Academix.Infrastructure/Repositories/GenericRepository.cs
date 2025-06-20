@@ -4,36 +4,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Academix.Domain.Interfaces;
+using Academix.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Academix.Infrastructure.Repositories
 {
-    internal class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
+        protected readonly ApplicationDbContext _context;
+        protected readonly DbSet<T> _dbSet;
 
-
-        public Task AddAsync(T entity)
+        public GenericRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _dbSet = context.Set<T>();
+        }
+
+        public async Task AddAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
         }
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(entity);
         }
 
         public Task<IQueryable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_dbSet.AsQueryable());
         }
 
-        public Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _dbSet.FindAsync(id);
         }
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Update(entity);
         }
     }
 }
