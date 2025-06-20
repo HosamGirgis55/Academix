@@ -31,5 +31,8 @@ namespace Academix.Application.Features.Students.Queries.GetStudentsList
         public string Email { get; set; } = string.Empty;
         public string StudentNumber { get; set; } = string.Empty;
         public int Age { get; set; }
+        public string AgeGroup { get; set; } = string.Empty;
+        public DateTime DateOfBirth { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 } 

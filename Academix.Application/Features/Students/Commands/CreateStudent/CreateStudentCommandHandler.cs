@@ -2,6 +2,8 @@ using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
 using Academix.Domain.Entities;
 using Academix.Domain.Interfaces;
+using AutoMapper;
+using Academix.Application.Common.Mappings;
 
 namespace Academix.Application.Features.Students.Commands.CreateStudent
 {
@@ -9,40 +11,35 @@ namespace Academix.Application.Features.Students.Commands.CreateStudent
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CreateStudentCommandHandler(IStudentRepository studentRepository, IUnitOfWork unitOfWork)
+        public CreateStudentCommandHandler(IStudentRepository studentRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<Guid>> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
         {
-            // Check if student with same email exists
-            var existingStudent = await _studentRepository.GetAllAsync();
-            if (existingStudent != null)
+            // Check if email already exists using extension method
+            var existingStudents = await _studentRepository.GetAllAsync();
+            if (!existingStudents.AsQueryable().IsEmailUnique(request.Email))
             {
                 return Result<Guid>.Failure("A student with this email already exists.");
             }
 
-            // Create the student entity
-            var student = new Student
+            // Check if student number already exists using extension method
+            if (!existingStudents.AsQueryable().IsStudentNumberUnique(request.StudentNumber))
             {
-                Id = Guid.NewGuid(),
-                FirstName = request.FirstName,
-                FirstNameAr = request.FirstNameAr,
-                LastName = request.LastName,
-                LastNameAr = request.LastNameAr,
-                Email = request.Email,
-                DateOfBirth = request.DateOfBirth,
-                StudentNumber = request.StudentNumber,
-                CreatedAt = DateTime.UtcNow
-            };
+                return Result<Guid>.Failure("A student with this student number already exists.");
+            }
+
+            // Create student entity using extension method
+            var student = request.ToStudentEntity(_mapper);
 
             // Add to repository
             await _studentRepository.AddAsync(student);
-
-            // Save changes
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<Guid>.Success(student.Id);

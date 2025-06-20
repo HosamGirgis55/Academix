@@ -51,7 +51,7 @@ namespace Academix.WebAPI
             builder.Services.AddValidatorsFromAssembly(typeof(Application.Common.Interfaces.ICommand).Assembly);
 
             // Add AutoMapper
-            builder.Services.AddAutoMapper(typeof(Application.Common.Interfaces.ICommand).Assembly);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
             // Add Localization
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");

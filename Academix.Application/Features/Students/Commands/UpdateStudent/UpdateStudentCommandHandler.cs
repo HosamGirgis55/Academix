@@ -1,6 +1,8 @@
 using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
 using Academix.Domain.Interfaces;
+using AutoMapper;
+using Academix.Application.Common.Mappings;
 
 namespace Academix.Application.Features.Students.Commands.UpdateStudent
 {
@@ -8,11 +10,13 @@ namespace Academix.Application.Features.Students.Commands.UpdateStudent
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UpdateStudentCommandHandler(IStudentRepository studentRepository, IUnitOfWork unitOfWork)
+        public UpdateStudentCommandHandler(IStudentRepository studentRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<bool>> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
@@ -24,24 +28,18 @@ namespace Academix.Application.Features.Students.Commands.UpdateStudent
                 return Result<bool>.Failure($"Student with ID {request.Id} not found.");
             }
 
-            // Check if email is being changed and already exists
+            // Check if email is being changed and already exists using extension method
             if (student.Email != request.Email)
             {
-                var existingStudent = await _studentRepository.GetAllAsync();
-                if (existingStudent != null && existingStudent.FirstOrDefault()?.Id != request.Id)
+                var existingStudents = await _studentRepository.GetAllAsync();
+                if (!existingStudents.AsQueryable().IsEmailUnique(request.Email, request.Id))
                 {
                     return Result<bool>.Failure("A student with this email already exists.");
                 }
             }
 
-            // Update student properties
-            student.FirstName = request.FirstName;
-            student.FirstNameAr = request.FirstNameAr;
-            student.LastName = request.LastName;
-            student.LastNameAr = request.LastNameAr;
-            student.Email = request.Email;
-            student.DateOfBirth = request.DateOfBirth;
-            student.UpdatedAt = DateTime.UtcNow;
+            // Update student using extension method
+            student.UpdateFrom(request, _mapper);
 
             _studentRepository.Update(student);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

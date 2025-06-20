@@ -2,6 +2,8 @@ using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
 using Academix.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using Academix.Application.Common.Mappings;
 
 namespace Academix.Application.Features.Students.Queries.GetStudentById
 {
@@ -9,11 +11,13 @@ namespace Academix.Application.Features.Students.Queries.GetStudentById
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
-        public GetStudentByIdQueryHandler(IStudentRepository studentRepository, IHttpContextAccessor httpContextAccessor)
+        public GetStudentByIdQueryHandler(IStudentRepository studentRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
         public async Task<Result<StudentDto>> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
@@ -28,18 +32,8 @@ namespace Academix.Application.Features.Students.Queries.GetStudentById
             // Get culture from HttpContext
             var culture = _httpContextAccessor.HttpContext?.Items["Culture"]?.ToString() ?? "en";
 
-            var studentDto = new StudentDto
-            {
-                Id = student.Id,
-                FirstName = student.GetFirstName(culture),
-                LastName = student.GetLastName(culture),
-                FullName = student.GetFullName(culture),
-                Email = student.Email,
-                DateOfBirth = student.DateOfBirth,
-                StudentNumber = student.StudentNumber,
-                CreatedAt = student.CreatedAt,
-                UpdatedAt = student.UpdatedAt
-            };
+            // Use extension method for culture-aware mapping
+            var studentDto = student.ToStudentDto(_mapper, culture);
             
             return Result<StudentDto>.Success(studentDto);
         }
