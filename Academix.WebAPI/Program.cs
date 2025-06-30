@@ -11,13 +11,14 @@ using Academix.Application.Common.Interfaces;
 using Academix.Infrastructure.Services;
 using Academix.WebAPI.Common.Middleware;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
  
  
 namespace Academix.WebAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,27 @@ namespace Academix.WebAPI
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("Academix.Infrastructure")));
+
+            // Configure Identity
+            builder.Services.AddIdentity<Domain.Entities.ApplicationUser, IdentityRole>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 6;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+
+                // Sign-in settings
+                options.SignIn.RequireConfirmedEmail = false; // Set to true if you want email confirmation
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             // Register repositories
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -57,6 +79,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
             builder.Services.AddScoped<ILocalizationService, LocalizationService>();
             builder.Services.AddHttpContextAccessor();
+
+            // Register Seed Data Service
+            builder.Services.AddScoped<Infrastructure.Services.SeedDataService>();
             
             // Configure supported cultures
             var supportedCultures = new List<CultureInfo>
@@ -80,11 +105,15 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 
-                // Create database if it doesn't exist
+                // Create database if it doesn't exist and seed data
                 using (var scope = app.Services.CreateScope())
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                     dbContext.Database.EnsureCreated();
+
+                    // Seed initial data
+                    var seedService = scope.ServiceProvider.GetRequiredService<Infrastructure.Services.SeedDataService>();
+                    await seedService.SeedAsync();
                 }
             }
 

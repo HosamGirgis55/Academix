@@ -78,4 +78,118 @@
   <data name="AgeInvalid" xml:space="preserve">
     <value>Student must be between 16 and 100 years old</value>
   </data>
+  <data name="FirstNameIsRequired" xml:space="preserve">
+    <value>First name is required</value>
+  </data>
+  <data name="FirstNameMinLength" xml:space="preserve">
+    <value>First name must be at least 2 characters</value>
+  </data>
+  <data name="FirstNameMaxLength" xml:space="preserve">
+    <value>First name cannot exceed 50 characters</value>
+  </data>
+  <data name="LastNameIsRequired" xml:space="preserve">
+    <value>Last name is required</value>
+  </data>
+  <data name="LastNameMinLength" xml:space="preserve">
+    <value>Last name must be at least 2 characters</value>
+  </data>
+  <data name="LastNameMaxLength" xml:space="preserve">
+    <value>Last name cannot exceed 50 characters</value>
+  </data>
+  <data name="EmailIsRequired" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="InvalidEmailFormat" xml:space="preserve">
+    <value>Email must be a valid email address</value>
+  </data>
+  <data name="EmailMaxLength" xml:space="preserve">
+    <value>Email cannot exceed 100 characters</value>
+  </data>
+  <data name="PasswordIsRequired" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="PasswordMinLength" xml:space="preserve">
+    <value>Password must be at least 6 characters</value>
+  </data>
+  <data name="PasswordComplexity" xml:space="preserve">
+    <value>Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character</value>
+  </data>
+  <data name="ConfirmPasswordIsRequired" xml:space="preserve">
+    <value>Confirm password is required</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="InvalidGender" xml:space="preserve">
+    <value>Please select a valid gender</value>
+  </data>
+  <data name="CountryIsRequired" xml:space="preserve">
+    <value>Country is required</value>
+  </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Please enter a valid phone number</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>A user with this email already exists</value>
+  </data>
+  <data name="CountryNotFound" xml:space="preserve">
+    <value>Selected country not found</value>
+  </data>
+  <data name="UserCreationFailed" xml:space="preserve">
+    <value>User creation failed</value>
+  </data>
+  <data name="StudentRegisteredSuccessfully" xml:space="preserve">
+    <value>Student registered successfully</value>
+  </data>
+  <data name="RegistrationFailed" xml:space="preserve">
+    <value>Registration failed</value>
+  </data>
+  <data name="CertificateNameRequired" xml:space="preserve">
+    <value>Certificate name is required</value>
+  </data>
+  <data name="CertificateNameMaxLength" xml:space="preserve">
+    <value>Certificate name cannot exceed 200 characters</value>
+  </data>
+  <data name="CertificateUrlRequired" xml:space="preserve">
+    <value>Certificate URL is required</value>
+  </data>
+  <data name="InvalidCertificateUrl" xml:space="preserve">
+    <value>Please enter a valid certificate URL</value>
+  </data>
+  <data name="CertificateDescriptionMaxLength" xml:space="preserve">
+    <value>Certificate description cannot exceed 500 characters</value>
+  </data>
+  <data name="CertificateIssuedByRequired" xml:space="preserve">
+    <value>Certificate issuer is required</value>
+  </data>
+  <data name="CertificateIssuedByMaxLength" xml:space="preserve">
+    <value>Certificate issuer cannot exceed 200 characters</value>
+  </data>
+  <data name="CertificateIssuedDateInvalid" xml:space="preserve">
+    <value>Certificate issued date cannot be in the future</value>
+  </data>
+  <data name="DegreeRequired" xml:space="preserve">
+    <value>Degree is required</value>
+  </data>
+  <data name="DegreeMaxLength" xml:space="preserve">
+    <value>Degree cannot exceed 200 characters</value>
+  </data>
+  <data name="InstitutionRequired" xml:space="preserve">
+    <value>Institution is required</value>
+  </data>
+  <data name="InstitutionMaxLength" xml:space="preserve">
+    <value>Institution cannot exceed 200 characters</value>
+  </data>
+  <data name="FieldOfStudyRequired" xml:space="preserve">
+    <value>Field of study is required</value>
+  </data>
+  <data name="FieldOfStudyMaxLength" xml:space="preserve">
+    <value>Field of study cannot exceed 200 characters</value>
+  </data>
+  <data name="StartDateInvalid" xml:space="preserve">
+    <value>Start date cannot be in the future</value>
+  </data>
+  <data name="EndDateMustBeAfterStartDate" xml:space="preserve">
+    <value>End date must be after start date</value>
+  </data>
 </root> 

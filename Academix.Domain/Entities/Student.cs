@@ -1,21 +1,33 @@
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 namespace Academix.Domain.Entities
 {
     public class Student : BaseEntity
     {
-        public string FirstName { get; set; } = string.Empty;
-        public string FirstNameAr { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string LastNameAr { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public DateTime DateOfBirth { get; set; }
-        public string StudentNumber { get; set; } = string.Empty;
+        public List<Educations>? Educations { get; set; }
+        public List<Certificate>? Certificate { get; set; }
         
-        // Navigation properties can be added later when implementing course enrollment
-        // public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
-        
-        // Helper methods for localization
-        public string GetFirstName(string culture) => culture == "ar" ? FirstNameAr : FirstName;
-        public string GetLastName(string culture) => culture == "ar" ? LastNameAr : LastName;
-        public string GetFullName(string culture) => $"{GetFirstName(culture)} {GetLastName(culture)}";
+        // Navigation property to ApplicationUser
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
     }
+    [Owned]
+    public class Certificate {         
+        public string Name { get; set; }
+        public string CertificateUrl { get; set; }
+        public string Description { get; set; }
+        public DateTime IssuedDate { get; set; }
+        public string IssuedBy { get; set; }
+    }
+    [Owned]
+    public class Educations
+    {
+        public string Degree { get; set; }
+        public string Institution { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string FieldOfStudy { get; set; }
+     }
 } 
