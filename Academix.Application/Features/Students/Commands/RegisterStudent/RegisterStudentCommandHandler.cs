@@ -11,15 +11,18 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailService _emailService;
         private readonly ILocalizationService _localizationService;
 
         public RegisterStudentCommandHandler(
             UserManager<ApplicationUser> userManager,
             IUnitOfWork unitOfWork,
+            IEmailService emailService,
             ILocalizationService localizationService)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _emailService = emailService;
             _localizationService = localizationService;
         }
 
@@ -56,7 +59,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     ProfilePictureUrl = request.ProfilePictureUrl,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-                    EmailConfirmed = false // You might want to implement email confirmation
+                    EmailConfirmed = false // Email confirmation required via OTP
                 };
 
                 // Create user with password
@@ -99,15 +102,27 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 // Add user to Student role (create role if needed)
                 await _userManager.AddToRoleAsync(user, "Student");
 
+                // Generate and send email verification OTP
+                var otp = await _emailService.GenerateOtpAsync(user.Email!, "registration");
+                user.EmailVerificationOtp = otp;
+                user.EmailVerificationOtpExpiry = DateTime.UtcNow.AddMinutes(15);
+                await _userManager.UpdateAsync(user);
+
+                // Send verification email
+                var emailSent = await _emailService.SendRegistrationConfirmationAsync(user.Email!, otp);
+
                 var response = new StudentRegistrationResponse
                 {
                     UserId = user.Id,
                     StudentId = student.Id,
                     Email = user.Email!,
                     FullName = $"{user.FirstName} {user.LastName}",
-                    Message = _localizationService.GetLocalizedString("StudentRegisteredSuccessfully"),
+                    Message = emailSent 
+                        ? _localizationService.GetLocalizedString("StudentRegisteredSuccessfullyCheckEmail")
+                        : _localizationService.GetLocalizedString("StudentRegisteredSuccessfully"),
                     CertificatesCount = student.Certificate?.Count ?? 0,
                     EducationsCount = student.Educations?.Count ?? 0,
+                    RequiresEmailVerification = true,
                     Certificates = student.Certificate?.Select(c => new CertificateResponseDto
                     {
                         Name = c.Name,

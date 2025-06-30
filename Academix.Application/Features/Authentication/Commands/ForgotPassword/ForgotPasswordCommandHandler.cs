@@ -3,20 +3,22 @@ using Academix.Application.Common.Models;
 using Academix.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Cryptography;
 
 namespace Academix.Application.Features.Authentication.Commands.ForgotPassword;
 
 public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, Result<string>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IEmailService _emailService;
     private readonly ILocalizationService _localizationService;
 
     public ForgotPasswordCommandHandler(
         UserManager<ApplicationUser> userManager,
+        IEmailService emailService,
         ILocalizationService localizationService)
     {
         _userManager = userManager;
+        _emailService = emailService;
         _localizationService = localizationService;
     }
 
@@ -29,25 +31,24 @@ public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordComman
             return Result<string>.Success("", _localizationService.GetLocalizedString("ResetPasswordEmailSent"));
         }
 
-        // Generate password reset token
-        var resetToken = GenerateSecureToken();
-        user.ResetPasswordToken = resetToken;
-        user.ResetPasswordTokenExpiry = DateTime.UtcNow.AddHours(1); // Token expires in 1 hour
+        // Generate OTP for password reset
+        var otp = await _emailService.GenerateOtpAsync(request.Email, "password-reset");
+        
+        // Update user with OTP information
+        user.PasswordResetOtp = otp;
+        user.PasswordResetOtpExpiry = DateTime.UtcNow.AddMinutes(15); // OTP expires in 15 minutes
+        user.UpdatedAt = DateTime.UtcNow;
 
         await _userManager.UpdateAsync(user);
 
-        // TODO: Send email with reset token
-        // In a real application, you would send an email here with the reset link
-        // For now, we'll return the token (in production, this should not be returned)
+        // Send OTP via email
+        var emailSent = await _emailService.SendPasswordResetOtpAsync(request.Email, otp);
         
-        return Result<string>.Success(resetToken, _localizationService.GetLocalizedString("ResetPasswordEmailSent"));
-    }
-
-    private static string GenerateSecureToken()
-    {
-        var randomBytes = new byte[32];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomBytes);
-        return Convert.ToBase64String(randomBytes);
+        if (!emailSent)
+        {
+            return Result<string>.Failure(_localizationService.GetLocalizedString("EmailSendFailed"));
+        }
+        
+        return Result<string>.Success("", _localizationService.GetLocalizedString("ResetPasswordEmailSent"));
     }
 } 

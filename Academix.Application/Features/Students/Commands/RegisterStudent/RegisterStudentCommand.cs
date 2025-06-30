@@ -46,6 +46,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public string Message { get; set; } = string.Empty;
         public int CertificatesCount { get; set; }
         public int EducationsCount { get; set; }
+        public bool RequiresEmailVerification { get; set; }
         public List<CertificateResponseDto> Certificates { get; set; } = new();
         public List<EducationResponseDto> Educations { get; set; } = new();
     }

@@ -19,7 +19,8 @@ public class UpdateProfileEndpoint : IEndpoint
             .RequireAuthorization()
             .Accepts<UpdateProfileDto>("application/json")
             .Produces<ResultModel<UserProfileDto>>(200)
-            .Produces<ResultModel<UserProfileDto>>(400);
+            .Produces<ResultModel<UserProfileDto>>(400)
+            .Produces(401);
     }
 
     private static async Task<IResult> UpdateProfileAsync(
@@ -40,7 +41,8 @@ public class UpdateProfileEndpoint : IEndpoint
             LastName = updateProfileDto.LastName,
             ProfilePictureUrl = updateProfileDto.ProfilePictureUrl,
             CountryId = updateProfileDto.CountryId,
-            Gender = updateProfileDto.Gender
+            Gender = updateProfileDto.Gender,
+            TimeZone = updateProfileDto.TimeZone
         };
 
         var result = await mediator.Send(command) as Result<UserProfileDto>;

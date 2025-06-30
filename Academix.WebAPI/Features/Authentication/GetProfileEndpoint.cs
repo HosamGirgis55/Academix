@@ -17,7 +17,8 @@ public class GetProfileEndpoint : IEndpoint
             .WithTags("Authentication")
             .RequireAuthorization()
             .Produces<ResultModel<UserProfileDto>>(200)
-            .Produces<ResultModel<UserProfileDto>>(404);
+            .Produces<ResultModel<UserProfileDto>>(404)
+            .Produces(401);
     }
 
     private static async Task<IResult> GetProfileAsync(

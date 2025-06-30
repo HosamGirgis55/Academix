@@ -31,7 +31,44 @@ namespace Academix.WebAPI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo 
+                { 
+                    Title = "Academix API", 
+                    Version = "v1",
+                    Description = "Academic Management System API"
+                });
+
+                // Add JWT Bearer Authentication
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Description = "Enter your JWT token in the text input below.\n\nExample: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    Name = "Authorization",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
+                });
+
+                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                        },
+                        new List<string>()
+                    }
+                });
+            });
             
             // Configure Entity Framework
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -49,7 +86,7 @@ namespace Academix.WebAPI
                 options.Password.RequiredLength = 6;
 
                 // User settings
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = false;
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 
                 // Sign-in settings
@@ -87,8 +124,15 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // Add TimeZone services
             builder.Services.AddScoped<ITimeZoneService, Infrastructure.Services.TimeZoneService>();
             
-            // Add session support for time zone storage
+            // Configure Email Settings
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+            
+            // Add Email Service
+            builder.Services.AddScoped<IEmailService, Infrastructure.Services.EmailService>();
+            
+            // Add session support for time zone storage and OTP caching
             builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddMemoryCache(); // For OTP storage
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -147,8 +191,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 
@@ -162,7 +206,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
                     var seedService = scope.ServiceProvider.GetRequiredService<Infrastructure.Services.SeedDataService>();
                     await seedService.SeedAsync();
                 }
-            }
+           // }
 
             // Add session middleware (must be before localization and time zone)
             app.UseSession();

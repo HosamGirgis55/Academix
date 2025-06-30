@@ -19,7 +19,8 @@ public class ChangePasswordEndpoint : IEndpoint
             .RequireAuthorization()
             .Accepts<ChangePasswordDto>("application/json")
             .Produces<ResultModel<bool>>(200)
-            .Produces<ResultModel<bool>>(400);
+            .Produces<ResultModel<bool>>(400)
+            .Produces(401);
     }
 
     private static async Task<IResult> ChangePasswordAsync(

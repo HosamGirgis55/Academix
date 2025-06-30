@@ -26,11 +26,17 @@ namespace Academix.Domain.Entities
         // Authentication properties
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
-            public string? ResetPasswordToken { get; set; }
-    public DateTime? ResetPasswordTokenExpiry { get; set; }
-    
-    // Time Zone Configuration
-    public string TimeZone { get; set; } = "UTC";
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpiry { get; set; }
+        
+        // Email Verification OTP
+        public string? EmailVerificationOtp { get; set; }
+        public DateTime? EmailVerificationOtpExpiry { get; set; }
+        public string? PasswordResetOtp { get; set; }
+        public DateTime? PasswordResetOtpExpiry { get; set; }
+        
+        // Time Zone Configuration
+        public string TimeZone { get; set; } = "UTC";
     }
 
 }
