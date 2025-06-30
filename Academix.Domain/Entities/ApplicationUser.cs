@@ -22,6 +22,12 @@ namespace Academix.Domain.Entities
         public Guid CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]
         public Country Country { get; set; } = default!;
+
+        // Authentication properties
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpiry { get; set; }
     }
 
 }

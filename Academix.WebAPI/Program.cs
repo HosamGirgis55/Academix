@@ -12,6 +12,10 @@ using Academix.Infrastructure.Services;
 using Academix.WebAPI.Common.Middleware;
 using System.Globalization;
 using Microsoft.AspNetCore.Identity;
+using Academix.Application.Common.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
  
  
 namespace Academix.WebAPI
@@ -80,6 +84,37 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<ILocalizationService, LocalizationService>();
             builder.Services.AddHttpContextAccessor();
 
+            // Configure JWT Settings
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
+            // Add JWT Authentication
+            var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+            var key = Encoding.ASCII.GetBytes(jwtSettings!.Key);
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtSettings.Audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            builder.Services.AddAuthorization();
+
             // Register Seed Data Service
             builder.Services.AddScoped<Infrastructure.Services.SeedDataService>();
             
@@ -120,6 +155,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // Add localization middleware
             app.UseLocalization();
             
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Map traditional controllers

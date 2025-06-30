@@ -89,7 +89,7 @@ namespace Academix.Application.Common.Models
             {
                 return ResultModel<T>.SuccessResult(
                     result.Value!,
-                    successMessage ?? "Operation completed successfully"
+                    successMessage ?? result.SuccessMessage ?? "Operation completed successfully"
                 );
             }
 
@@ -109,7 +109,7 @@ namespace Academix.Application.Common.Models
         {
             if (result.IsSuccess)
             {
-                return ResultModel.SuccessResult(successMessage ?? "Operation completed successfully");
+                return ResultModel.SuccessResult(successMessage ?? result.SuccessMessage ?? "Operation completed successfully");
             }
 
             var errors = new List<string>();
