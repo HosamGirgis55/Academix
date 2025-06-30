@@ -36,6 +36,7 @@ public class UpdateProfileDto
     public string? ProfilePictureUrl { get; set; }
     public Guid CountryId { get; set; }
     public string Gender { get; set; } = string.Empty;
+    public string? TimeZone { get; set; }
 }
 
 public class UserProfileDto
@@ -48,5 +49,6 @@ public class UserProfileDto
     public string Gender { get; set; } = string.Empty;
     public Guid CountryId { get; set; }
     public string CountryName { get; set; } = string.Empty;
+    public string TimeZone { get; set; } = "UTC";
     public List<string> Roles { get; set; } = new();
 } 

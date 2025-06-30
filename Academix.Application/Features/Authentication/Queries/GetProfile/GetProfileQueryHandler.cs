@@ -48,6 +48,7 @@ public class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, Result<Us
             Gender = user.gender.GetLocalizedName(_localizationService),
             CountryId = user.CountryId,
             CountryName = countryName,
+            TimeZone = user.TimeZone,
             Roles = roles.ToList()
         };
 

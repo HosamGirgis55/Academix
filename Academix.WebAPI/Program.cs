@@ -84,6 +84,18 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<ILocalizationService, LocalizationService>();
             builder.Services.AddHttpContextAccessor();
 
+            // Add TimeZone services
+            builder.Services.AddScoped<ITimeZoneService, Infrastructure.Services.TimeZoneService>();
+            
+            // Add session support for time zone storage
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             // Configure JWT Settings
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
@@ -152,8 +164,14 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
                 }
             }
 
+            // Add session middleware (must be before localization and time zone)
+            app.UseSession();
+            
             // Add localization middleware
             app.UseLocalization();
+            
+            // Add time zone middleware
+            app.UseMiddleware<Academix.WebAPI.Common.Middleware.TimeZoneMiddleware>();
             
             app.UseAuthentication();
             app.UseAuthorization();

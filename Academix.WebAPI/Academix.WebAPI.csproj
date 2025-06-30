@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Academix.Infrastructure\Academix.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Common\" />
+  </ItemGroup>
+
 </Project>

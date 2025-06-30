@@ -13,4 +13,5 @@ public class UpdateProfileCommand : ICommand<UserProfileDto>, IRequest<Result<Us
     public string? ProfilePictureUrl { get; set; }
     public Guid CountryId { get; set; }
     public string Gender { get; set; } = string.Empty;
+    public string? TimeZone { get; set; }
 } 

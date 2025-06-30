@@ -44,6 +44,12 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
         {
             user.gender = gender;
         }
+        
+        // Update time zone if provided
+        if (!string.IsNullOrEmpty(request.TimeZone))
+        {
+            user.TimeZone = request.TimeZone;
+        }
 
         user.UpdatedAt = DateTime.UtcNow;
 
@@ -74,6 +80,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
             Gender = updatedUser.gender.GetLocalizedName(_localizationService),
             CountryId = updatedUser.CountryId,
             CountryName = countryName,
+            TimeZone = updatedUser.TimeZone,
             Roles = roles.ToList()
         };
 
