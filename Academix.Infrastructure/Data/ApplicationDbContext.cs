@@ -14,14 +14,15 @@ namespace Academix.Infrastructure.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Country> Countries { get; set; }
-       
+        public DbSet<Nationality> Nationalities { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // Student configuration
-            modelBuilder.Entity<Student>(entity =>
+            modelBuilder.Entity<Teacher>(entity =>
             {
                 entity.OwnsMany(e => e.Educations, builder =>
                 {
@@ -35,7 +36,7 @@ namespace Academix.Infrastructure.Data
 
                 entity.HasOne(s => s.User)
                       .WithOne()
-                      .HasForeignKey<Student>(s => s.UserId)
+                      .HasForeignKey<Teacher>(s => s.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 

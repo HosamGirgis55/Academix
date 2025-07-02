@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Academix.Domain\Academix.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\" />
-  </ItemGroup>
-
 </Project>

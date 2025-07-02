@@ -46,7 +46,7 @@ public class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, Result<Us
             LastName = user.LastName,
             ProfilePictureUrl = user.ProfilePictureUrl,
             Gender = user.gender.GetLocalizedName(_localizationService),
-            CountryId = user.CountryId,
+            
             CountryName = countryName,
             TimeZone = user.TimeZone,
             Roles = roles.ToList()
