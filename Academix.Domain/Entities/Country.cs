@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Academix.Domain.Entities
 {
+
     public class Country: BaseEntity
     {
         public string NameAr { get; set; }

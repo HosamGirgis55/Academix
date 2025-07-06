@@ -1,6 +1,7 @@
 using Academix.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 namespace Academix.Infrastructure.Data
 {
@@ -12,6 +13,16 @@ namespace Academix.Infrastructure.Data
         }
 
         public DbSet<Student> Students { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Nationality> Nationalities { get; set; }
+        public DbSet<Position> Positions { get; set; }
+        public DbSet<Specialization> specializations  { get; set; }
+        public DbSet<Experiences> Experiences { get; set; }
+        public DbSet<Level> Levels { get; set; }
+        public DbSet<Field> Fields { get; set; }
+        public DbSet<Communication> Communication { get; set; }
+
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }

@@ -10,10 +10,37 @@ namespace Academix.Infrastructure.Repositories
         private IDbContextTransaction? _transaction;
         private readonly Dictionary<Type, object> _repositories = new();
 
+        private readonly Dictionary<Type, object> _repositories = new();
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
+
+        private TInterface GetRepository<TInterface, TImplementation>()
+        where TInterface : class
+        where TImplementation : TInterface
+        {
+            var type = typeof(TInterface);
+            if (_repositories.TryGetValue(type, out var repo))
+            {
+                return (TInterface)repo;
+            }
+
+            var instance = (TInterface)Activator.CreateInstance(typeof(TImplementation), _context)!;
+            _repositories[type] = instance;
+            return instance;
+        }
+
+        public ICountryRepository Countries => GetRepository<ICountryRepository, CountryRepository>();
+        public INationalityRepository Nationalities => GetRepository<INationalityRepository, NationalityRepository>();
+        public IPositionRepository Positions => GetRepository<IPositionRepository, PositionRepository>();
+        public ISpecializationRepository Specialization => GetRepository<ISpecializationRepository, SpecializationRepository>();
+        public IExperiencesRepository Experiences => GetRepository<IExperiencesRepository, ExperiencesRepository>();
+        public ILevelRepository Level => GetRepository<ILevelRepository, LevelRepository>();
+        public IFieldRepository Field => GetRepository<IFieldRepository, FieldRepository>();
+
+        public ICommunicationRepository Communication => GetRepository<ICommunicationRepository,CommunicationRepository>();
+
 
         public IGenericRepository<T> Repository<T>() where T : class
         {
