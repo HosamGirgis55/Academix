@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Academix.Domain.Entities
 {
-    public class Nationality
+
+    public class Nationality:BaseEntity
     {
-        public int Id { get; set; }
-        public string NameEnglish { get; set; } 
-        public string NameArabic { get; set; }
-        public string code { get; set; }
-    }
+        public string NameAr { get; set; }
+        public string NameEn { get; set; }
+        // Navigation property to ApplicationUser
+        public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
+        
+             }
 }

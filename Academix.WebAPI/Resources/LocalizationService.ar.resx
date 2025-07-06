@@ -78,4 +78,118 @@
   <data name="AgeInvalid" xml:space="preserve">
     <value>يجب أن يكون عمر الطالب بين 16 و 100 سنة</value>
   </data>
+  <data name="FirstNameIsRequired" xml:space="preserve">
+    <value>الاسم الأول مطلوب</value>
+  </data>
+  <data name="FirstNameMinLength" xml:space="preserve">
+    <value>يجب أن يكون الاسم الأول على الأقل حرفين</value>
+  </data>
+  <data name="FirstNameMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الاسم الأول 50 حرفاً</value>
+  </data>
+  <data name="LastNameIsRequired" xml:space="preserve">
+    <value>اسم العائلة مطلوب</value>
+  </data>
+  <data name="LastNameMinLength" xml:space="preserve">
+    <value>يجب أن يكون اسم العائلة على الأقل حرفين</value>
+  </data>
+  <data name="LastNameMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز اسم العائلة 50 حرفاً</value>
+  </data>
+  <data name="EmailIsRequired" xml:space="preserve">
+    <value>البريد الإلكتروني مطلوب</value>
+  </data>
+  <data name="InvalidEmailFormat" xml:space="preserve">
+    <value>يجب أن يكون البريد الإلكتروني صحيحاً</value>
+  </data>
+  <data name="EmailMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز البريد الإلكتروني 100 حرف</value>
+  </data>
+  <data name="PasswordIsRequired" xml:space="preserve">
+    <value>كلمة المرور مطلوبة</value>
+  </data>
+  <data name="PasswordMinLength" xml:space="preserve">
+    <value>يجب أن تكون كلمة المرور على الأقل 6 أحرف</value>
+  </data>
+  <data name="PasswordComplexity" xml:space="preserve">
+    <value>يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم ورمز خاص واحد على الأقل</value>
+  </data>
+  <data name="ConfirmPasswordIsRequired" xml:space="preserve">
+    <value>تأكيد كلمة المرور مطلوب</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>كلمات المرور غير متطابقة</value>
+  </data>
+  <data name="InvalidGender" xml:space="preserve">
+    <value>يرجى اختيار جنس صحيح</value>
+  </data>
+  <data name="CountryIsRequired" xml:space="preserve">
+    <value>البلد مطلوب</value>
+  </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>يرجى إدخال رقم هاتف صحيح</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>يوجد مستخدم بهذا البريد الإلكتروني بالفعل</value>
+  </data>
+  <data name="CountryNotFound" xml:space="preserve">
+    <value>البلد المحدد غير موجود</value>
+  </data>
+  <data name="UserCreationFailed" xml:space="preserve">
+    <value>فشل إنشاء المستخدم</value>
+  </data>
+  <data name="StudentRegisteredSuccessfully" xml:space="preserve">
+    <value>تم تسجيل الطالب بنجاح</value>
+  </data>
+  <data name="RegistrationFailed" xml:space="preserve">
+    <value>فشل التسجيل</value>
+  </data>
+  <data name="CertificateNameRequired" xml:space="preserve">
+    <value>اسم الشهادة مطلوب</value>
+  </data>
+  <data name="CertificateNameMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز اسم الشهادة 200 حرف</value>
+  </data>
+  <data name="CertificateUrlRequired" xml:space="preserve">
+    <value>رابط الشهادة مطلوب</value>
+  </data>
+  <data name="InvalidCertificateUrl" xml:space="preserve">
+    <value>يرجى إدخال رابط شهادة صحيح</value>
+  </data>
+  <data name="CertificateDescriptionMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز وصف الشهادة 500 حرف</value>
+  </data>
+  <data name="CertificateIssuedByRequired" xml:space="preserve">
+    <value>جهة إصدار الشهادة مطلوبة</value>
+  </data>
+  <data name="CertificateIssuedByMaxLength" xml:space="preserve">
+    <value>لا يمكن أن تتجاوز جهة إصدار الشهادة 200 حرف</value>
+  </data>
+  <data name="CertificateIssuedDateInvalid" xml:space="preserve">
+    <value>لا يمكن أن يكون تاريخ إصدار الشهادة في المستقبل</value>
+  </data>
+  <data name="DegreeRequired" xml:space="preserve">
+    <value>الدرجة العلمية مطلوبة</value>
+  </data>
+  <data name="DegreeMaxLength" xml:space="preserve">
+    <value>لا يمكن أن تتجاوز الدرجة العلمية 200 حرف</value>
+  </data>
+  <data name="InstitutionRequired" xml:space="preserve">
+    <value>المؤسسة التعليمية مطلوبة</value>
+  </data>
+  <data name="InstitutionMaxLength" xml:space="preserve">
+    <value>لا يمكن أن تتجاوز المؤسسة التعليمية 200 حرف</value>
+  </data>
+  <data name="FieldOfStudyRequired" xml:space="preserve">
+    <value>مجال الدراسة مطلوب</value>
+  </data>
+  <data name="FieldOfStudyMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز مجال الدراسة 200 حرف</value>
+  </data>
+  <data name="StartDateInvalid" xml:space="preserve">
+    <value>لا يمكن أن يكون تاريخ البداية في المستقبل</value>
+  </data>
+  <data name="EndDateMustBeAfterStartDate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ النهاية بعد تاريخ البداية</value>
+  </data>
 </root> 

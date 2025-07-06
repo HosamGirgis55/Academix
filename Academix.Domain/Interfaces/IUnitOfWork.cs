@@ -12,6 +12,7 @@ namespace Academix.Domain.Interfaces
         ILevelRepository Level { get; }
         IFieldRepository Field { get; }
         ICommunicationRepository Communication { get; }
+        IGenericRepository<T> Repository<T>() where T : class;
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();

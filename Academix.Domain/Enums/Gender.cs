@@ -8,9 +8,9 @@ namespace Academix.Domain.Enums
 {
     public enum Gender
     {
-        male = 1,
-        female = 2,
-        ذكر = 3,
-        انثى = 4
+
+        Male = 0,
+        Female = 1,
+
     }
 }

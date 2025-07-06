@@ -78,4 +78,211 @@
   <data name="AgeInvalid" xml:space="preserve">
     <value>Student must be between 16 and 100 years old</value>
   </data>
+  <data name="FirstNameIsRequired" xml:space="preserve">
+    <value>First name is required</value>
+  </data>
+  <data name="FirstNameMinLength" xml:space="preserve">
+    <value>First name must be at least 2 characters</value>
+  </data>
+  <data name="FirstNameMaxLength" xml:space="preserve">
+    <value>First name cannot exceed 50 characters</value>
+  </data>
+  <data name="LastNameIsRequired" xml:space="preserve">
+    <value>Last name is required</value>
+  </data>
+  <data name="LastNameMinLength" xml:space="preserve">
+    <value>Last name must be at least 2 characters</value>
+  </data>
+  <data name="LastNameMaxLength" xml:space="preserve">
+    <value>Last name cannot exceed 50 characters</value>
+  </data>
+  <data name="EmailIsRequired" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="InvalidEmailFormat" xml:space="preserve">
+    <value>Email must be a valid email address</value>
+  </data>
+  <data name="EmailMaxLength" xml:space="preserve">
+    <value>Email cannot exceed 100 characters</value>
+  </data>
+  <data name="PasswordIsRequired" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="PasswordMinLength" xml:space="preserve">
+    <value>Password must be at least 6 characters</value>
+  </data>
+  <data name="PasswordComplexity" xml:space="preserve">
+    <value>Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character</value>
+  </data>
+  <data name="ConfirmPasswordIsRequired" xml:space="preserve">
+    <value>Confirm password is required</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="InvalidGender" xml:space="preserve">
+    <value>Please select a valid gender</value>
+  </data>
+  <data name="CountryIsRequired" xml:space="preserve">
+    <value>Country is required</value>
+  </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Please enter a valid phone number</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>A user with this email already exists</value>
+  </data>
+  <data name="CountryNotFound" xml:space="preserve">
+    <value>Selected country not found</value>
+  </data>
+  <data name="UserCreationFailed" xml:space="preserve">
+    <value>User creation failed</value>
+  </data>
+  <data name="StudentRegisteredSuccessfully" xml:space="preserve">
+    <value>Student registered successfully</value>
+  </data>
+  <data name="RegistrationFailed" xml:space="preserve">
+    <value>Registration failed</value>
+  </data>
+  <data name="CertificateNameRequired" xml:space="preserve">
+    <value>Certificate name is required</value>
+  </data>
+  <data name="CertificateNameMaxLength" xml:space="preserve">
+    <value>Certificate name cannot exceed 200 characters</value>
+  </data>
+  <data name="CertificateUrlRequired" xml:space="preserve">
+    <value>Certificate URL is required</value>
+  </data>
+  <data name="InvalidCertificateUrl" xml:space="preserve">
+    <value>Please enter a valid certificate URL</value>
+  </data>
+  <data name="CertificateDescriptionMaxLength" xml:space="preserve">
+    <value>Certificate description cannot exceed 500 characters</value>
+  </data>
+  <data name="CertificateIssuedByRequired" xml:space="preserve">
+    <value>Certificate issuer is required</value>
+  </data>
+  <data name="CertificateIssuedByMaxLength" xml:space="preserve">
+    <value>Certificate issuer cannot exceed 200 characters</value>
+  </data>
+  <data name="CertificateIssuedDateInvalid" xml:space="preserve">
+    <value>Certificate issued date cannot be in the future</value>
+  </data>
+  <data name="DegreeRequired" xml:space="preserve">
+    <value>Degree is required</value>
+  </data>
+  <data name="DegreeMaxLength" xml:space="preserve">
+    <value>Degree cannot exceed 200 characters</value>
+  </data>
+  <data name="InstitutionRequired" xml:space="preserve">
+    <value>Institution is required</value>
+  </data>
+  <data name="InstitutionMaxLength" xml:space="preserve">
+    <value>Institution cannot exceed 200 characters</value>
+  </data>
+  <data name="FieldOfStudyRequired" xml:space="preserve">
+    <value>Field of study is required</value>
+  </data>
+  <data name="FieldOfStudyMaxLength" xml:space="preserve">
+    <value>Field of study cannot exceed 200 characters</value>
+  </data>
+  <data name="StartDateInvalid" xml:space="preserve">
+    <value>Start date cannot be in the future</value>
+  </data>
+  <data name="EndDateMustBeAfterStartDate" xml:space="preserve">
+    <value>End date must be after start date</value>
+  </data>
+  <!-- Authentication Messages -->
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Invalid email or password</value>
+  </data>
+  <data name="LoginSuccessful" xml:space="preserve">
+    <value>Login successful</value>
+  </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>Invalid or expired refresh token</value>
+  </data>
+  <data name="TokenRefreshed" xml:space="preserve">
+    <value>Token refreshed successfully</value>
+  </data>
+  <data name="ResetPasswordEmailSent" xml:space="preserve">
+    <value>If your email exists in our system, you will receive a password reset link</value>
+  </data>
+  <data name="InvalidResetToken" xml:space="preserve">
+    <value>Invalid or expired reset token</value>
+  </data>
+  <data name="PasswordResetFailed" xml:space="preserve">
+    <value>Password reset failed</value>
+  </data>
+  <data name="PasswordResetSuccessful" xml:space="preserve">
+    <value>Password reset successfully</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+    <value>Password changed successfully</value>
+  </data>
+  <data name="ProfileUpdatedSuccessfully" xml:space="preserve">
+    <value>Profile updated successfully</value>
+  </data>
+  <data name="ProfileRetrievedSuccessfully" xml:space="preserve">
+    <value>Profile retrieved successfully</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="CurrentPasswordRequired" xml:space="preserve">
+    <value>Current password is required</value>
+  </data>
+  <data name="NewPasswordRequired" xml:space="preserve">
+    <value>New password is required</value>
+  </data>
+  <data name="RefreshTokenRequired" xml:space="preserve">
+    <value>Refresh token is required</value>
+  </data>
+  <data name="ResetTokenRequired" xml:space="preserve">
+    <value>Reset token is required</value>
+  </data>
+  <!-- Gender Localization -->
+  <data name="Male_En" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="Female_En" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="Male_Ar" xml:space="preserve">
+    <value>ذكر</value>
+  </data>
+  <data name="Female_Ar" xml:space="preserve">
+    <value>أنثى</value>
+  </data>
+  <!-- Email and OTP Messages -->
+  <data name="EmailConfirmedSuccessfully" xml:space="preserve">
+    <value>Email confirmed successfully</value>
+  </data>
+  <data name="EmailAlreadyConfirmed" xml:space="preserve">
+    <value>Email is already confirmed</value>
+  </data>
+  <data name="InvalidOtp" xml:space="preserve">
+    <value>Invalid or expired OTP code</value>
+  </data>
+  <data name="EmailConfirmationFailed" xml:space="preserve">
+    <value>Email confirmation failed</value>
+  </data>
+  <data name="PasswordResetSuccessfully" xml:space="preserve">
+    <value>Password reset successfully</value>
+  </data>
+  <data name="EmailSendFailed" xml:space="preserve">
+    <value>Failed to send email. Please try again.</value>
+  </data>
+  <data name="StudentRegisteredSuccessfullyCheckEmail" xml:space="preserve">
+    <value>Student registered successfully. Please check your email to verify your account.</value>
+  </data>
+  <data name="OtpRequired" xml:space="preserve">
+    <value>OTP code is required</value>
+  </data>
+  <data name="OtpExpired" xml:space="preserve">
+    <value>OTP code has expired. Please request a new one.</value>
+  </data>
 </root> 
