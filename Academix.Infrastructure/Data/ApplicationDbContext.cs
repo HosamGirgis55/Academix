@@ -24,8 +24,7 @@ namespace Academix.Infrastructure.Data
         public DbSet<Communication> Communication { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Nationality> Nationalities { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

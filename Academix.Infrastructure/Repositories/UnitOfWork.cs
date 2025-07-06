@@ -10,7 +10,6 @@ namespace Academix.Infrastructure.Repositories
         private IDbContextTransaction? _transaction;
         private readonly Dictionary<Type, object> _repositories = new();
 
-        private readonly Dictionary<Type, object> _repositories = new();
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;

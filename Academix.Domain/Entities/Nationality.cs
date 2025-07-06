@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 namespace Academix.Domain.Entities
 {
 
-    public class Nationality:BaseEntity
+    public class Nationality : loockupBaseEntity
     {
-        public string NameAr { get; set; }
-        public string NameEn { get; set; }
-        // Navigation property to ApplicationUser
-        public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
-        
-             }
+
+        public ICollection<Student> Students { get; set; } = new List<Student>();
+    }
 }

@@ -37,7 +37,6 @@ namespace Academix.WebAPI.Controllers
 
                     var genders = genderNames.Select((name, index) => new LookupItemDto
                     {
-                        Id = index + 1,
                         Name = name
                     }).ToList();
                     return Ok(Result<List<LookupItemDto>>.Success(genders));
@@ -47,8 +46,8 @@ namespace Academix.WebAPI.Controllers
                     var result = countries.Select(c => new LookupItemDto
                     {
                         Id = c.Id,
-                        Name = lang.ToLower() == "ar" ? c.NameArabic : c.NameEnglish,
-                        Code = c.code
+                        Name = lang.ToLower() == "ar" ? c.NameAr : c.NameEn,
+                        Code = c.Code
                     }).ToList();
                     return Ok(Result<List<LookupItemDto>>.Success(result));
 
@@ -57,8 +56,8 @@ namespace Academix.WebAPI.Controllers
                     var nationalityResult = nationalities.Select(n => new LookupItemDto
                     {
                         Id = n.Id,
-                        Name = lang.ToLower() == "ar" ? n.NameArabic : n.NameEnglish,
-                        Code = n.code
+                        Name = lang.ToLower() == "ar" ? n.NameAr : n.NameEn,
+                        Code = n.Code
                     }).ToList();
 
                     return Ok(Result<List<LookupItemDto>>.Success(nationalityResult));
@@ -69,8 +68,8 @@ namespace Academix.WebAPI.Controllers
                     var PositionResult = Positions.Select(n => new LookupItemDto
                     {
                         Id = n.Id,
-                        Name = lang.ToLower() == "ar" ? n.NameArabic : n.NameEnglish,
-                        Code = n.code
+                        Name = lang.ToLower() == "ar" ? n.NameAr : n.NameEn,
+                        Code = n.Code
                     }).ToList();
 
                     return Ok(Result<List<LookupItemDto>>.Success(PositionResult));
@@ -80,8 +79,8 @@ namespace Academix.WebAPI.Controllers
                     var SpecializationResult = Specialization.Select(n => new LookupItemDto
                     {
                         Id = n.Id,
-                        Name = lang.ToLower() == "ar" ? n.NameArabic : n.NameEnglish,
-                        Code = n.code
+                        Name = lang.ToLower() == "ar" ? n.NameAr : n.NameEn,
+                        Code = n.Code
                     }).ToList();
 
                     return Ok(Result<List<LookupItemDto>>.Success(SpecializationResult));
@@ -91,8 +90,8 @@ namespace Academix.WebAPI.Controllers
                     var ExperiencesResult = Experiences.Select(n => new LookupItemDto
                     {
                         Id = n.Id,
-                        Name = lang.ToLower() == "ar" ? n.NameArabic : n.NameEnglish,
-                        Code = n.code
+                        Name = lang.ToLower() == "ar" ? n.NameAr : n.NameEn,
+                        Code = n.Code
                     }).ToList();
 
                     return Ok(Result<List<LookupItemDto>>.Success(ExperiencesResult));
@@ -102,8 +101,8 @@ namespace Academix.WebAPI.Controllers
                     var LevelsResult = Levels.Select(n => new LookupItemDto
                     {
                         Id = n.Id,
-                        Name = lang.ToLower() == "ar" ? n.NameArabic : n.NameEnglish,
-                        Code = n.code
+                        Name = lang.ToLower() == "ar" ? n.NameAr : n.NameEn,
+                        Code = n.Code
                     }).ToList();
 
                     return Ok(Result<List<LookupItemDto>>.Success(LevelsResult));
@@ -113,8 +112,8 @@ namespace Academix.WebAPI.Controllers
                     var FieldsResult = Fields.Select(n => new LookupItemDto
                     {
                         Id = n.Id,
-                        Name = lang.ToLower() == "ar" ? n.NameArabic : n.NameEnglish,
-                        Code = n.code
+                        Name = lang.ToLower() == "ar" ? n.NameAr : n.NameEn,
+                        Code = n.Code
                     }).ToList();
 
                     return Ok(Result<List<LookupItemDto>>.Success(FieldsResult));
@@ -124,8 +123,8 @@ namespace Academix.WebAPI.Controllers
                     var CommunicationsResult = Communications.Select(n => new LookupItemDto
                     {
                         Id = n.Id,
-                        Name = lang.ToLower() == "ar" ? n.NameArabic : n.NameEnglish,
-                        Code = n.code
+                        Name = lang.ToLower() == "ar" ? n.NameAr : n.NameEn,
+                        Code = n.Code
                     }).ToList();
 
                     return Ok(Result<List<LookupItemDto>>.Success(CommunicationsResult));

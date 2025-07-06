@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Academix.Domain.Entities
 {
-    public class Field
+    public class Field : loockupBaseEntity
     {
-        public int Id { get; set; }
-        public string NameEnglish { get; set; }
-        public string NameArabic { get; set; }
-        public string code { get; set; }
+
+        public ICollection<Student> Students { get; set; } = new List<Student>();
     }
 }
