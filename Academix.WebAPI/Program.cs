@@ -9,6 +9,9 @@ using Academix.WebAPI.Common.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,13 +37,18 @@ builder.Services.AddMemoryCache();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddDistributedMemoryCache();
 
+// Configure supported cultures
+var supportedCultures = new[] { "en", "ar" };
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var supportedCultures = new[] { "en", "ar" };
     options.SetDefaultCulture(supportedCultures[0])
         .AddSupportedCultures(supportedCultures)
         .AddSupportedUICultures(supportedCultures);
 });
+
+// Add string localizer
+builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
+builder.Services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
 
 // Add Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

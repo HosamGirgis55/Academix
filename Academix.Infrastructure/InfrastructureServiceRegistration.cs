@@ -5,6 +5,7 @@ using Academix.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Academix.Application.Common.Interfaces;
 
 namespace Academix.Infrastructure
 {
@@ -18,6 +19,20 @@ namespace Academix.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<SeedDataService>();
+
+            // Add localization service
+            services.AddScoped<ILocalizationService, LocalizationService>();
+            services.AddScoped<ITimeZoneService, TimeZoneService>();
+            services.AddScoped<IEmailService, EmailService>();
+
+            // Add repositories
+            services.AddScoped<IFieldRepository, FieldRepository>();
+            services.AddScoped<ILevelRepository, LevelRepository>();
+            services.AddScoped<INationalityRepository, NationalityRepository>();
+            services.AddScoped<IPositionRepository, PositionRepository>();
+            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+
 
             return services;
         }

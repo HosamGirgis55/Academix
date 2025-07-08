@@ -198,6 +198,12 @@
   <data name="CertificateDescriptionMaxLength" xml:space="preserve">
     <value>Certificate description cannot exceed 500 characters</value>
   </data>
+  <data name="Enum_Gender_Male" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="Enum_Gender_Female" xml:space="preserve">
+    <value>Female</value>
+  </data>
   <data name="CertificateIssuedByRequired" xml:space="preserve">
     <value>Certificate issuer is required</value>
   </data>

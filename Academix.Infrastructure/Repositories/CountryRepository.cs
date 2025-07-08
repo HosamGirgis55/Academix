@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Academix.Infrastructure.Repositories
 {
-    internal class CountryRepository : GenericRepository<Country>,ICountryRepository
+    public class CountryRepository : GenericRepository<Country>,ICountryRepository
     {
         public CountryRepository(ApplicationDbContext context) : base(context)
         {

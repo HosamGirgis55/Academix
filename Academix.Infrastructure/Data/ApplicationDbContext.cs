@@ -12,20 +12,20 @@ namespace Academix.Infrastructure.Data
         {
         }
 
-        public DbSet<Student> Students { get; set; } = null!;
         public DbSet<Country> Countries { get; set; } = null!;
+        public DbSet<Experience> Experiences { get; set; } = null!;
+        public DbSet<Field> Fields { get; set; } = null!;
+        public DbSet<Level> Levels { get; set; } = null!;
+        public DbSet<CommunicationMethod> CommunicationMethods { get; set; } = null!;
         public DbSet<Nationality> Nationalities { get; set; } = null!;
         public DbSet<Position> Positions { get; set; } = null!;
         public DbSet<Specialization> Specializations { get; set; } = null!;
-        public DbSet<Experience> Experiences { get; set; } = null!;
-        public DbSet<Level> Levels { get; set; } = null!;
-        public DbSet<Field> Fields { get; set; } = null!;
-        public DbSet<Communication> Communication { get; set; } = null!;
+        public DbSet<Student> Students { get; set; } = null!;
+        public DbSet<StudentExperience> StudentExperiences { get; set; } = null!;
         public DbSet<Teacher> Teachers { get; set; } = null!;
         public DbSet<GraduationStatus> GraduationStatuses { get; set; } = null!;
         public DbSet<Skill> Skills { get; set; } = null!;
         public DbSet<StudentSkill> StudentSkills { get; set; } = null!;
-        public DbSet<StudentExperience> StudentExperiences { get; set; } = null!;
         public DbSet<LearningInterest> LearningInterests { get; set; } = null!;
         public DbSet<LearningInterestsStudent> LearningInterestsStudents { get; set; } = null!;
         public DbSet<Exame> Exames { get; set; } = null!;
@@ -33,7 +33,6 @@ namespace Academix.Infrastructure.Data
         // Teacher Preferences Tables
         public DbSet<TeachingArea> TeachingAreas { get; set; } = null!;
         public DbSet<AgeGroup> AgeGroups { get; set; } = null!;
-        public DbSet<CommunicationMethod> CommunicationMethods { get; set; } = null!;
         public DbSet<TeachingLanguage> TeachingLanguages { get; set; } = null!;
 
         // Junction Tables

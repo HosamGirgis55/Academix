@@ -5,25 +5,18 @@
 namespace Academix.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init2 : Migration
+    public partial class Initial_Migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "code",
-                table: "Fields");
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "code",
-                table: "Fields",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+
         }
     }
 }

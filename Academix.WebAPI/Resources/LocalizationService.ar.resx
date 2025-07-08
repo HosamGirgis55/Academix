@@ -198,6 +198,12 @@
   <data name="CertificateDescriptionMaxLength" xml:space="preserve">
     <value>لا يمكن أن يتجاوز وصف الشهادة 500 حرف</value>
   </data>
+  <data name="Enum_Gender_Male" xml:space="preserve">
+    <value>ذكر</value>
+  </data>
+  <data name="Enum_Gender_Female" xml:space="preserve">
+    <value>أنثى</value>
+  </data>
   <data name="CertificateIssuedByRequired" xml:space="preserve">
     <value>جهة إصدار الشهادة مطلوبة</value>
   </data>
@@ -230,11 +236,5 @@
   </data>
   <data name="EndDateMustBeAfterStartDate" xml:space="preserve">
     <value>يجب أن يكون تاريخ النهاية بعد تاريخ البداية</value>
-  </data>
-  <data name="Enum_Gender_Male" xml:space="preserve">
-    <value>ذكر</value>
-  </data>
-  <data name="Enum_Gender_Female" xml:space="preserve">
-    <value>أنثى</value>
   </data>
 </root> 

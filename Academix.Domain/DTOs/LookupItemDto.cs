@@ -18,5 +18,5 @@ namespace Academix.Domain.DTOs;
     /// <summary>
     /// The code/key of the lookup item (optional)
     /// </summary>
-    public string? Code { get; set; }
+    
 }
