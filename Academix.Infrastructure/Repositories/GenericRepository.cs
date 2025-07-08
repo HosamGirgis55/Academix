@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Academix.Domain.Interfaces;
 using Academix.Infrastructure.Data;
@@ -32,7 +31,7 @@ namespace Academix.Infrastructure.Repositories
 
         public Task<IQueryable<T>> GetAllAsync()
         {
-            return Task.FromResult(_dbSet.AsQueryable());
+            return Task.FromResult(_dbSet.AsNoTracking().AsQueryable());
         }
 
         public async Task<T> GetByIdAsync(Guid id)
