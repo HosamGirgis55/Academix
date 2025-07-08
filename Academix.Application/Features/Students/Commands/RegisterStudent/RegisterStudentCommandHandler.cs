@@ -72,13 +72,14 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                     return Result.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
                 }
-                List<ProblemSolving> problemSolving = new List<ProblemSolving>();
-                foreach (var problem in request.ProblemSolveing ?? new List<ProblemSolveingDTO>())
+                List<StudentExperience> Experience = new List<StudentExperience>();
+                foreach (var problem in request.Experiences ?? new List<ExperienceDTO>())
                 {
-                    problemSolving.Add(new ProblemSolving
+                    Experience.Add(new StudentExperience
                     {
-                        Id = problem.Id,
-
+                        ExperienceId = problem.Id,
+                    });
+                }
                 // Add to Student role
                 await _userManager.AddToRoleAsync(user, "Student");
                 var LearningInterestsRequests = new List<LearningInterestsStudent>();
@@ -106,7 +107,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     GraduationStatusId = request.GraduationStatusId,
                     SpecialistId = request.SpecialistId,
                     Skills = new List<StudentSkill>(),
-                    Experiences = new List<StudentExperience>(),
+                    Experiences = Experience,
                     LearningInterests = LearningInterestsRequests
                 };
 

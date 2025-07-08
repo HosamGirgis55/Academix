@@ -65,18 +65,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 .Must(uri => string.IsNullOrEmpty(uri) || Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .WithMessage(_localizationService.GetLocalizedString("InvalidProfilePictureUrl"));
 
-            // Experience validations
-            RuleForEach(x => x.Experiences)
-                .ChildRules(platform =>
-                {
-                    platform.RuleFor(p => p.Id)
-                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("ExperiencePlatformIdRequired"));
-
-                    platform.RuleFor(p => p.ProfileUrl)
-                        .Must(uri => string.IsNullOrEmpty(uri) || Uri.TryCreate(uri, UriKind.Absolute, out _))
-                        .WithMessage(_localizationService.GetLocalizedString("InvalidExperienceProfileUrl"));
-                })
-                .When(x => x.Experiences != null && x.Experiences.Any());
+            
 
             // Skills validations
             RuleForEach(x => x.Skills)
@@ -90,17 +79,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         }
     }
 
-    public class CreateCertificateDtoValidator : AbstractValidator<CreateCertificateDto>
-    {
-        public CreateCertificateDtoValidator(ILocalizationService localizationService)
-        {
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage(localizationService.GetLocalizedString("CertificateNameRequired"))
-                .MaximumLength(200).WithMessage(localizationService.GetLocalizedString("CertificateNameMaxLength"));
-
-           
-        }
-    }
+    
 
  
 

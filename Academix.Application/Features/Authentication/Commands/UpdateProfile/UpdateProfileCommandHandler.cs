@@ -78,7 +78,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
             LastName = updatedUser.LastName,
             ProfilePictureUrl = updatedUser.ProfilePictureUrl,
             Gender = updatedUser.Gender.GetLocalizedName(_localizationService),
-            CountryId = updatedUser.CountryId,
+            
             CountryName = countryName,
             TimeZone = updatedUser.TimeZone,
             Roles = roles.ToList()

@@ -1,11 +1,8 @@
-using Academix.Application.Features.Teachers.Commands.RegisterTeacher;
 using Academix.Application.Common.Models;
+using Academix.Application.Features.Teachers.Commands.RegisterTeacher;
 using Academix.WebAPI.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Academix.Helpers;
-using Academix.Application.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
 
 namespace Academix.WebAPI.Features.Teachers
 {
@@ -16,23 +13,24 @@ namespace Academix.WebAPI.Features.Teachers
             app.MapPost("/api/teachers/register", HandleAsync)
                 .WithName("RegisterTeacher")
                 .WithTags("Teachers")
-                .Produces<ResponseHelper>(200)
-                .Produces<ResponseHelper>(400);
+                .Produces<ResultModel<AuthenticationResult>>(200)
+                .Produces<ResultModel<AuthenticationResult>>(400);
         }
 
         private static async Task<IResult> HandleAsync(
             [FromBody] RegisterTeacherCommand command,
-            ISender sender,
+            [FromServices] IMediator mediator,
             CancellationToken cancellationToken)
         {
-            var result = await sender.Send(command, cancellationToken);
+            var result = await mediator.Send(command, cancellationToken);
+            var resultModel = result.ToResultModel(result.SuccessMessage);
 
-            if (result.IsSuccess)
+            if (resultModel.Success)
             {
-                return Results.Ok();
+                return Results.Ok(resultModel);
             }
 
-            return Results.BadRequest();
+            return Results.BadRequest(resultModel);
         }
     }
 } 

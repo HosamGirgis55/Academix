@@ -1,10 +1,11 @@
-using System;
-using System.Collections.Generic;
 using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
 using Academix.Domain.DTOs;
+using Academix.Domain.Entities;
 using Academix.Domain.Enums;
 using MediatR;
+using System;
+using System.Collections.Generic;
 
 namespace Academix.Application.Features.Students.Commands.RegisterStudent
 {
@@ -25,18 +26,12 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public Guid LevelId { get; set; }
         public Guid GraduationStatusId { get; set; }
         public Guid SpecialistId { get; set; }
-        public List<ExperiencePlatform> Experiences { get; set; } = new();
+        public List<ExperienceDTO> Experiences { get; set; } = new();
         public List<StudentSkillDto> Skills { get; set; } = new();
         public List<LearningInterestsDto> LearningInterests { get; set; } = new();
     }
 
-    public class ExperiencePlatform
-    {
-        public Guid Id { get; set; }
-        public string? ProfileUrl { get; set; }
-        public int? SolvedProblems { get; set; }
-        public int? Rating { get; set; }
-    }
+     
     public class LearningInterestsDto
     {
       public  Guid LearningInterestId { get; set; }
@@ -46,7 +41,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public Guid SkillId { get; set; }
      }
 
-    public class ProblemSolveingDTO
+    public class ExperienceDTO
     {
         public Guid Id { get; set; }
 
@@ -66,8 +61,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public string Message { get; set; } = string.Empty;
          
         public bool RequiresEmailVerification { get; set; }
-        public List<CertificateResponseDto> Certificates { get; set; } = new();
-        public List<EducationResponseDto> Educations { get; set; } = new();
+      
         public StudentPreferencesDto? Preferences { get; set; }
     }
 

@@ -12,41 +12,36 @@ namespace Academix.Infrastructure.Data
         {
         }
 
-        public DbSet<Student> Students { get; set; }
-
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Nationality> Nationalities { get; set; }
-        public DbSet<Position> Positions { get; set; }
-        public DbSet<Specialization> specializations  { get; set; }
-        public DbSet<Experiences> Experiences { get; set; }
-        public DbSet<Level> Levels { get; set; }
-        public DbSet<Field> Fields { get; set; }
-        public DbSet<Communication> Communication { get; set; }
-
-        public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Level> Levels { get; set; }
-        public DbSet<GraduationStatus> GraduationStatuses { get; set; }
-        public DbSet<Specialization> Specializations { get; set; }
-        public DbSet<Skill> Skills { get; set; }
-        public DbSet<Experience> Experiences { get; set; }
-        public DbSet<StudentSkill> StudentSkills { get; set; }
-        public DbSet<StudentExperience> StudentExperiences { get; set; }
+        public DbSet<Student> Students { get; set; } = null!;
+        public DbSet<Country> Countries { get; set; } = null!;
+        public DbSet<Nationality> Nationalities { get; set; } = null!;
+        public DbSet<Position> Positions { get; set; } = null!;
+        public DbSet<Specialization> Specializations { get; set; } = null!;
+        public DbSet<Experiences> Experiences { get; set; } = null!;
+        public DbSet<Level> Levels { get; set; } = null!;
+        public DbSet<Field> Fields { get; set; } = null!;
+        public DbSet<Communication> Communication { get; set; } = null!;
+        public DbSet<Teacher> Teachers { get; set; } = null!;
+        public DbSet<GraduationStatus> GraduationStatuses { get; set; } = null!;
+        public DbSet<Skill> Skills { get; set; } = null!;
+        public DbSet<StudentSkill> StudentSkills { get; set; } = null!;
+        public DbSet<StudentExperience> StudentExperiences { get; set; } = null!;
+        public DbSet<LearningInterest> LearningInterests { get; set; } = null!;
+        public DbSet<LearningInterestsStudent> LearningInterestsStudents { get; set; } = null!;
+        public DbSet<Exame> Exames { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // Student configuration
-            modelBuilder.Entity<Teacher>(entity =>
+            modelBuilder.Entity<Student>(entity =>
             {
-               
                 entity.HasOne(s => s.User)
                       .WithOne()
-                      .HasForeignKey<Teacher>(s => s.UserId)
+                      .HasForeignKey<Student>(s => s.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                // Configure relationships
                 entity.HasOne(s => s.Nationality)
                       .WithMany()
                       .HasForeignKey(s => s.NationalityId)
@@ -58,12 +53,12 @@ namespace Academix.Infrastructure.Data
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(s => s.Level)
-                      .WithMany()
+                      .WithMany(l => l.Students)
                       .HasForeignKey(s => s.LevelId)
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(s => s.GraduationStatus)
-                      .WithMany()
+                      .WithMany(g => g.Students)
                       .HasForeignKey(s => s.GraduationStatusId)
                       .OnDelete(DeleteBehavior.Restrict);
 
@@ -71,9 +66,6 @@ namespace Academix.Infrastructure.Data
                       .WithMany()
                       .HasForeignKey(s => s.SpecialistId)
                       .OnDelete(DeleteBehavior.Restrict);
-
-                
-               
             });
 
             // Teacher configuration
@@ -94,15 +86,37 @@ namespace Academix.Infrastructure.Data
                       .HasForeignKey(t => t.CountryId)
                       .OnDelete(DeleteBehavior.Restrict);
 
-                entity.Property(t => t.Certificates)
-                      .HasConversion(
-                          v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                          v => JsonSerializer.Deserialize<List<TeacherCertificate>>(v, (JsonSerializerOptions)null));
+                entity.OwnsMany(t => t.Certificates, certificateBuilder =>
+                {
+                    certificateBuilder.ToJson();
+                });
 
-                entity.Property(t => t.Educations)
-                      .HasConversion(
-                          v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                          v => JsonSerializer.Deserialize<List<TeacherEducation>>(v, (JsonSerializerOptions)null));
+                entity.OwnsMany(t => t.Educations, educationBuilder =>
+                {
+                    educationBuilder.ToJson();
+                });
+
+                entity.HasMany(t => t.Exames)
+                      .WithOne(e => e.Teacher)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Level configuration
+            modelBuilder.Entity<Level>(entity =>
+            {
+                entity.HasMany(l => l.Students)
+                      .WithOne(s => s.Level)
+                      .HasForeignKey(s => s.LevelId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // GraduationStatus configuration
+            modelBuilder.Entity<GraduationStatus>(entity =>
+            {
+                entity.HasMany(g => g.Students)
+                      .WithOne(s => s.GraduationStatus)
+                      .HasForeignKey(s => s.GraduationStatusId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
             // ApplicationUser configuration
@@ -111,15 +125,6 @@ namespace Academix.Infrastructure.Data
                 entity.HasOne(u => u.Country)
                       .WithMany()
                       .HasForeignKey(u => u.CountryId)
-                      .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Country configuration
-            modelBuilder.Entity<Country>(entity =>
-            {
-                entity.HasMany(c => c.Students)
-                      .WithOne()
-                      .HasForeignKey("CountryId")
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -151,45 +156,19 @@ namespace Academix.Infrastructure.Data
                       .HasForeignKey(se => se.ExperienceId);
             });
 
-            // Seed some initial data
-           // SeedData(modelBuilder);
+            // LearningInterestsStudent configuration
+            modelBuilder.Entity<LearningInterestsStudent>(entity =>
+            {
+                entity.HasKey(lis => new { lis.StudentId, lis.LearningInterestId });
+
+                entity.HasOne(lis => lis.Students)
+                      .WithMany(s => s.LearningInterests)
+                      .HasForeignKey(lis => lis.StudentId);
+
+                entity.HasOne(lis => lis.LearningInterests)
+                      .WithMany(li => li.LearningInterests)
+                      .HasForeignKey(lis => lis.LearningInterestId);
+            });
         }
-
-        //private void SeedData(ModelBuilder modelBuilder)
-        //{
-        //    // Seed Students
-        //    var student1Id = Guid.NewGuid();
-        //    var student2Id = Guid.NewGuid();
-            
-        //    modelBuilder.Entity<Student>().HasData(
-        //        new Student
-        //        {
-        //            Id = student1Id,
-        //            FirstName = "John",
-        //            FirstNameAr = "جون",
-        //            LastName = "Doe",
-        //            LastNameAr = "دو",
-        //            Email = "john.doe@example.com",
-        //            DateOfBirth = new DateTime(2000, 1, 15),
-        //            StudentNumber = "20240001",
-        //            CreatedAt = DateTime.UtcNow
-        //        },
-        //        new Student
-        //        {
-        //            Id = student2Id,
-        //            FirstName = "Jane",
-        //            FirstNameAr = "جين",
-        //            LastName = "Smith",
-        //            LastNameAr = "سميث",
-        //            Email = "jane.smith@example.com",
-        //            DateOfBirth = new DateTime(2001, 3, 20),
-        //            StudentNumber = "20240002",
-        //            CreatedAt = DateTime.UtcNow
-        //        }
-        //    );
-
-           
-            
-        //}
     }
 } 
