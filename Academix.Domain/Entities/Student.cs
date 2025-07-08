@@ -11,6 +11,7 @@ namespace Academix.Domain.Entities
         
          
         public string UserId { get; set; }
+        [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
 
         // Basic Info

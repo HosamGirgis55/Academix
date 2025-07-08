@@ -98,45 +98,12 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 .NotEmpty().WithMessage(localizationService.GetLocalizedString("CertificateNameRequired"))
                 .MaximumLength(200).WithMessage(localizationService.GetLocalizedString("CertificateNameMaxLength"));
 
-            RuleFor(x => x.CertificateUrl)
-                .NotEmpty().WithMessage(localizationService.GetLocalizedString("CertificateUrlRequired"))
-                .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
-                .WithMessage(localizationService.GetLocalizedString("InvalidCertificateUrl"));
-
-            RuleFor(x => x.Description)
-                .MaximumLength(500).WithMessage(localizationService.GetLocalizedString("CertificateDescriptionMaxLength"));
-
-            RuleFor(x => x.IssuedBy)
-                .NotEmpty().WithMessage(localizationService.GetLocalizedString("CertificateIssuedByRequired"))
-                .MaximumLength(200).WithMessage(localizationService.GetLocalizedString("CertificateIssuedByMaxLength"));
-
-            RuleFor(x => x.IssuedDate)
-                .LessThanOrEqualTo(DateTime.Today).WithMessage(localizationService.GetLocalizedString("CertificateIssuedDateInvalid"));
+           
         }
     }
 
-    public class CreateEducationDtoValidator : AbstractValidator<CreateEducationDto>
-    {
-        public CreateEducationDtoValidator(ILocalizationService localizationService)
-        {
-            RuleFor(x => x.Degree)
-                .NotEmpty().WithMessage(localizationService.GetLocalizedString("DegreeRequired"))
-                .MaximumLength(200).WithMessage(localizationService.GetLocalizedString("DegreeMaxLength"));
+ 
 
-            RuleFor(x => x.Institution)
-                .NotEmpty().WithMessage(localizationService.GetLocalizedString("InstitutionRequired"))
-                .MaximumLength(200).WithMessage(localizationService.GetLocalizedString("InstitutionMaxLength"));
 
-            RuleFor(x => x.FieldOfStudy)
-                .NotEmpty().WithMessage(localizationService.GetLocalizedString("FieldOfStudyRequired"))
-                .MaximumLength(200).WithMessage(localizationService.GetLocalizedString("FieldOfStudyMaxLength"));
 
-            RuleFor(x => x.StartDate)
-                .LessThanOrEqualTo(DateTime.Today).WithMessage(localizationService.GetLocalizedString("StartDateInvalid"));
-
-            RuleFor(x => x.EndDate)
-                .GreaterThan(x => x.StartDate).WithMessage(localizationService.GetLocalizedString("EndDateMustBeAfterStartDate"))
-                .When(x => x.EndDate != default(DateTime));
-        }
-    }
 } 

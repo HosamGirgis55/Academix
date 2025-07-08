@@ -72,6 +72,12 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                     return Result.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
                 }
+                List<ProblemSolving> problemSolving = new List<ProblemSolving>();
+                foreach (var problem in request.ProblemSolveing ?? new List<ProblemSolveingDTO>())
+                {
+                    problemSolving.Add(new ProblemSolving
+                    {
+                        Id = problem.Id,
 
                 // Add to Student role
                 await _userManager.AddToRoleAsync(user, "Student");

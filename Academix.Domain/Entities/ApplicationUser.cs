@@ -19,9 +19,9 @@ namespace Academix.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        public Guid CountryId { get; set; }
+        public Guid? CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]
-        public Country Country { get; set; } = default!;
+        public Country? Country { get; set; } = default!;
 
         // Authentication properties
         public string? RefreshToken { get; set; }
@@ -37,6 +37,16 @@ namespace Academix.Domain.Entities
         
         // Time Zone Configuration
         public string TimeZone { get; set; } = "UTC";
+
+        // Navigation property to National
+        public Guid? NationalityId { get; set; }
+        [ForeignKey(nameof(NationalityId))]
+        public Nationality? Nationality { get; set; }
+
+
+        public Student? Student { get; set; }
+
+        public Teacher? Teacher { get; set; }
     }
 
 }

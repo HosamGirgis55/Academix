@@ -46,22 +46,15 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public Guid SkillId { get; set; }
      }
 
-    public class CreateCertificateDto
+    public class ProblemSolveingDTO
     {
-        public string Name { get; set; } = string.Empty;
-        public string CertificateUrl { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public DateTime IssuedDate { get; set; }
-        public string IssuedBy { get; set; } = string.Empty;
-    }
+        public Guid Id { get; set; }
 
-    public class CreateEducationDto
+    }
+    public class StudentSkillDTO
     {
-        public string Degree { get; set; } = string.Empty;
-        public string Institution { get; set; } = string.Empty;
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string FieldOfStudy { get; set; } = string.Empty;
+        public Guid SkillId { get; set; }
+        
     }
 
     public class StudentRegistrationResponse
@@ -71,29 +64,14 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public string Email { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
-        public int CertificatesCount { get; set; }
-        public int EducationsCount { get; set; }
+         
         public bool RequiresEmailVerification { get; set; }
         public List<CertificateResponseDto> Certificates { get; set; } = new();
         public List<EducationResponseDto> Educations { get; set; } = new();
         public StudentPreferencesDto? Preferences { get; set; }
     }
 
-    public class CertificateResponseDto
-    {
-        public string Name { get; set; } = string.Empty;
-        public string CertificateUrl { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public DateTime IssuedDate { get; set; }
-        public string IssuedBy { get; set; } = string.Empty;
-    }
+     
 
-    public class EducationResponseDto
-    {
-        public string Degree { get; set; } = string.Empty;
-        public string Institution { get; set; } = string.Empty;
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string FieldOfStudy { get; set; } = string.Empty;
-    }
+     
 } 

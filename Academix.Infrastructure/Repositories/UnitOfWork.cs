@@ -16,6 +16,7 @@ namespace Academix.Infrastructure.Repositories
         private readonly Dictionary<Type, object> _repositories;
         private IDbContextTransaction _transaction;
 
+        private readonly Dictionary<Type, object> _repositories = new();
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -37,6 +38,16 @@ namespace Academix.Infrastructure.Repositories
         {
             return GetRepository<T>();
         }
+
+        private TInterface GetRepository<TInterface, TImplementation>()
+        where TInterface : class
+        where TImplementation : TInterface
+        {
+            var type = typeof(TInterface);
+            if (_repositories.TryGetValue(type, out var repo))
+            {
+                return (TInterface)repo;
+            }
 
         private IGenericRepository<T> GetRepository<T>() where T : class
         {
