@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Academix.Domain.Entities
 {
@@ -13,46 +12,58 @@ namespace Academix.Domain.Entities
     {
         public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; } = null!;
 
-        public string Bio { get; set; }
-        public string Github { get; set; }
-        public string ProfilePictureUrl { get; set; }
+        // Basic Info
+        public string Bio { get; set; } = string.Empty;
+        public string ProfilePictureUrl { get; set; } = string.Empty;
+        public List<string> AdditionalInterests { get; set; } = new();
 
-        public List<TeacherEducation> Educations { get; set; } = new();
-        [Column(TypeName = "nvarchar(max)")]
-        public List<TeacherCertificate> Certificates { get; set; } = new();
-
+        // Foreign Keys
         public Guid NationalityId { get; set; }
-        public Country Nationality { get; set; }
+        [ForeignKey("NationalityId")]
+        public Country Nationality { get; set; } = null!;
 
         public Guid CountryId { get; set; }
-        public Country Country { get; set; }
+        [ForeignKey("CountryId")]
+        public Country Country { get; set; } = null!;
 
+        // Education and Certificates
+        public List<TeacherEducation> Educations { get; set; } = new();
+        public List<Certificate> Certificates { get; set; } = new();
+
+        // Exams
         public List<Exame>? Exames { get; set; }
+
+        // Teacher Preferences
+        public ICollection<TeacherTeachingArea> TeacherTeachingAreas { get; set; } = new List<TeacherTeachingArea>();
+        public ICollection<TeacherAgeGroup> TeacherAgeGroups { get; set; } = new List<TeacherAgeGroup>();
+        public ICollection<TeacherCommunicationMethod> TeacherCommunicationMethods { get; set; } = new List<TeacherCommunicationMethod>();
+        public ICollection<TeacherTeachingLanguage> TeacherTeachingLanguages { get; set; } = new List<TeacherTeachingLanguage>();
     }
 
     [Owned]
     public class TeacherEducation
     {
-        public string Degree { get; set; }
-        public string Institution { get; set; }
+        public string Institution { get; set; } = string.Empty;
+        public string Degree { get; set; } = string.Empty;
+        public string Field { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string FieldOfStudy { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string Description { get; set; } = string.Empty;
     }
 
     [Owned]
-    public class TeacherCertificate
+    public class Certificate
     {
-        public string Name { get; set; }
-        public string CertificateUrl { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string CertificateUrl { get; set; } = string.Empty;
+        public string IssuedBy { get; set; } = string.Empty;
         public DateTime IssuedDate { get; set; }
-        public string IssuedBy { get; set; }
+        public string ExamResult { get; set; } = string.Empty;
     }
 
-    public class Exame:BaseEntity
+    public class Exame : BaseEntity
     {
         public string Name { get; set; }
         public string ExamResult { get; set; }

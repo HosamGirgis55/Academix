@@ -73,11 +73,11 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     return Result.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
                 }
                 List<StudentExperience> Experience = new List<StudentExperience>();
-                foreach (var problem in request.Experiences ?? new List<ExperienceDTO>())
+                foreach (var ex in request.Experiences ?? new List<ExperienceDTO>())
                 {
                     Experience.Add(new StudentExperience
                     {
-                        ExperienceId = problem.Id,
+                        ExperienceId = ex.Id,
                     });
                 }
                 // Add to Student role

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Academix.Domain.Entities
 {
-    public class Position
+    public class Position:BaseEntity
     {
-        public int Id { get; set; }
-        public string NameEnglish { get; set; }
-        public string NameArabic { get; set; }
-        public string code { get; set; }
-    }
+       
+        public string NameAr { get; set; }
+        public string NameEn { get; set; }
+     }
 }

@@ -46,8 +46,8 @@ public class VerifyEmailOtpCommandHandler : IRequestHandler<VerifyEmailOtpComman
 
         // Confirm the email
         user.EmailConfirmed = true;
-        user.EmailVerificationOtp = null;
-        user.EmailVerificationOtpExpiry = null;
+        user.EmailOtp = null;
+        user.EmailOtpExpiry = null;
         user.UpdatedAt = DateTime.UtcNow;
 
         var result = await _userManager.UpdateAsync(user);

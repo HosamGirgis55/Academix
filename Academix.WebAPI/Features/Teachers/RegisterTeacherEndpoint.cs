@@ -1,8 +1,11 @@
-using Academix.Application.Common.Models;
 using Academix.Application.Features.Teachers.Commands.RegisterTeacher;
+using Academix.Application.Common.Models;
 using Academix.WebAPI.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Academix.Helpers;
+using Academix.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace Academix.WebAPI.Features.Teachers
 {
@@ -13,24 +16,32 @@ namespace Academix.WebAPI.Features.Teachers
             app.MapPost("/api/teachers/register", HandleAsync)
                 .WithName("RegisterTeacher")
                 .WithTags("Teachers")
-                .Produces<ResultModel<AuthenticationResult>>(200)
-                .Produces<ResultModel<AuthenticationResult>>(400);
+                .Produces<ResponseHelper>(200)
+                .Produces<ResponseHelper>(400);
         }
 
         private static async Task<IResult> HandleAsync(
             [FromBody] RegisterTeacherCommand command,
             [FromServices] IMediator mediator,
+            [FromServices] ResponseHelper response,
+            [FromServices] ILocalizationService localizationService,
             CancellationToken cancellationToken)
         {
-            var result = await mediator.Send(command, cancellationToken);
-            var resultModel = result.ToResultModel(result.SuccessMessage);
-
-            if (resultModel.Success)
+            try
             {
-                return Results.Ok(resultModel);
-            }
+                var result = await mediator.Send(command, cancellationToken);
 
-            return Results.BadRequest(resultModel);
+                if (result.IsSuccess)
+                {
+                    return Results.Ok(response.Created(result));
+                }
+
+                return Results.BadRequest(response.BadRequest(result.Error));
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(response.BadRequest(localizationService.GetLocalizedString("TeacherRegistrationFailed")));
+            }
         }
     }
 } 

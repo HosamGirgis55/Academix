@@ -1,5 +1,4 @@
 using Academix.Application.Common.Models;
-using Academix.Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,46 +7,50 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
 {
     public class RegisterTeacherCommand : IRequest<Result>
     {
-        public required string FirstName { get; set; }
-        public required string LastName { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-        public required string ConfirmPassword { get; set; }
+        // User Info
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public int Gender { get; set; }
+
+        // Basic Info
+        public string Bio { get; set; } = string.Empty;
+        public string ProfilePictureUrl { get; set; } = string.Empty;
+        public List<string> AdditionalInterests { get; set; } = new();
+
+        // Location Info
         public Guid NationalityId { get; set; }
-        public Gender Gender { get; set; }
         public Guid CountryId { get; set; }
-        public string? ProfilePictureUrl { get; set; }
-        public List<TeacherCertificateDto> Certificates { get; set; } = new();
+
+        // Education
         public List<TeacherEducationDto> Educations { get; set; } = new();
-        public List<TeacherExamsDto> TeacherExams { get; set; } = new();
+        public List<TeacherCertificateDto> Certificates { get; set; } = new();
 
-    }
-
-    public class TeacherCertificateDto
-    {
-        public string Name { get; set; }
-        public string CertificateUrl { get; set; }
-        public string Description { get; set; }
-        public DateTime IssuedDate { get; set; }
-        public string IssuedBy { get; set; }
+        // Teaching Preferences
+        public List<Guid> TeachingAreaIds { get; set; } = new();
+        public List<Guid> AgeGroupIds { get; set; } = new();
+        public List<Guid> CommunicationMethodIds { get; set; } = new();
+        public List<Guid> TeachingLanguageIds { get; set; } = new();
     }
 
     public class TeacherEducationDto
     {
-        public string Degree { get; set; }
-        public string Institution { get; set; }
+        public string Institution { get; set; } = string.Empty;
+        public string Degree { get; set; } = string.Empty;
+        public string Field { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string FieldOfStudy { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string Description { get; set; } = string.Empty;
     }
 
-    public class TeacherExamsDto
+    public class TeacherCertificateDto
     {
-        public string Name { get; set; }
-        public string ExamResult { get; set; }
-        public string IssuedBy { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string CertificateUrl { get; set; } = string.Empty;
+        public string IssuedBy { get; set; } = string.Empty;
         public DateTime IssuedDate { get; set; }
-        public string ExameCertificateUrl { get; set; }
-
+        public string ExamResult { get; set; } = string.Empty;
     }
 } 

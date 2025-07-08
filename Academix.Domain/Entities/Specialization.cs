@@ -8,9 +8,9 @@ namespace Academix.Domain.Entities
 {
     public class Specialization : BaseEntity
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-
+        public string NameAr { get; set; }
+        public string NameEn { get; set; }
+ 
         // Navigation property
         public ICollection<Student> Students { get; set; }
     }
