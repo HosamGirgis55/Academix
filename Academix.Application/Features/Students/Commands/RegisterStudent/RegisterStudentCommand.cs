@@ -1,22 +1,49 @@
+using System;
+using System.Collections.Generic;
 using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
+using Academix.Domain.DTOs;
 using Academix.Domain.Enums;
+using MediatR;
 
 namespace Academix.Application.Features.Students.Commands.RegisterStudent
 {
-    public class RegisterStudentCommand : ICommand<Result<StudentRegistrationResponse>>
+    public class RegisterStudentCommand : IRequest<Result>
     {
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string ConfirmPassword { get; set; } = string.Empty;
-        public string? PhoneNumber { get; set; }
-        public Gender Gender { get; set; }
-        public Guid CountryId { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+        public required string ConfirmPassword { get; set; }
+        public Guid NationalityId { get; set; }
+        public int Gender { get; set; }
+        public Guid ResidenceCountryId { get; set; }
         public string? ProfilePictureUrl { get; set; }
-        public List<CreateCertificateDto>? Certificates { get; set; }
-        public List<CreateEducationDto>? Educations { get; set; }
+        public string? Bio { get; set; }
+        public string? Github { get; set; }
+        public bool ConnectProgramming { get; set; }
+        public Guid LevelId { get; set; }
+        public Guid GraduationStatusId { get; set; }
+        public Guid SpecialistId { get; set; }
+        public List<ExperiencePlatform> Experiences { get; set; } = new();
+        public List<StudentSkillDto> Skills { get; set; } = new();
+        public List<LearningInterestsDto> LearningInterests { get; set; } = new();
+    }
+
+    public class ExperiencePlatform
+    {
+        public Guid Id { get; set; }
+        public string? ProfileUrl { get; set; }
+        public int? SolvedProblems { get; set; }
+        public int? Rating { get; set; }
+    }
+    public class LearningInterestsDto
+    {
+      public  Guid LearningInterestId { get; set; }
+    }
+    public class StudentSkillDto
+    {
+        public Guid SkillId { get; set; }
      }
 
     public class CreateCertificateDto
@@ -49,6 +76,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public bool RequiresEmailVerification { get; set; }
         public List<CertificateResponseDto> Certificates { get; set; } = new();
         public List<EducationResponseDto> Educations { get; set; } = new();
+        public StudentPreferencesDto? Preferences { get; set; }
     }
 
     public class CertificateResponseDto

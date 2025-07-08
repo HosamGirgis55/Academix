@@ -1,49 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
 using Academix.Domain.Entities;
+using Academix.Domain.Enums;
 using Academix.Domain.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Academix.Application.Features.Students.Commands.RegisterStudent
 {
-    public class RegisterStudentCommandHandler : ICommandHandler<RegisterStudentCommand, Result<StudentRegistrationResponse>>
+    public class RegisterStudentCommandHandler : IRequestHandler<RegisterStudentCommand, Result>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEmailService _emailService;
         private readonly ILocalizationService _localizationService;
+        private readonly IEmailService _emailService;
 
         public RegisterStudentCommandHandler(
-            UserManager<ApplicationUser> userManager,
+            UserManager<ApplicationUser> userManager, 
             IUnitOfWork unitOfWork,
-            IEmailService emailService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            IEmailService emailService)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
-            _emailService = emailService;
             _localizationService = localizationService;
+            _emailService = emailService;
         }
 
-        public async Task<Result<StudentRegistrationResponse>> Handle(RegisterStudentCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(RegisterStudentCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // Check if user already exists
+                // Check if user exists
                 var existingUser = await _userManager.FindByEmailAsync(request.Email);
                 if (existingUser != null)
                 {
-                    return Result<StudentRegistrationResponse>.Failure(_localizationService.GetLocalizedString("UserAlreadyExists"));
+                    return Result.Failure(_localizationService.GetLocalizedString("UserAlreadyExists"));
                 }
 
                 // Check if country exists
                 var countryExists = await _unitOfWork.Repository<Country>()
-                    .GetByIdAsync(request.CountryId);
+                    .GetByIdAsync(request.ResidenceCountryId);
                 
                 if (countryExists == null)
                 {
-                    return Result<StudentRegistrationResponse>.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
+                    return Result.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
                 }
 
                 // Create ApplicationUser
@@ -53,99 +59,90 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     Email = request.Email,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    PhoneNumber = request.PhoneNumber,
-                    gender = request.Gender,
-                    CountryId = request.CountryId,
+                    Gender = (Gender)request.Gender,
+                    CountryId = request.ResidenceCountryId,
                     ProfilePictureUrl = request.ProfilePictureUrl,
                     CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
-                    EmailConfirmed = false // Email confirmation required via OTP
+                    EmailConfirmed = false
                 };
 
-                // Create user with password
                 var result = await _userManager.CreateAsync(user, request.Password);
-                
                 if (!result.Succeeded)
                 {
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                    return Result<StudentRegistrationResponse>.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
+                    return Result.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
                 }
 
-                // Create Student entity
+                // Add to Student role
+                await _userManager.AddToRoleAsync(user, "Student");
+                var LearningInterestsRequests = new List<LearningInterestsStudent>();
+                foreach (var G in request.LearningInterests)
+                {
+                    LearningInterestsRequests.Add(new LearningInterestsStudent
+                    {
+                        LearningInterestId = G.LearningInterestId,
+
+                    });
+                }
+
+                // Create Student
                 var student = new Student
                 {
-                    Id = Guid.NewGuid(),
                     UserId = user.Id,
-                    CreatedAt = DateTime.UtcNow,
-                    Educations = request.Educations?.Select(e => new Educations
-                    {
-                        Degree = e.Degree,
-                        Institution = e.Institution,
-                        StartDate = e.StartDate,
-                        EndDate = e.EndDate,
-                        FieldOfStudy = e.FieldOfStudy
-                    }).ToList() ?? new List<Educations>(),
-                    Certificate = request.Certificates?.Select(c => new Certificate
-                    {
-                        Name = c.Name,
-                        CertificateUrl = c.CertificateUrl,
-                        Description = c.Description,
-                        IssuedDate = c.IssuedDate,
-                        IssuedBy = c.IssuedBy
-                    }).ToList() ?? new List<Certificate>()
+                    User = user,
+                    Bio = request.Bio,
+                    Github = request.Github,
+                    ConnectProgramming = request.ConnectProgramming,
+                    ProfilePictureUrl = request.ProfilePictureUrl,
+                    NationalityId = request.NationalityId,
+                    ResidenceCountryId = request.ResidenceCountryId,
+                    LevelId = request.LevelId,
+                    GraduationStatusId = request.GraduationStatusId,
+                    SpecialistId = request.SpecialistId,
+                    Skills = new List<StudentSkill>(),
+                    Experiences = new List<StudentExperience>(),
+                    LearningInterests = LearningInterestsRequests
                 };
 
-                // Add student to repository
-                await _unitOfWork.Repository<Student>().AddAsync(student);
+                // Add Skills
+                if (request.Skills != null)
+                {
+                    foreach (var skill in request.Skills)
+                    {
+                        student.Skills.Add(new StudentSkill
+                        {
+                            StudentId = student.Id,
+                            SkillId = skill.SkillId
+                         });
+                    }
+                }
+
+                // Add Experiences
+                if (request.Experiences != null)
+                {
+                    foreach (var platform in request.Experiences)
+                    {
+                        student.Experiences.Add(new StudentExperience
+                        {
+                            StudentId = student.Id,
+                            ExperienceId = platform.Id,
+                         
+                        });
+                    }
+                }
+
+                await _unitOfWork.Students.AddAsync(student);
                 await _unitOfWork.SaveChangesAsync();
 
-                // Add user to Student role (create role if needed)
-                await _userManager.AddToRoleAsync(user, "Student");
-
                 // Generate and send email verification OTP
-                var otp = await _emailService.GenerateOtpAsync(user.Email!, "registration");
-                user.EmailVerificationOtp = otp;
-                user.EmailVerificationOtpExpiry = DateTime.UtcNow.AddMinutes(15);
-                await _userManager.UpdateAsync(user);
-
-                // Send verification email
+                var otp = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var emailSent = await _emailService.SendRegistrationConfirmationAsync(user.Email!, otp);
 
-                var response = new StudentRegistrationResponse
-                {
-                    UserId = user.Id,
-                    StudentId = student.Id,
-                    Email = user.Email!,
-                    FullName = $"{user.FirstName} {user.LastName}",
-                    Message = emailSent 
-                        ? _localizationService.GetLocalizedString("StudentRegisteredSuccessfullyCheckEmail")
-                        : _localizationService.GetLocalizedString("StudentRegisteredSuccessfully"),
-                    CertificatesCount = student.Certificate?.Count ?? 0,
-                    EducationsCount = student.Educations?.Count ?? 0,
-                    RequiresEmailVerification = true,
-                    Certificates = student.Certificate?.Select(c => new CertificateResponseDto
-                    {
-                        Name = c.Name,
-                        CertificateUrl = c.CertificateUrl,
-                        Description = c.Description,
-                        IssuedDate = c.IssuedDate,
-                        IssuedBy = c.IssuedBy
-                    }).ToList() ?? new List<CertificateResponseDto>(),
-                    Educations = student.Educations?.Select(e => new EducationResponseDto
-                    {
-                        Degree = e.Degree,
-                        Institution = e.Institution,
-                        StartDate = e.StartDate,
-                        EndDate = e.EndDate,
-                        FieldOfStudy = e.FieldOfStudy
-                    }).ToList() ?? new List<EducationResponseDto>()
-                };
-
-                return Result<StudentRegistrationResponse>.Success(response);
+                return Result.Success();
             }
             catch (Exception ex)
             {
-                return Result<StudentRegistrationResponse>.Failure($"{_localizationService.GetLocalizedString("RegistrationFailed")}: {ex.Message}");
+                return Result.Failure($"{_localizationService.GetLocalizedString("RegistrationFailed")}: {ex.Message}");
             }
         }
     }

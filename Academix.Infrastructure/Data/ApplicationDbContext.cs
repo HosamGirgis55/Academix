@@ -1,6 +1,7 @@
 using Academix.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Academix.Infrastructure.Data
 {
@@ -14,7 +15,13 @@ namespace Academix.Infrastructure.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Country> Countries { get; set; }
-       
+        public DbSet<Level> Levels { get; set; }
+        public DbSet<GraduationStatus> GraduationStatuses { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<Experience> Experiences { get; set; }
+        public DbSet<StudentSkill> StudentSkills { get; set; }
+        public DbSet<StudentExperience> StudentExperiences { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,20 +30,40 @@ namespace Academix.Infrastructure.Data
             // Student configuration
             modelBuilder.Entity<Student>(entity =>
             {
-                entity.OwnsMany(e => e.Educations, builder =>
-                {
-                    builder.ToJson(); // EF Core 7+ only
-                });
-
-                entity.OwnsMany(e => e.Certificate, builder =>
-                {
-                    builder.ToJson(); // EF Core 7+ only
-                });
-
+               
                 entity.HasOne(s => s.User)
                       .WithOne()
                       .HasForeignKey<Student>(s => s.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                // Configure relationships
+                entity.HasOne(s => s.Nationality)
+                      .WithMany()
+                      .HasForeignKey(s => s.NationalityId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(s => s.ResidenceCountry)
+                      .WithMany()
+                      .HasForeignKey(s => s.ResidenceCountryId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(s => s.Level)
+                      .WithMany()
+                      .HasForeignKey(s => s.LevelId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(s => s.GraduationStatus)
+                      .WithMany()
+                      .HasForeignKey(s => s.GraduationStatusId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(s => s.Specialist)
+                      .WithMany()
+                      .HasForeignKey(s => s.SpecialistId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                
+               
             });
 
             // Teacher configuration
@@ -46,6 +73,26 @@ namespace Academix.Infrastructure.Data
                       .WithOne()
                       .HasForeignKey<Teacher>(t => t.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(t => t.Nationality)
+                      .WithMany()
+                      .HasForeignKey(t => t.NationalityId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(t => t.Country)
+                      .WithMany()
+                      .HasForeignKey(t => t.CountryId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(t => t.Certificates)
+                      .HasConversion(
+                          v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                          v => JsonSerializer.Deserialize<List<TeacherCertificate>>(v, (JsonSerializerOptions)null));
+
+                entity.Property(t => t.Educations)
+                      .HasConversion(
+                          v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                          v => JsonSerializer.Deserialize<List<TeacherEducation>>(v, (JsonSerializerOptions)null));
             });
 
             // ApplicationUser configuration
@@ -66,8 +113,33 @@ namespace Academix.Infrastructure.Data
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // StudentSkill configuration
+            modelBuilder.Entity<StudentSkill>(entity =>
+            {
+                entity.HasKey(ss => new { ss.StudentId, ss.SkillId });
 
+                entity.HasOne(ss => ss.Student)
+                      .WithMany(s => s.Skills)
+                      .HasForeignKey(ss => ss.StudentId);
 
+                entity.HasOne(ss => ss.Skill)
+                      .WithMany(s => s.StudentSkills)
+                      .HasForeignKey(ss => ss.SkillId);
+            });
+
+            // StudentExperience configuration
+            modelBuilder.Entity<StudentExperience>(entity =>
+            {
+                entity.HasKey(se => new { se.StudentId, se.ExperienceId });
+
+                entity.HasOne(se => se.Student)
+                      .WithMany(s => s.Experiences)
+                      .HasForeignKey(se => se.StudentId);
+
+                entity.HasOne(se => se.Experience)
+                      .WithMany(e => e.StudentExperiences)
+                      .HasForeignKey(se => se.ExperienceId);
+            });
 
             // Seed some initial data
            // SeedData(modelBuilder);

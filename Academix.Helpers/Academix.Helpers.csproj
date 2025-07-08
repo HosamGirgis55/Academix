@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.17" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Academix.Application\Academix.Application.csproj" />
+  </ItemGroup>
+
 </Project>

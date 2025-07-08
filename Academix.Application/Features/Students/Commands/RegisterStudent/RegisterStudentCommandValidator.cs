@@ -39,23 +39,54 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage(_localizationService.GetLocalizedString("InvalidGender"));
 
-            RuleFor(x => x.CountryId)
+            RuleFor(x => x.NationalityId)
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("NationalityIsRequired"));
+
+            RuleFor(x => x.ResidenceCountryId)
                 .NotEmpty().WithMessage(_localizationService.GetLocalizedString("CountryIsRequired"));
 
-            RuleFor(x => x.PhoneNumber)
-                .Matches(@"^\+?[1-9]\d{1,14}$")
-                .When(x => !string.IsNullOrEmpty(x.PhoneNumber))
-                .WithMessage(_localizationService.GetLocalizedString("InvalidPhoneNumber"));
+            RuleFor(x => x.LevelId)
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("LevelIsRequired"));
 
-            // Certificate validations
-            RuleForEach(x => x.Certificates)
-                .SetValidator(new CreateCertificateDtoValidator(_localizationService))
-                .When(x => x.Certificates != null && x.Certificates.Any());
+            RuleFor(x => x.GraduationStatusId)
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("GraduationStatusIsRequired"));
 
-            // Education validations
-            RuleForEach(x => x.Educations)
-                .SetValidator(new CreateEducationDtoValidator(_localizationService))
-                .When(x => x.Educations != null && x.Educations.Any());
+            RuleFor(x => x.SpecialistId)
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("SpecialistIsRequired"));
+
+            RuleFor(x => x.Bio)
+                .MaximumLength(500).WithMessage(_localizationService.GetLocalizedString("BioMaxLength"));
+
+            RuleFor(x => x.Github)
+                .Must(uri => string.IsNullOrEmpty(uri) || Uri.TryCreate(uri, UriKind.Absolute, out _))
+                .WithMessage(_localizationService.GetLocalizedString("InvalidGithubUrl"));
+
+            RuleFor(x => x.ProfilePictureUrl)
+                .Must(uri => string.IsNullOrEmpty(uri) || Uri.TryCreate(uri, UriKind.Absolute, out _))
+                .WithMessage(_localizationService.GetLocalizedString("InvalidProfilePictureUrl"));
+
+            // Experience validations
+            RuleForEach(x => x.Experiences)
+                .ChildRules(platform =>
+                {
+                    platform.RuleFor(p => p.Id)
+                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("ExperiencePlatformIdRequired"));
+
+                    platform.RuleFor(p => p.ProfileUrl)
+                        .Must(uri => string.IsNullOrEmpty(uri) || Uri.TryCreate(uri, UriKind.Absolute, out _))
+                        .WithMessage(_localizationService.GetLocalizedString("InvalidExperienceProfileUrl"));
+                })
+                .When(x => x.Experiences != null && x.Experiences.Any());
+
+            // Skills validations
+            RuleForEach(x => x.Skills)
+                .ChildRules(skill =>
+                {
+                    skill.RuleFor(s => s.SkillId)
+                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("SkillIdRequired"));
+ 
+                })
+                .When(x => x.Skills != null && x.Skills.Any());
         }
     }
 

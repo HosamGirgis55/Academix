@@ -4,6 +4,7 @@ using Academix.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Academix.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250707215645_AddStudentLearningInterests")]
+    partial class AddStudentLearningInterests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,7 +171,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Experience", b =>
@@ -203,7 +206,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Experiences", (string)null);
+                    b.ToTable("Experiences");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.GraduationStatus", b =>
@@ -234,7 +237,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GraduationStatuses", (string)null);
+                    b.ToTable("GraduationStatuses");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Level", b =>
@@ -265,7 +268,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Levels", (string)null);
+                    b.ToTable("Levels");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Skill", b =>
@@ -296,7 +299,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skills", (string)null);
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Specialization", b =>
@@ -327,7 +330,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specializations", (string)null);
+                    b.ToTable("Specializations");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Student", b =>
@@ -421,7 +424,7 @@ namespace Academix.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.StudentExperience", b =>
@@ -436,7 +439,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasIndex("ExperienceId");
 
-                    b.ToTable("StudentExperiences", (string)null);
+                    b.ToTable("StudentExperiences");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.StudentSkill", b =>
@@ -451,7 +454,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("StudentSkills", (string)null);
+                    b.ToTable("StudentSkills");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Teacher", b =>
@@ -481,7 +484,7 @@ namespace Academix.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -683,7 +686,7 @@ namespace Academix.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Academix.Domain.Entities.Student.Certificate#Academix.Domain.Entities.Certificate", "Certificate", b1 =>
+                    b.OwnsMany("Academix.Domain.Entities.Certificate", "Certificate", b1 =>
                         {
                             b1.Property<Guid>("StudentId")
                                 .HasColumnType("uniqueidentifier");
@@ -713,7 +716,7 @@ namespace Academix.Infrastructure.Migrations
 
                             b1.HasKey("StudentId", "Id");
 
-                            b1.ToTable("Students", (string)null);
+                            b1.ToTable("Students");
 
                             b1.ToJson("Certificate");
 
@@ -721,7 +724,7 @@ namespace Academix.Infrastructure.Migrations
                                 .HasForeignKey("StudentId");
                         });
 
-                    b.OwnsMany("Academix.Domain.Entities.Student.Educations#Academix.Domain.Entities.Educations", "Educations", b1 =>
+                    b.OwnsMany("Academix.Domain.Entities.Educations", "Educations", b1 =>
                         {
                             b1.Property<Guid>("StudentId")
                                 .HasColumnType("uniqueidentifier");
@@ -750,7 +753,7 @@ namespace Academix.Infrastructure.Migrations
 
                             b1.HasKey("StudentId", "Id");
 
-                            b1.ToTable("Students", (string)null);
+                            b1.ToTable("Students");
 
                             b1.ToJson("Educations");
 

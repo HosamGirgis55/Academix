@@ -4,6 +4,7 @@ using Academix.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Academix.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250707212858_AddPreferencesToStudent")]
+    partial class AddPreferencesToStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,9 +59,6 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -125,6 +125,9 @@ namespace Academix.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("gender")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
@@ -168,166 +171,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Experience", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Experiences", (string)null);
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.GraduationStatus", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GraduationStatuses", (string)null);
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Level", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Levels", (string)null);
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Skill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Skills", (string)null);
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Specialization", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Specializations", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Student", b =>
@@ -335,13 +179,6 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Bio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ConnectProgramming")
-                        .HasColumnType("bit");
 
                     b.Property<Guid?>("CountryId")
                         .HasColumnType("uniqueidentifier");
@@ -352,41 +189,8 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Github")
-                        .IsRequired()
+                    b.Property<string>("Preferences")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("GraduationStatusId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("GraduationStatusId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("LearningInterests")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("LevelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("LevelId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("NationalityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ProfilePictureUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ResidenceCountryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SpecialistId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("SpecializationId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -402,56 +206,10 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.HasIndex("GraduationStatusId");
-
-                    b.HasIndex("GraduationStatusId1");
-
-                    b.HasIndex("LevelId");
-
-                    b.HasIndex("LevelId1");
-
-                    b.HasIndex("NationalityId");
-
-                    b.HasIndex("ResidenceCountryId");
-
-                    b.HasIndex("SpecialistId");
-
-                    b.HasIndex("SpecializationId");
-
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Students", (string)null);
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.StudentExperience", b =>
-                {
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ExperienceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("StudentId", "ExperienceId");
-
-                    b.HasIndex("ExperienceId");
-
-                    b.ToTable("StudentExperiences", (string)null);
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.StudentSkill", b =>
-                {
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("StudentId", "SkillId");
-
-                    b.HasIndex("SkillId");
-
-                    b.ToTable("StudentSkills", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Teacher", b =>
@@ -481,7 +239,7 @@ namespace Academix.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -635,55 +393,13 @@ namespace Academix.Infrastructure.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Academix.Domain.Entities.GraduationStatus", "GraduationStatus")
-                        .WithMany()
-                        .HasForeignKey("GraduationStatusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Academix.Domain.Entities.GraduationStatus", null)
-                        .WithMany("Students")
-                        .HasForeignKey("GraduationStatusId1");
-
-                    b.HasOne("Academix.Domain.Entities.Level", "Level")
-                        .WithMany()
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Academix.Domain.Entities.Level", null)
-                        .WithMany("Students")
-                        .HasForeignKey("LevelId1");
-
-                    b.HasOne("Academix.Domain.Entities.Country", "Nationality")
-                        .WithMany()
-                        .HasForeignKey("NationalityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Academix.Domain.Entities.Country", "ResidenceCountry")
-                        .WithMany()
-                        .HasForeignKey("ResidenceCountryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Academix.Domain.Entities.Specialization", "Specialist")
-                        .WithMany()
-                        .HasForeignKey("SpecialistId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Academix.Domain.Entities.Specialization", null)
-                        .WithMany("Students")
-                        .HasForeignKey("SpecializationId");
-
                     b.HasOne("Academix.Domain.Entities.ApplicationUser", "User")
                         .WithOne()
                         .HasForeignKey("Academix.Domain.Entities.Student", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Academix.Domain.Entities.Student.Certificate#Academix.Domain.Entities.Certificate", "Certificate", b1 =>
+                    b.OwnsMany("Academix.Domain.Entities.Certificate", "Certificate", b1 =>
                         {
                             b1.Property<Guid>("StudentId")
                                 .HasColumnType("uniqueidentifier");
@@ -713,7 +429,7 @@ namespace Academix.Infrastructure.Migrations
 
                             b1.HasKey("StudentId", "Id");
 
-                            b1.ToTable("Students", (string)null);
+                            b1.ToTable("Students");
 
                             b1.ToJson("Certificate");
 
@@ -721,7 +437,7 @@ namespace Academix.Infrastructure.Migrations
                                 .HasForeignKey("StudentId");
                         });
 
-                    b.OwnsMany("Academix.Domain.Entities.Student.Educations#Academix.Domain.Entities.Educations", "Educations", b1 =>
+                    b.OwnsMany("Academix.Domain.Entities.Educations", "Educations", b1 =>
                         {
                             b1.Property<Guid>("StudentId")
                                 .HasColumnType("uniqueidentifier");
@@ -750,7 +466,7 @@ namespace Academix.Infrastructure.Migrations
 
                             b1.HasKey("StudentId", "Id");
 
-                            b1.ToTable("Students", (string)null);
+                            b1.ToTable("Students");
 
                             b1.ToJson("Educations");
 
@@ -762,55 +478,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.Navigation("Educations");
 
-                    b.Navigation("GraduationStatus");
-
-                    b.Navigation("Level");
-
-                    b.Navigation("Nationality");
-
-                    b.Navigation("ResidenceCountry");
-
-                    b.Navigation("Specialist");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.StudentExperience", b =>
-                {
-                    b.HasOne("Academix.Domain.Entities.Experience", "Experience")
-                        .WithMany("StudentExperiences")
-                        .HasForeignKey("ExperienceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Academix.Domain.Entities.Student", "Student")
-                        .WithMany("Experiences")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Experience");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.StudentSkill", b =>
-                {
-                    b.HasOne("Academix.Domain.Entities.Skill", "Skill")
-                        .WithMany("StudentSkills")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Academix.Domain.Entities.Student", "Student")
-                        .WithMany("Skills")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Skill");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Teacher", b =>
@@ -878,38 +546,6 @@ namespace Academix.Infrastructure.Migrations
             modelBuilder.Entity("Academix.Domain.Entities.Country", b =>
                 {
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Experience", b =>
-                {
-                    b.Navigation("StudentExperiences");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.GraduationStatus", b =>
-                {
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Level", b =>
-                {
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Skill", b =>
-                {
-                    b.Navigation("StudentSkills");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Specialization", b =>
-                {
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Academix.Domain.Entities.Student", b =>
-                {
-                    b.Navigation("Experiences");
-
-                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

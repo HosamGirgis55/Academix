@@ -1,4 +1,3 @@
-
 using Academix.Helper;
 using Academix.WebAPI.Common;
 using Academix.Infrastructure.Data;
@@ -16,8 +15,8 @@ using Academix.Application.Common.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
- 
- 
+using Academix.Helpers;
+
 namespace Academix.WebAPI
 {
     public class Program
@@ -104,6 +103,7 @@ namespace Academix.WebAPI
 
             // Register helpers
             builder.Services.AddScoped<FileUploaderHelper>();
+            builder.Services.AddScoped<ResponseHelper>();
 
             // Add MediatR configuration
             builder.Services.AddMediatR(cfg => {
@@ -114,7 +114,7 @@ namespace Academix.WebAPI
             builder.Services.AddValidatorsFromAssembly(typeof(Application.Common.Interfaces.ICommand).Assembly);
 
             // Add AutoMapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
             // Add Localization
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -186,33 +186,25 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
                 options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
+                
+                // Add Accept-Language header provider
+                options.RequestCultureProviders.Insert(0, new Microsoft.AspNetCore.Localization.AcceptLanguageHeaderRequestCultureProvider());
             });
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            //if (app.Environment.IsDevelopment())
-            //{
+            if (app.Environment.IsDevelopment())
+            {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                
-                // Create database if it doesn't exist and seed data
-                using (var scope = app.Services.CreateScope())
-                {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                    dbContext.Database.EnsureCreated();
-
-                    // Seed initial data
-                    var seedService = scope.ServiceProvider.GetRequiredService<Infrastructure.Services.SeedDataService>();
-                    await seedService.SeedAsync();
-                }
-           // }
+            }
 
             // Add session middleware (must be before localization and time zone)
             app.UseSession();
             
             // Add localization middleware
-            app.UseLocalization();
+            app.UseRequestLocalization();
             
             // Add time zone middleware
             app.UseMiddleware<Academix.WebAPI.Common.Middleware.TimeZoneMiddleware>();
@@ -226,7 +218,25 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // Map all minimal API endpoints that implement IEndpoint
             app.MapEndpoints();
 
-            app.Run();
+            // Create database if it doesn't exist and seed data
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    var seedService = services.GetRequiredService<Infrastructure.Services.SeedDataService>();
+                    await context.Database.MigrateAsync();
+                    await seedService.SeedAsync();
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+                }
+            }
+
+            await app.RunAsync();
         }
     }
 }

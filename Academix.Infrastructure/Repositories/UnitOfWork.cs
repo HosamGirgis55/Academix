@@ -1,30 +1,52 @@
+using Academix.Domain.Entities;
 using Academix.Domain.Interfaces;
 using Academix.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Academix.Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-        private IDbContextTransaction? _transaction;
-        private readonly Dictionary<Type, object> _repositories = new();
+        private readonly Dictionary<Type, object> _repositories;
+        private IDbContextTransaction _transaction;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
+            _repositories = new Dictionary<Type, object>();
         }
 
-        public IGenericRepository<T> Repository<T>() where T : class
+        public IGenericRepository<Student> Students => GetRepository<Student>();
+        public IGenericRepository<Teacher> Teachers => GetRepository<Teacher>();
+        public IGenericRepository<Country> Countries => GetRepository<Country>();
+        public IGenericRepository<Level> Levels => GetRepository<Level>();
+        public IGenericRepository<GraduationStatus> GraduationStatuses => GetRepository<GraduationStatus>();
+        public IGenericRepository<Specialization> Specializations => GetRepository<Specialization>();
+        public IGenericRepository<Skill> Skills => GetRepository<Skill>();
+        public IGenericRepository<Experience> Experiences => GetRepository<Experience>();
+        public IGenericRepository<StudentSkill> StudentSkills => GetRepository<StudentSkill>();
+        public IGenericRepository<StudentExperience> StudentExperiences => GetRepository<StudentExperience>();
+
+        public IGenericRepository<T> Repository<T>() where T : BaseEntity
         {
-            if (_repositories.ContainsKey(typeof(T)))
+            return GetRepository<T>();
+        }
+
+        private IGenericRepository<T> GetRepository<T>() where T : class
+        {
+            var type = typeof(T);
+            if (!_repositories.ContainsKey(type))
             {
-                return (IGenericRepository<T>)_repositories[typeof(T)];
+                _repositories[type] = new GenericRepository<T>(_context);
             }
 
-            var repository = new GenericRepository<T>(_context);
-            _repositories.Add(typeof(T), repository);
-            return repository;
+            return (IGenericRepository<T>)_repositories[type];
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

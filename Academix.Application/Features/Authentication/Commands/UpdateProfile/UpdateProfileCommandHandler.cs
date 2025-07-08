@@ -42,7 +42,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
         
         if (Enum.TryParse<Gender>(request.Gender, true, out var gender))
         {
-            user.gender = gender;
+            user.Gender = gender;
         }
         
         // Update time zone if provided
@@ -77,7 +77,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
             FirstName = updatedUser.FirstName,
             LastName = updatedUser.LastName,
             ProfilePictureUrl = updatedUser.ProfilePictureUrl,
-            Gender = updatedUser.gender.GetLocalizedName(_localizationService),
+            Gender = updatedUser.Gender.GetLocalizedName(_localizationService),
             CountryId = updatedUser.CountryId,
             CountryName = countryName,
             TimeZone = updatedUser.TimeZone,

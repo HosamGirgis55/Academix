@@ -33,12 +33,8 @@ public static class LocalizationExtensions
         
         return gender switch
         {
-            Gender.Male => currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase) 
-                ? localizationService.GetLocalizedString("Male_Ar") 
-                : localizationService.GetLocalizedString("Male_En"),
-            Gender.Female => currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase) 
-                ? localizationService.GetLocalizedString("Female_Ar") 
-                : localizationService.GetLocalizedString("Female_En"),
+            Gender.Male => localizationService.GetLocalizedString("Enum_Gender_Male"),
+            Gender.Female => localizationService.GetLocalizedString("Enum_Gender_Female"),
             _ => gender.ToString()
         };
     }

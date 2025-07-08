@@ -20,17 +20,17 @@ public class GetGendersQueryHandler : IRequestHandler<GetGendersQuery, Result<Li
         var genders = Enum.GetValues<Gender>().Select(gender => new GenderDto
         {
             Value = (int)gender,
-            Name = gender.GetLocalizedName(_localizationService), // Use localized name based on current culture
+            Name = gender.GetLocalizedName(_localizationService),
             NameEn = gender switch
             {
-                Gender.Male => _localizationService.GetLocalizedString("Male_En"),
-                Gender.Female => _localizationService.GetLocalizedString("Female_En"),
+                Gender.Male => _localizationService.GetLocalizedString("Enum_Gender_Male"),
+                Gender.Female => _localizationService.GetLocalizedString("Enum_Gender_Female"),
                 _ => gender.ToString()
             },
             NameAr = gender switch
             {
-                Gender.Male => _localizationService.GetLocalizedString("Male_Ar"),
-                Gender.Female => _localizationService.GetLocalizedString("Female_Ar"),
+                Gender.Male => _localizationService.GetLocalizedString("Enum_Gender_Male"),
+                Gender.Female => _localizationService.GetLocalizedString("Enum_Gender_Female"),
                 _ => gender.ToString()
             }
         }).ToList();
