@@ -41,6 +41,9 @@ public class GetLookupQueryHandler : IRequestHandler<GetLookupQuery, Result<List
                 "teachinglanguage" => await GetTeachingLanguageLookup(cancellationToken),
                 "communicationmethod" => await GetCommunicationMethodLookup(cancellationToken),
                 "agegroup" => await GetAgeGroupLookup(cancellationToken),
+                "graduationStatus" => await GetGraduationStatusLookup(cancellationToken),
+                "experiences" => await GetExperienceLookup(cancellationToken),
+                "skilles" => await GetSkilleLookup(cancellationToken),
                 _ => new List<LookupItemDto>()
             };
 
@@ -176,6 +179,40 @@ public class GetLookupQueryHandler : IRequestHandler<GetLookupQuery, Result<List
         var query = await _unitOfWork.Repository<AgeGroup>().GetAllAsync();
         var ageGroups = await query.AsNoTracking().ToListAsync(cancellationToken);
         
+        return ageGroups.Select(group => new LookupItemDto
+        {
+            Id = group.Id.ToString(),
+            Name = GetLocalizedName(group.NameEn, group.NameAr)
+        }).ToList();
+    }
+
+    private async Task<List<LookupItemDto>> GetGraduationStatusLookup(CancellationToken cancellationToken)
+    {
+        var query = await _unitOfWork.Repository<GraduationStatus>().GetAllAsync();
+        var ageGroups = await query.AsNoTracking().ToListAsync(cancellationToken);
+
+        return ageGroups.Select(group => new LookupItemDto
+        {
+            Id = group.Id.ToString(),
+            Name = GetLocalizedName(group.NameEn, group.NameAr)
+        }).ToList();
+    }
+    private async Task<List<LookupItemDto>> GetSkilleLookup(CancellationToken cancellationToken)
+    {
+        var query = await _unitOfWork.Repository<GraduationStatus>().GetAllAsync();
+        var ageGroups = await query.AsNoTracking().ToListAsync(cancellationToken);
+
+        return ageGroups.Select(group => new LookupItemDto
+        {
+            Id = group.Id.ToString(),
+            Name = GetLocalizedName(group.NameEn, group.NameAr)
+        }).ToList();
+    }
+    private async Task<List<LookupItemDto>> GetExperienceLookup(CancellationToken cancellationToken)
+    {
+        var query = await _unitOfWork.Repository<GraduationStatus>().GetAllAsync();
+        var ageGroups = await query.AsNoTracking().ToListAsync(cancellationToken);
+
         return ageGroups.Select(group => new LookupItemDto
         {
             Id = group.Id.ToString(),
