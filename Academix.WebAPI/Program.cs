@@ -23,6 +23,17 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
 
+//Allow CROS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -82,10 +93,10 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
-
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseCors("AllowAll");
+
 
 // Add request localization
 app.UseRequestLocalization();
@@ -93,6 +104,8 @@ app.UseRequestLocalization();
 // Use custom middleware
 app.UseMiddleware<LocalizationMiddleware>();
 app.UseMiddleware<TimeZoneMiddleware>();
+
+app.UseAuthorization();
 
 // Map endpoints
 app.MapEndpoints();
