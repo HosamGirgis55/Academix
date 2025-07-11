@@ -10,6 +10,7 @@ using Academix.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Academix.Application.Features.Students.Commands.RegisterStudent
 {
@@ -36,20 +37,81 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         {
             try
             {
+                // Validate all foreign key references first
+                var nationality = await _unitOfWork.Repository<Country>().GetByIdAsync(request.NationalityId);
+                if (nationality == null)
+                {
+                    return Result.Failure(_localizationService.GetLocalizedString("NationalityNotFound"));
+                }
+
+                var residenceCountry = await _unitOfWork.Repository<Country>().GetByIdAsync(request.ResidenceCountryId);
+                if (residenceCountry == null)
+                {
+                    return Result.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
+                }
+
+                var level = await _unitOfWork.Repository<Level>().GetByIdAsync(request.LevelId);
+                if (level == null)
+                {
+                    return Result.Failure(_localizationService.GetLocalizedString("LevelNotFound"));
+                }
+
+                var graduationStatus = await _unitOfWork.Repository<GraduationStatus>().GetByIdAsync(request.GraduationStatusId);
+                if (graduationStatus == null)
+                {
+                    return Result.Failure(_localizationService.GetLocalizedString("GraduationStatusNotFound"));
+                }
+
+                var specialist = await _unitOfWork.Repository<Specialization>().GetByIdAsync(request.SpecialistId);
+                if (specialist == null)
+                {
+                    return Result.Failure(_localizationService.GetLocalizedString("SpecializationNotFound"));
+                }
+
+                // Validate experiences
+                if (request.Experiences != null && request.Experiences.Any())
+                {
+                    var experienceIds = request.Experiences.Select(e => e.Id).ToList();
+                    var experiences = await _unitOfWork.Repository<Experience>().GetAllAsync();
+                    var existingExperiences = experiences.Where(e => experienceIds.Contains(e.Id)).ToList();
+
+                    if (existingExperiences.Count() != experienceIds.Count)
+                    {
+                        return Result.Failure(_localizationService.GetLocalizedString("InvalidExperience"));
+                    }
+                }
+
+                // Validate skills
+                if (request.Skills != null && request.Skills.Any())
+                {
+                    var skillIds = request.Skills.Select(s => s.SkillId).ToList();
+                    var skills = await _unitOfWork.Repository<Skill>().GetAllAsync();
+                    var existingSkills = skills.Where(s => skillIds.Contains(s.Id)).ToList();
+
+                    if (existingSkills.Count() != skillIds.Count)
+                    {
+                        return Result.Failure(_localizationService.GetLocalizedString("InvalidSkill"));
+                    }
+                }
+
+                // Validate learning interests
+                if (request.LearningInterests != null && request.LearningInterests.Any())
+                {
+                    var learningInterestIds = request.LearningInterests.Select(l => l.LearningInterestId).ToList();
+                    var interests = await _unitOfWork.Repository<LearningInterest>().GetAllAsync();
+                    var existingInterests = interests.Where(l => learningInterestIds.Contains(l.Id)).ToList();
+
+                    if (existingInterests.Count() != learningInterestIds.Count)
+                    {
+                        return Result.Failure(_localizationService.GetLocalizedString("InvalidLearningInterest"));
+                    }
+                }
+
                 // Check if user exists
                 var existingUser = await _userManager.FindByEmailAsync(request.Email);
                 if (existingUser != null)
                 {
                     return Result.Failure(_localizationService.GetLocalizedString("UserAlreadyExists"));
-                }
-
-                // Check if country exists
-                var countryExists = await _unitOfWork.Repository<Country>()
-                    .GetByIdAsync(request.ResidenceCountryId);
-                
-                if (countryExists == null)
-                {
-                    return Result.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
                 }
 
                 // Create ApplicationUser
@@ -72,25 +134,9 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                     return Result.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
                 }
-                List<StudentExperience> Experience = new List<StudentExperience>();
-                foreach (var ex in request.Experiences ?? new List<ExperienceDTO>())
-                {
-                    Experience.Add(new StudentExperience
-                    {
-                        ExperienceId = ex.Id,
-                    });
-                }
+
                 // Add to Student role
                 await _userManager.AddToRoleAsync(user, "Student");
-                var LearningInterestsRequests = new List<LearningInterestsStudent>();
-                foreach (var G in request.LearningInterests)
-                {
-                    LearningInterestsRequests.Add(new LearningInterestsStudent
-                    {
-                        LearningInterestId = G.LearningInterestId,
-
-                    });
-                }
 
                 // Create Student
                 var student = new Student
@@ -105,40 +151,54 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     ResidenceCountryId = request.ResidenceCountryId,
                     LevelId = request.LevelId,
                     GraduationStatusId = request.GraduationStatusId,
-                    SpecialistId = request.SpecialistId,
-                    Skills = new List<StudentSkill>(),
-                    Experiences = Experience,
-                    LearningInterests = LearningInterestsRequests
+                    SpecialistId = request.SpecialistId
                 };
 
-                // Add Skills
-                if (request.Skills != null)
+                // Save student first to get the Id
+                await _unitOfWork.Students.AddAsync(student);
+                await _unitOfWork.SaveChangesAsync();
+
+                // Now add the related entities
+                if (request.Skills != null && request.Skills.Any())
                 {
                     foreach (var skill in request.Skills)
                     {
-                        student.Skills.Add(new StudentSkill
+                        var studentSkill = new StudentSkill
                         {
                             StudentId = student.Id,
                             SkillId = skill.SkillId
-                         });
+                        };
+                        await _unitOfWork.Repository<StudentSkill>().AddAsync(studentSkill);
                     }
                 }
 
-                // Add Experiences
-                if (request.Experiences != null)
+                if (request.Experiences != null && request.Experiences.Any())
                 {
-                    foreach (var platform in request.Experiences)
+                    foreach (var exp in request.Experiences)
                     {
-                        student.Experiences.Add(new StudentExperience
+                        var studentExperience = new StudentExperience
                         {
                             StudentId = student.Id,
-                            ExperienceId = platform.Id,
-                         
-                        });
+                            ExperienceId = exp.Id
+                        };
+                        await _unitOfWork.Repository<StudentExperience>().AddAsync(studentExperience);
                     }
                 }
 
-                await _unitOfWork.Students.AddAsync(student);
+                if (request.LearningInterests != null && request.LearningInterests.Any())
+                {
+                    foreach (var interest in request.LearningInterests)
+                    {
+                        var learningInterest = new LearningInterestsStudent
+                        {
+                            StudentId = student.Id,
+                            LearningInterestId = interest.LearningInterestId
+                        };
+                        await _unitOfWork.Repository<LearningInterestsStudent>().AddAsync(learningInterest);
+                    }
+                }
+
+                // Save all related entities
                 await _unitOfWork.SaveChangesAsync();
 
                 // Generate and send email verification OTP

@@ -64,8 +64,4 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
       
         public StudentPreferencesDto? Preferences { get; set; }
     }
-
-     
-
-     
 } 

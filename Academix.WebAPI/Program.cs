@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Academix.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
 
 //Allow CROS
@@ -80,6 +82,7 @@ builder.Services.AddSingleton(emailSettings);
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ILocalizationService, LocalizationService>();
 builder.Services.AddScoped<ITimeZoneService, TimeZoneService>();
+builder.Services.AddScoped<ResponseHelper>();
 
 // Add MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
@@ -97,7 +100,6 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
-
 // Add request localization
 app.UseRequestLocalization();
 
@@ -109,21 +111,5 @@ app.UseAuthorization();
 
 // Map endpoints
 app.MapEndpoints();
-
-// Seed data
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var seedService = services.GetRequiredService<SeedDataService>();
-        await seedService.SeedAllAsync();
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the database.");
-    }
-}
 
 app.Run();

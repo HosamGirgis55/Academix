@@ -16,6 +16,7 @@ namespace Academix.WebAPI.Features.Students
             app.MapPost("/api/students/register", HandleAsync)
                 .WithName("RegisterStudent")
                 .WithTags("Students")
+                .Accepts<RegisterStudentCommand>("application/json")
                 .Produces<ResponseHelper>(200)
                 .Produces<ResponseHelper>(400);
         }
