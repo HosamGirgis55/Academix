@@ -10,5 +10,6 @@ namespace Academix.Domain.Entities
     {
          public string NameAr { get; set; }
         public string NameEn { get; set; }
-     }
+        public List<LearningInterestsStudent>? LearningInterests { get; set; } = new();
+    }
 }

@@ -48,7 +48,7 @@ namespace Academix.Domain.Entities
         public Guid StudentId { get; set; }
         public Guid LearningInterestId { get; set; }
         public Student Students { get; set; }
-        public LearningInterest LearningInterests { get; set; }
+        public Field LearningInterests { get; set; }
     }
 
     public class LearningInterest:BaseEntity
