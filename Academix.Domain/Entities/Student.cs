@@ -22,7 +22,7 @@ namespace Academix.Domain.Entities
 
         // Foreign Keys
         public Guid NationalityId { get; set; }
-        public Country Nationality { get; set; }
+        public Nationality Nationality { get; set; }
 
         public Guid ResidenceCountryId { get; set; }
         public Country ResidenceCountry { get; set; }
