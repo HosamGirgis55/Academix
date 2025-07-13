@@ -47,7 +47,7 @@ namespace Academix.Domain.Entities
         public Guid StudentId { get; set; }
         public Guid FieldId { get; set; }
         public Student Students { get; set; }
-        [ForeignKey("LearningInterestId")]
+        [ForeignKey("FieldId")]
         public Field Field { get; set; }
     }
 
