@@ -33,6 +33,8 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
         public List<Guid> AgeGroupIds { get; set; } = new();
         public List<Guid> CommunicationMethodIds { get; set; } = new();
         public List<Guid> TeachingLanguageIds { get; set; } = new();
+
+        public decimal Salary { get; set; }
     }
 
     public class TeacherEducationDto

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Academix.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250711192551_editLearningInterestes")]
-    partial class editLearningInterestes
+    [Migration("20250713203622_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -444,7 +444,7 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("LearningInterestId1")
+                    b.Property<Guid?>("LearningInterestId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -652,6 +652,9 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<Guid>("NationalityId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("NationalityId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ProfilePictureUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -684,6 +687,8 @@ namespace Academix.Infrastructure.Migrations
                     b.HasIndex("LevelId");
 
                     b.HasIndex("NationalityId");
+
+                    b.HasIndex("NationalityId1");
 
                     b.HasIndex("ResidenceCountryId");
 
@@ -804,6 +809,9 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<string>("ProfilePictureUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -1177,9 +1185,7 @@ namespace Academix.Infrastructure.Migrations
 
                     b.HasOne("Academix.Domain.Entities.LearningInterest", null)
                         .WithMany("LearningInterests")
-                        .HasForeignKey("LearningInterestId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LearningInterestId1");
 
                     b.HasOne("Academix.Domain.Entities.Student", "Students")
                         .WithMany("LearningInterests")
@@ -1215,6 +1221,10 @@ namespace Academix.Infrastructure.Migrations
                         .HasForeignKey("NationalityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Academix.Domain.Entities.Nationality", null)
+                        .WithMany("Students")
+                        .HasForeignKey("NationalityId1");
 
                     b.HasOne("Academix.Domain.Entities.Country", "ResidenceCountry")
                         .WithMany()
@@ -1568,6 +1578,8 @@ namespace Academix.Infrastructure.Migrations
 
             modelBuilder.Entity("Academix.Domain.Entities.Nationality", b =>
                 {
+                    b.Navigation("Students");
+
                     b.Navigation("Users");
                 });
 

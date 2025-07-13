@@ -102,7 +102,8 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                         IssuedBy = c.IssuedBy,
                         IssuedDate = c.IssuedDate,
                         ExamResult = c.ExamResult
-                    }).ToList()
+                    }).ToList(),
+                    Salary = request.Salary,
                 };
 
                 // Add Teaching Areas

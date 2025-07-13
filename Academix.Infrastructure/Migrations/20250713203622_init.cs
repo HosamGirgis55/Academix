@@ -47,21 +47,6 @@ namespace Academix.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Communication",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NameEnglish = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NameArabic = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    code = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Communication", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CommunicationMethods",
                 columns: table => new
                 {
@@ -459,6 +444,7 @@ namespace Academix.Infrastructure.Migrations
                     GraduationStatusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SpecialistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    NationalityId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SpecializationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -480,12 +466,6 @@ namespace Academix.Infrastructure.Migrations
                         principalTable: "Countries",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Students_Countries_NationalityId",
-                        column: x => x.NationalityId,
-                        principalTable: "Countries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Students_Countries_ResidenceCountryId",
                         column: x => x.ResidenceCountryId,
                         principalTable: "Countries",
@@ -503,6 +483,17 @@ namespace Academix.Infrastructure.Migrations
                         principalTable: "Levels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Students_Nationalities_NationalityId",
+                        column: x => x.NationalityId,
+                        principalTable: "Nationalities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Students_Nationalities_NationalityId1",
+                        column: x => x.NationalityId1,
+                        principalTable: "Nationalities",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Students_Specializations_SpecialistId",
                         column: x => x.SpecialistId,
@@ -525,6 +516,7 @@ namespace Academix.Infrastructure.Migrations
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdditionalInterests = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NationalityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -563,6 +555,7 @@ namespace Academix.Infrastructure.Migrations
                 {
                     StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LearningInterestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LearningInterestId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -573,11 +566,16 @@ namespace Academix.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_LearningInterestsStudents", x => new { x.StudentId, x.LearningInterestId });
                     table.ForeignKey(
-                        name: "FK_LearningInterestsStudents_LearningInterests_LearningInterestId",
+                        name: "FK_LearningInterestsStudents_Fields_LearningInterestId",
                         column: x => x.LearningInterestId,
-                        principalTable: "LearningInterests",
+                        principalTable: "Fields",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LearningInterestsStudents_LearningInterests_LearningInterestId1",
+                        column: x => x.LearningInterestId1,
+                        principalTable: "LearningInterests",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_LearningInterestsStudents_Students_StudentId",
                         column: x => x.StudentId,
@@ -851,6 +849,11 @@ namespace Academix.Infrastructure.Migrations
                 column: "LearningInterestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LearningInterestsStudents_LearningInterestId1",
+                table: "LearningInterestsStudents",
+                column: "LearningInterestId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StudentExperiences_ExperienceId",
                 table: "StudentExperiences",
                 column: "ExperienceId");
@@ -879,6 +882,11 @@ namespace Academix.Infrastructure.Migrations
                 name: "IX_Students_NationalityId",
                 table: "Students",
                 column: "NationalityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_NationalityId1",
+                table: "Students",
+                column: "NationalityId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_ResidenceCountryId",
@@ -967,13 +975,7 @@ namespace Academix.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Communication");
-
-            migrationBuilder.DropTable(
                 name: "Exames");
-
-            migrationBuilder.DropTable(
-                name: "Fields");
 
             migrationBuilder.DropTable(
                 name: "LearningInterestsStudents");
@@ -1001,6 +1003,9 @@ namespace Academix.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Fields");
 
             migrationBuilder.DropTable(
                 name: "LearningInterests");
