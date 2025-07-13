@@ -39,6 +39,7 @@ namespace Academix.Infrastructure.Data
         public DbSet<TeacherAgeGroup> TeacherAgeGroups { get; set; } = null!;
         public DbSet<TeacherCommunicationMethod> TeacherCommunicationMethods { get; set; } = null!;
         public DbSet<TeacherTeachingLanguage> TeacherTeachingLanguages { get; set; } = null!;
+        public DbSet<Comment> Comments { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -244,6 +245,35 @@ namespace Academix.Infrastructure.Data
 
                 entity.HasIndex(ts => new { ts.TeacherId, ts.SkillId })
                       .IsUnique();
+            });
+
+            // Comment configuration
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.HasOne(c => c.Student)
+                      .WithMany(s => s.Comments)
+                      .HasForeignKey(c => c.StudentId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(c => c.Teacher)
+                      .WithMany(t => t.Comments)
+                      .HasForeignKey(c => c.TeacherId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(c => new { c.StudentId, c.TeacherId })
+                      .IsUnique(); // Ensure one comment per student per teacher
+
+                entity.Property(c => c.Content)
+                      .IsRequired()
+                      .HasMaxLength(1000);
+
+                entity.Property(c => c.Rating)
+                      .IsRequired()
+                      .HasDefaultValue(1);
+
+                entity.Property(c => c.CreatedAt)
+                      .IsRequired()
+                      .HasDefaultValueSql("GETUTCDATE()");
             });
         }
     }

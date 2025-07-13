@@ -330,12 +330,6 @@
   <data name="OtpExpired" xml:space="preserve">
     <value>OTP code has expired. Please request a new one.</value>
   </data>
-  <data name="Enum_Gender_Male" xml:space="preserve">
-    <value>Male</value>
-  </data>
-  <data name="Enum_Gender_Female" xml:space="preserve">
-    <value>Female</value>
-  </data>
   <data name="SkillsRequired" xml:space="preserve">
     <value>Skills are required</value>
   </data>

@@ -41,6 +41,9 @@ namespace Academix.Domain.Entities
 
         // Learning Interests
         public List<LearningInterestsStudent>? LearningInterests { get; set; } = new();
+        
+        // Comments
+        public List<Comment> Comments { get; set; } = new();
     }
     public class LearningInterestsStudent : BaseEntity
     {

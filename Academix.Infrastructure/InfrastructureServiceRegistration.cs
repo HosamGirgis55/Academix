@@ -31,6 +31,7 @@ namespace Academix.Infrastructure
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
 
             return services;

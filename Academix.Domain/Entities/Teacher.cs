@@ -40,6 +40,9 @@ namespace Academix.Domain.Entities
         public ICollection<TeacherAgeGroup> TeacherAgeGroups { get; set; } = new List<TeacherAgeGroup>();
         public ICollection<TeacherCommunicationMethod> TeacherCommunicationMethods { get; set; } = new List<TeacherCommunicationMethod>();
         public ICollection<TeacherTeachingLanguage> TeacherTeachingLanguages { get; set; } = new List<TeacherTeachingLanguage>();
+        
+        // Comments
+        public List<Comment> Comments { get; set; } = new();
     }
 
     [Owned]
