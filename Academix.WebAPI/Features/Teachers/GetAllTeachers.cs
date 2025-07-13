@@ -1,0 +1,42 @@
+﻿using Academix.Application.Common.Interfaces;
+using Academix.Application.Features.Teachers.Query.GetAll;
+using Academix.Helpers;
+using Academix.WebAPI.Common;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+public class GetAllTeachersEndpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapGet("/api/teachers", HandleAsync)
+            .WithName("GetAllTeachers")
+            .WithTags("Teachers")
+            .Produces<ResponseHelper>(200)
+            .Produces<ResponseHelper>(400);
+    }
+
+    private static async Task<IResult> HandleAsync(
+        [FromServices] IMediator mediator,
+        [FromServices] ResponseHelper response,
+        [FromServices] ILocalizationService localizationService,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var query = new GetAllTeachersQuery();
+
+            var result = await mediator.Send(query, cancellationToken);
+
+            if (result.IsSuccess)
+                return Results.Ok(response.Success(result.Value));
+
+            return Results.BadRequest(response.BadRequest(result.Error));
+        }
+        catch (Exception)
+        {
+            var message = localizationService.GetLocalizedString("TeacherGetAllFailed");
+            return Results.BadRequest(response.BadRequest(message));
+        }
+    }
+}

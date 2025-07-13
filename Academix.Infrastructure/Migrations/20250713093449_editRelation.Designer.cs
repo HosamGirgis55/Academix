@@ -4,6 +4,7 @@ using Academix.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Academix.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250713093449_editRelation")]
+    partial class editRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -649,9 +652,6 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<Guid>("NationalityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("NationalityId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ProfilePictureUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -684,8 +684,6 @@ namespace Academix.Infrastructure.Migrations
                     b.HasIndex("LevelId");
 
                     b.HasIndex("NationalityId");
-
-                    b.HasIndex("NationalityId1");
 
                     b.HasIndex("ResidenceCountryId");
 
@@ -1216,10 +1214,6 @@ namespace Academix.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Academix.Domain.Entities.Nationality", null)
-                        .WithMany("Students")
-                        .HasForeignKey("NationalityId1");
-
                     b.HasOne("Academix.Domain.Entities.Country", "ResidenceCountry")
                         .WithMany()
                         .HasForeignKey("ResidenceCountryId")
@@ -1572,8 +1566,6 @@ namespace Academix.Infrastructure.Migrations
 
             modelBuilder.Entity("Academix.Domain.Entities.Nationality", b =>
                 {
-                    b.Navigation("Students");
-
                     b.Navigation("Users");
                 });
 

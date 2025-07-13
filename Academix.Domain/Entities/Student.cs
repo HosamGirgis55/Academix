@@ -22,6 +22,7 @@ namespace Academix.Domain.Entities
 
         // Foreign Keys
         public Guid NationalityId { get; set; }
+        [ForeignKey("NationalityId")]
         public Nationality Nationality { get; set; }
 
         public Guid ResidenceCountryId { get; set; }
@@ -48,6 +49,7 @@ namespace Academix.Domain.Entities
         public Guid StudentId { get; set; }
         public Guid LearningInterestId { get; set; }
         public Student Students { get; set; }
+        [ForeignKey("LearningInterestId")]
         public Field LearningInterests { get; set; }
     }
 

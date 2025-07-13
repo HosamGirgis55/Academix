@@ -11,8 +11,10 @@ namespace Academix.Domain.Entities
     {
         public string NameAr { get; set; }
         public string NameEn { get; set; }
+        public ICollection<Student> Students { get; set; }
+
         // Navigation property to ApplicationUser
         public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
-        
-             }
+
+    }
 }
