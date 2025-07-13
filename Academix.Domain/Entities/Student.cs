@@ -21,9 +21,7 @@ namespace Academix.Domain.Entities
         public string ProfilePictureUrl { get; set; }
 
         // Foreign Keys
-        public Guid NationalityId { get; set; }
-        [ForeignKey("NationalityId")]
-        public Nationality Nationality { get; set; }
+       
 
         public Guid ResidenceCountryId { get; set; }
         public Country ResidenceCountry { get; set; }
@@ -47,10 +45,10 @@ namespace Academix.Domain.Entities
     public class LearningInterestsStudent : BaseEntity
     {
         public Guid StudentId { get; set; }
-        public Guid LearningInterestId { get; set; }
+        public Guid FieldId { get; set; }
         public Student Students { get; set; }
         [ForeignKey("LearningInterestId")]
-        public Field LearningInterests { get; set; }
+        public Field Field { get; set; }
     }
 
     public class LearningInterest:BaseEntity

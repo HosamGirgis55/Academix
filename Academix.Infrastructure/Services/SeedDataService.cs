@@ -29,7 +29,6 @@ namespace Academix.Infrastructure.Services
             await _context.Database.MigrateAsync();
             await SeedRolesAsync();
             await SeedCountriesAsync();
-            await SeedNationalitiesAsync();
             await SeedFieldsAsync();
             await SeedLevelsAsync();
             await SeedSpecializationsAsync();
@@ -40,6 +39,8 @@ namespace Academix.Infrastructure.Services
             await SeedAgeGroupsAsync();
             await SeedCommunicationMethodsAsync();
             await SeedTeachingLanguagesAsync();
+            await SeedGraduationStatusesAsync();
+            await SeedLearningInterestsAsync();
             await _context.SaveChangesAsync();
         }
 
@@ -74,26 +75,7 @@ namespace Academix.Infrastructure.Services
             }
         }
 
-        private async Task SeedNationalitiesAsync()
-        {
-            if (!await _context.Nationalities.AnyAsync())
-            {
-                var nationalities = new List<Nationality>
-                {
-                    new Nationality { NameAr = "سعودي", NameEn = "Saudi" },
-                    new Nationality { NameAr = "مصري", NameEn = "Egyptian" },
-                    new Nationality { NameAr = "إماراتي", NameEn = "Emirati" },
-                    new Nationality { NameAr = "كويتي", NameEn = "Kuwaiti" },
-                    new Nationality { NameAr = "قطري", NameEn = "Qatari" },
-                    new Nationality { NameAr = "بحريني", NameEn = "Bahraini" },
-                    new Nationality { NameAr = "عماني", NameEn = "Omani" },
-                    new Nationality { NameAr = "أردني", NameEn = "Jordanian" },
-                    new Nationality { NameAr = "لبناني", NameEn = "Lebanese" },
-                    new Nationality { NameAr = "عراقي", NameEn = "Iraqi" }
-                };
-                await _context.Nationalities.AddRangeAsync(nationalities);
-            }
-        }
+
 
         private async Task SeedFieldsAsync()
         {
@@ -283,6 +265,42 @@ namespace Academix.Infrastructure.Services
                     new TeachingLanguage { NameAr = "الإنجليزية", NameEn = "English" }
                 };
                 await _context.TeachingLanguages.AddRangeAsync(languages);
+            }
+        }
+
+        private async Task SeedGraduationStatusesAsync()
+        {
+            if (!await _context.GraduationStatuses.AnyAsync())
+            {
+                var graduationStatuses = new List<GraduationStatus>
+                {
+                    new GraduationStatus { NameAr = "متخرج", NameEn = "Graduated" },
+                    new GraduationStatus { NameAr = "غير متخرج", NameEn = "Not Graduated" },
+                    new GraduationStatus { NameAr = "طالب حالي", NameEn = "Current Student" },
+                    new GraduationStatus { NameAr = "متوقف عن الدراسة", NameEn = "Dropped Out" }
+                };
+                await _context.GraduationStatuses.AddRangeAsync(graduationStatuses);
+            }
+        }
+
+        private async Task SeedLearningInterestsAsync()
+        {
+            if (!await _context.LearningInterests.AnyAsync())
+            {
+                var learningInterests = new List<LearningInterest>
+                {
+                    new LearningInterest { NameAr = "تطوير الويب", NameEn = "Web Development" },
+                    new LearningInterest { NameAr = "تطوير تطبيقات الموبايل", NameEn = "Mobile App Development" },
+                    new LearningInterest { NameAr = "علوم البيانات", NameEn = "Data Science" },
+                    new LearningInterest { NameAr = "الذكاء الاصطناعي", NameEn = "Artificial Intelligence" },
+                    new LearningInterest { NameAr = "التعلم الآلي", NameEn = "Machine Learning" },
+                    new LearningInterest { NameAr = "أمن المعلومات", NameEn = "Cybersecurity" },
+                    new LearningInterest { NameAr = "البرمجة", NameEn = "Programming" },
+                    new LearningInterest { NameAr = "قواعد البيانات", NameEn = "Database Management" },
+                    new LearningInterest { NameAr = "التصميم", NameEn = "Design" },
+                    new LearningInterest { NameAr = "إدارة المشاريع", NameEn = "Project Management" }
+                };
+                await _context.LearningInterests.AddRangeAsync(learningInterests);
             }
         }
     }

@@ -4,6 +4,7 @@ using Academix.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Academix.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250713211725_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,6 +114,9 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<Guid?>("NationalityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -168,6 +174,8 @@ namespace Academix.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("NationalityId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -488,6 +496,37 @@ namespace Academix.Infrastructure.Migrations
                     b.ToTable("Levels");
                 });
 
+            modelBuilder.Entity("Academix.Domain.Entities.Nationality", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Nationalities");
+                });
+
             modelBuilder.Entity("Academix.Domain.Entities.Position", b =>
                 {
                     b.Property<Guid>("Id")
@@ -613,6 +652,9 @@ namespace Academix.Infrastructure.Migrations
                     b.Property<Guid>("LevelId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("NationalityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ProfilePictureUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -643,6 +685,8 @@ namespace Academix.Infrastructure.Migrations
                     b.HasIndex("GraduationStatusId");
 
                     b.HasIndex("LevelId");
+
+                    b.HasIndex("NationalityId");
 
                     b.HasIndex("ResidenceCountryId");
 
@@ -1106,6 +1150,10 @@ namespace Academix.Infrastructure.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Academix.Domain.Entities.Nationality", null)
+                        .WithMany("Users")
+                        .HasForeignKey("NationalityId");
+
                     b.Navigation("Country");
                 });
 
@@ -1162,6 +1210,10 @@ namespace Academix.Infrastructure.Migrations
                         .HasForeignKey("LevelId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Academix.Domain.Entities.Nationality", null)
+                        .WithMany("Students")
+                        .HasForeignKey("NationalityId");
 
                     b.HasOne("Academix.Domain.Entities.Country", "ResidenceCountry")
                         .WithMany()
@@ -1501,6 +1553,13 @@ namespace Academix.Infrastructure.Migrations
             modelBuilder.Entity("Academix.Domain.Entities.Level", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Academix.Domain.Entities.Nationality", b =>
+                {
+                    b.Navigation("Students");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Academix.Domain.Entities.Skill", b =>

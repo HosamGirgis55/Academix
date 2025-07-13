@@ -17,7 +17,6 @@ namespace Academix.Infrastructure.Data
         public DbSet<Field> Fields { get; set; } = null!;
         public DbSet<Level> Levels { get; set; } = null!;
         public DbSet<CommunicationMethod> CommunicationMethods { get; set; } = null!;
-        public DbSet<Nationality> Nationalities { get; set; } = null!;
         public DbSet<Position> Positions { get; set; } = null!;
         public DbSet<Specialization> Specializations { get; set; } = null!;
         public DbSet<Student> Students { get; set; } = null!;
@@ -53,10 +52,7 @@ namespace Academix.Infrastructure.Data
                       .HasForeignKey<Student>(s => s.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(s => s.Nationality)
-                      .WithMany()
-                      .HasForeignKey(s => s.NationalityId)
-                      .OnDelete(DeleteBehavior.Restrict);
+             
 
                 entity.HasOne(s => s.ResidenceCountry)
                       .WithMany()
@@ -87,10 +83,7 @@ namespace Academix.Infrastructure.Data
                       .HasForeignKey<Teacher>(t => t.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(t => t.Nationality)
-                      .WithMany()
-                      .HasForeignKey(t => t.NationalityId)
-                      .OnDelete(DeleteBehavior.Restrict);
+              
 
                 entity.HasOne(t => t.Country)
                       .WithMany()
@@ -224,16 +217,15 @@ namespace Academix.Infrastructure.Data
             // LearningInterestsStudent configuration
             modelBuilder.Entity<LearningInterestsStudent>(entity =>
             {
-                entity.HasKey(lis => new { lis.StudentId, lis.LearningInterestId });
-
+ 
                 entity.HasOne(lis => lis.Students)
                       .WithMany(s => s.LearningInterests)
                       .HasForeignKey(lis => lis.StudentId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(lis => lis.LearningInterests)
+                entity.HasOne(lis => lis.Field)
                       .WithMany(li => li.LearningInterests)
-                      .HasForeignKey(lis => lis.LearningInterestId)
+                      .HasForeignKey(lis => lis.FieldId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
         }

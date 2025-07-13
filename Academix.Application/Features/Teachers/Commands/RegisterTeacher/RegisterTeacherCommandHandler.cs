@@ -84,8 +84,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     Bio = request.Bio,
                     ProfilePictureUrl = request.ProfilePictureUrl,
                     AdditionalInterests = request.AdditionalInterests,
-                    NationalityId = request.NationalityId,
-                    CountryId = request.CountryId,
+                     CountryId = request.CountryId,
                     Educations = request.Educations.Select(e => new TeacherEducation
                     {
                         Institution = e.Institution,

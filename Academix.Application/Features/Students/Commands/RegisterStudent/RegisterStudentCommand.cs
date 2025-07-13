@@ -16,8 +16,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public required string Email { get; set; }
         public required string Password { get; set; }
         public required string ConfirmPassword { get; set; }
-        public Guid NationalityId { get; set; }
-        public int Gender { get; set; }
+         public int Gender { get; set; }
         public Guid ResidenceCountryId { get; set; }
         public string? ProfilePictureUrl { get; set; }
         public string? Bio { get; set; }

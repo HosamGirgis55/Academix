@@ -38,11 +38,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
             try
             {
                 // Validate all foreign key references first
-                var nationality = await _unitOfWork.Repository<Country>().GetByIdAsync(request.NationalityId);
-                if (nationality == null)
-                {
-                    return Result.Failure(_localizationService.GetLocalizedString("NationalityNotFound"));
-                }
+               
 
                 var residenceCountry = await _unitOfWork.Repository<Country>().GetByIdAsync(request.ResidenceCountryId);
                 if (residenceCountry == null)
@@ -147,8 +143,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     Github = request.Github,
                     ConnectProgramming = request.ConnectProgramming,
                     ProfilePictureUrl = request.ProfilePictureUrl,
-                    NationalityId = request.NationalityId,
-                    ResidenceCountryId = request.ResidenceCountryId,
+                     ResidenceCountryId = request.ResidenceCountryId,
                     LevelId = request.LevelId,
                     GraduationStatusId = request.GraduationStatusId,
                     SpecialistId = request.SpecialistId
@@ -192,7 +187,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                         var learningInterest = new LearningInterestsStudent
                         {
                             StudentId = student.Id,
-                            LearningInterestId = interest.LearningInterestId
+                            FieldId = interest.LearningInterestId
                         };
                         await _unitOfWork.Repository<LearningInterestsStudent>().AddAsync(learningInterest);
                     }

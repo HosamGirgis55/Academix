@@ -39,8 +39,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage(_localizationService.GetLocalizedString("InvalidGender"));
 
-            RuleFor(x => x.NationalityId)
-                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("NationalityIsRequired"));
+             
 
             RuleFor(x => x.ResidenceCountryId)
                 .NotEmpty().WithMessage(_localizationService.GetLocalizedString("CountryIsRequired"));

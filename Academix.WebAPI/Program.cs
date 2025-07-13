@@ -90,6 +90,13 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IComm
 
 var app = builder.Build();
 
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var seedDataService = scope.ServiceProvider.GetRequiredService<SeedDataService>();
+    await seedDataService.SeedAllAsync();
+}
+
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{

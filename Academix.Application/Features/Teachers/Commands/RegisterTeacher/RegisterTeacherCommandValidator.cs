@@ -47,8 +47,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                 .Must(uri => string.IsNullOrEmpty(uri) || Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .WithMessage(_localizationService.GetLocalizedString("InvalidProfilePictureUrl"));
 
-            RuleFor(x => x.NationalityId)
-                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("NationalityIsRequired"));
+          
 
             RuleFor(x => x.CountryId)
                 .NotEmpty().WithMessage(_localizationService.GetLocalizedString("CountryIsRequired"));

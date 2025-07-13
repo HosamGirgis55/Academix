@@ -15,10 +15,7 @@ namespace Academix.Domain.DTOs
         public string Bio { get; set; } = string.Empty;
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public double salary { get; set; }
-        public List<string> skilles { get; set; } 
-
-
-        public string Nationality { get; set; }
+        public List<string> skilles { get; set; }
 
 
     }

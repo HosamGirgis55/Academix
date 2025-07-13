@@ -20,11 +20,7 @@ namespace Academix.Domain.Entities
         public List<string> AdditionalInterests { get; set; } = new();
         public decimal Salary { get; set; }
 
-        // Foreign Keys
-        public Guid NationalityId { get; set; }
-        [ForeignKey("NationalityId")]
-        public Country Nationality { get; set; } = null!;
-
+       
         public Guid CountryId { get; set; }
         [ForeignKey("CountryId")]
         public Country Country { get; set; } = null!;

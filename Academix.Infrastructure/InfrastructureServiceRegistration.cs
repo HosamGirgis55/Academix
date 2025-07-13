@@ -28,7 +28,6 @@ namespace Academix.Infrastructure
             // Add repositories
             services.AddScoped<IFieldRepository, FieldRepository>();
             services.AddScoped<ILevelRepository, LevelRepository>();
-            services.AddScoped<INationalityRepository, NationalityRepository>();
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();

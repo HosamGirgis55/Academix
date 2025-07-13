@@ -21,8 +21,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
         public List<string> AdditionalInterests { get; set; } = new();
 
         // Location Info
-        public Guid NationalityId { get; set; }
-        public Guid CountryId { get; set; }
+         public Guid CountryId { get; set; }
 
         // Education
         public List<TeacherEducationDto> Educations { get; set; } = new();

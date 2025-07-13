@@ -34,7 +34,6 @@ public class GetLookupQueryHandler : IRequestHandler<GetLookupQuery, Result<List
                 "country" => await GetCountryLookup(cancellationToken),
                 "field" => await GetFieldLookup(cancellationToken),
                 "level" => await GetLevelLookup(cancellationToken),
-                "nationality" => await GetNationalityLookup(cancellationToken),
                 "position" => await GetPositionLookup(cancellationToken),
                 "specialization" => await GetSpecializationLookup(cancellationToken),
                 "teachingarea" => await GetTeachingAreaLookup(cancellationToken),
@@ -42,6 +41,7 @@ public class GetLookupQueryHandler : IRequestHandler<GetLookupQuery, Result<List
                 "communicationmethod" => await GetCommunicationMethodLookup(cancellationToken),
                 "agegroup" => await GetAgeGroupLookup(cancellationToken),
                 "graduationstatus" => await GetGraduationStatusLookup(cancellationToken),
+                "learninginterest" => await GetLearningInterestLookup(cancellationToken),
                 "experiences" => await GetExperienceLookup(cancellationToken),
                 "skilles" => await GetSkilleLookup(cancellationToken),
                 _ => new List<LookupItemDto>()
@@ -102,17 +102,7 @@ public class GetLookupQueryHandler : IRequestHandler<GetLookupQuery, Result<List
         }).ToList();
     }
 
-    private async Task<List<LookupItemDto>> GetNationalityLookup(CancellationToken cancellationToken)
-    {
-        var query = await _unitOfWork.Repository<Nationality>().GetAllAsync();
-        var nationalities = await query.AsNoTracking().ToListAsync(cancellationToken);
-        
-        return nationalities.Select(nationality => new LookupItemDto
-        {
-            Id = nationality.Id.ToString(),
-            Name = GetLocalizedName(nationality.NameEn, nationality.NameAr)
-        }).ToList();
-    }
+
 
     private async Task<List<LookupItemDto>> GetPositionLookup(CancellationToken cancellationToken)
     {
@@ -217,6 +207,18 @@ public class GetLookupQueryHandler : IRequestHandler<GetLookupQuery, Result<List
         {
             Id = group.Id.ToString(),
             Name = GetLocalizedName(group.NameEn, group.NameAr)
+        }).ToList();
+    }
+
+    private async Task<List<LookupItemDto>> GetLearningInterestLookup(CancellationToken cancellationToken)
+    {
+        var query = await _unitOfWork.Repository<LearningInterest>().GetAllAsync();
+        var learningInterests = await query.AsNoTracking().ToListAsync(cancellationToken);
+
+        return learningInterests.Select(interest => new LookupItemDto
+        {
+            Id = interest.Id.ToString(),
+            Name = GetLocalizedName(interest.NameEn, interest.NameAr)
         }).ToList();
     }
 
