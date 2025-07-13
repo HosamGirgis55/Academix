@@ -145,6 +145,17 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     });
                 }
 
+                // Add Skills
+                foreach (var skillDto in request.Skills)
+                {
+                    teacher.Skills.Add(new TeacherSkill
+                    {
+                        TeacherId = teacher.Id,
+                        SkillId = skillDto.SkillId
+                        
+                    });
+                }
+
                 await _unitOfWork.Repository<Teacher>().AddAsync(teacher);
                 await _unitOfWork.SaveChangesAsync();
 

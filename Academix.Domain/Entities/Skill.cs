@@ -7,8 +7,9 @@ namespace Academix.Domain.Entities
         public string NameAr { get; set; }
         public string NameEn { get; set; }
          
-        // Navigation property
+        // Navigation properties
         public ICollection<StudentSkill> StudentSkills { get; set; }
+        public ICollection<TeacherSkill> TeacherSkills { get; set; }
     }
 
     

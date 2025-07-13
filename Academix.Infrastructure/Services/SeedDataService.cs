@@ -285,23 +285,23 @@ namespace Academix.Infrastructure.Services
 
         private async Task SeedLearningInterestsAsync()
         {
-            if (!await _context.LearningInterests.AnyAsync())
-            {
-                var learningInterests = new List<LearningInterest>
-                {
-                    new LearningInterest { NameAr = "تطوير الويب", NameEn = "Web Development" },
-                    new LearningInterest { NameAr = "تطوير تطبيقات الموبايل", NameEn = "Mobile App Development" },
-                    new LearningInterest { NameAr = "علوم البيانات", NameEn = "Data Science" },
-                    new LearningInterest { NameAr = "الذكاء الاصطناعي", NameEn = "Artificial Intelligence" },
-                    new LearningInterest { NameAr = "التعلم الآلي", NameEn = "Machine Learning" },
-                    new LearningInterest { NameAr = "أمن المعلومات", NameEn = "Cybersecurity" },
-                    new LearningInterest { NameAr = "البرمجة", NameEn = "Programming" },
-                    new LearningInterest { NameAr = "قواعد البيانات", NameEn = "Database Management" },
-                    new LearningInterest { NameAr = "التصميم", NameEn = "Design" },
-                    new LearningInterest { NameAr = "إدارة المشاريع", NameEn = "Project Management" }
-                };
-                await _context.LearningInterests.AddRangeAsync(learningInterests);
-            }
+            //if (!await _context.LearningInterests.AnyAsync())
+            //{
+            //    var learningInterests = new List<LearningInterest>
+            //    {
+            //        new LearningInterest { NameAr = "تطوير الويب", NameEn = "Web Development" },
+            //        new LearningInterest { NameAr = "تطوير تطبيقات الموبايل", NameEn = "Mobile App Development" },
+            //        new LearningInterest { NameAr = "علوم البيانات", NameEn = "Data Science" },
+            //        new LearningInterest { NameAr = "الذكاء الاصطناعي", NameEn = "Artificial Intelligence" },
+            //        new LearningInterest { NameAr = "التعلم الآلي", NameEn = "Machine Learning" },
+            //        new LearningInterest { NameAr = "أمن المعلومات", NameEn = "Cybersecurity" },
+            //        new LearningInterest { NameAr = "البرمجة", NameEn = "Programming" },
+            //        new LearningInterest { NameAr = "قواعد البيانات", NameEn = "Database Management" },
+            //        new LearningInterest { NameAr = "التصميم", NameEn = "Design" },
+            //        new LearningInterest { NameAr = "إدارة المشاريع", NameEn = "Project Management" }
+            //    };
+            //    await _context.LearningInterests.AddRangeAsync(learningInterests);
+            //}
         }
     }
 } 

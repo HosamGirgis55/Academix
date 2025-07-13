@@ -15,8 +15,13 @@ namespace Academix.Domain.DTOs
         public string Bio { get; set; } = string.Empty;
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public double salary { get; set; }
-        public List<string> skilles { get; set; }
+        public List<TeacherSkillDto> Skills { get; set; } = new();
+    }
 
-
+    public class TeacherSkillDto
+    {
+        public Guid SkillId { get; set; }
+        public string SkillName { get; set; } = string.Empty;
+        public int Level { get; set; }
     }
 }

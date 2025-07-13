@@ -237,4 +237,13 @@
   <data name="EndDateMustBeAfterStartDate" xml:space="preserve">
     <value>يجب أن يكون تاريخ النهاية بعد تاريخ البداية</value>
   </data>
+  <data name="SkillsRequired" xml:space="preserve">
+    <value>المهارات مطلوبة</value>
+  </data>
+  <data name="SkillIdRequired" xml:space="preserve">
+    <value>معرف المهارة مطلوب</value>
+  </data>
+  <data name="SkillLevelRange" xml:space="preserve">
+    <value>يجب أن يكون مستوى المهارة بين 1 و 5</value>
+  </data>
 </root> 

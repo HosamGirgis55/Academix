@@ -68,6 +68,10 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                 .NotEmpty().WithMessage(_localizationService.GetLocalizedString("TeachingLanguagesRequired"))
                 .Must(x => x.Count > 0).WithMessage(_localizationService.GetLocalizedString("TeachingLanguagesRequired"));
 
+            RuleFor(x => x.Skills)
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("SkillsRequired"))
+                .Must(x => x.Count > 0).WithMessage(_localizationService.GetLocalizedString("SkillsRequired"));
+
             RuleForEach(x => x.Educations)
                 .ChildRules(education =>
                 {
@@ -112,6 +116,15 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     certificate.RuleFor(c => c.IssuedDate)
                         .NotEmpty().WithMessage(_localizationService.GetLocalizedString("IssuedDateRequired"))
                         .LessThanOrEqualTo(DateTime.UtcNow).WithMessage(_localizationService.GetLocalizedString("IssuedDateInFuture"));
+                });
+
+            RuleForEach(x => x.Skills)
+                .ChildRules(skill =>
+                {
+                    skill.RuleFor(s => s.SkillId)
+                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("SkillIdRequired"));
+
+                   
                 });
         }
     }

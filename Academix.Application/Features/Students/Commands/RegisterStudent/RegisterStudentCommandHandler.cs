@@ -94,7 +94,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 if (request.LearningInterests != null && request.LearningInterests.Any())
                 {
                     var learningInterestIds = request.LearningInterests.Select(l => l.LearningInterestId).ToList();
-                    var interests = await _unitOfWork.Repository<LearningInterest>().GetAllAsync();
+                    var interests = await _unitOfWork.Repository<Field>().GetAllAsync();
                     var existingInterests = interests.Where(l => learningInterestIds.Contains(l.Id)).ToList();
 
                     if (existingInterests.Count() != learningInterestIds.Count)

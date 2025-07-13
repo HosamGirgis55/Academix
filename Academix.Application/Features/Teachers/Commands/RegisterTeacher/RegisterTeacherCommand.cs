@@ -33,6 +33,9 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
         public List<Guid> CommunicationMethodIds { get; set; } = new();
         public List<Guid> TeachingLanguageIds { get; set; } = new();
 
+        // Skills
+        public List<TeacherSkillRegistrationDto> Skills { get; set; } = new();
+
         public decimal Salary { get; set; }
     }
 
@@ -53,5 +56,11 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
         public string IssuedBy { get; set; } = string.Empty;
         public DateTime IssuedDate { get; set; }
         public string ExamResult { get; set; } = string.Empty;
+    }
+
+    public class TeacherSkillRegistrationDto
+    {
+        public Guid SkillId { get; set; }
+         
     }
 } 

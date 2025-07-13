@@ -336,4 +336,13 @@
   <data name="Enum_Gender_Female" xml:space="preserve">
     <value>Female</value>
   </data>
+  <data name="SkillsRequired" xml:space="preserve">
+    <value>Skills are required</value>
+  </data>
+  <data name="SkillIdRequired" xml:space="preserve">
+    <value>Skill ID is required</value>
+  </data>
+  <data name="SkillLevelRange" xml:space="preserve">
+    <value>Skill level must be between 1 and 5</value>
+  </data>
 </root> 

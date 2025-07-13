@@ -32,6 +32,9 @@ namespace Academix.Domain.Entities
         // Exams
         public List<Exame>? Exames { get; set; }
 
+        // Skills
+        public List<TeacherSkill>? Skills { get; set; } = new();
+
         // Teacher Preferences
         public ICollection<TeacherTeachingArea> TeacherTeachingAreas { get; set; } = new List<TeacherTeachingArea>();
         public ICollection<TeacherAgeGroup> TeacherAgeGroups { get; set; } = new List<TeacherAgeGroup>();

@@ -212,7 +212,7 @@ public class GetLookupQueryHandler : IRequestHandler<GetLookupQuery, Result<List
 
     private async Task<List<LookupItemDto>> GetLearningInterestLookup(CancellationToken cancellationToken)
     {
-        var query = await _unitOfWork.Repository<LearningInterest>().GetAllAsync();
+        var query = await _unitOfWork.Repository<Field>().GetAllAsync();
         var learningInterests = await query.AsNoTracking().ToListAsync(cancellationToken);
 
         return learningInterests.Select(interest => new LookupItemDto

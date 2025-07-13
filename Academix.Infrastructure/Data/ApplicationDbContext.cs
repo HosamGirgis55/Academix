@@ -25,8 +25,8 @@ namespace Academix.Infrastructure.Data
         public DbSet<GraduationStatus> GraduationStatuses { get; set; } = null!;
         public DbSet<Skill> Skills { get; set; } = null!;
         public DbSet<StudentSkill> StudentSkills { get; set; } = null!;
-        public DbSet<LearningInterest> LearningInterests { get; set; } = null!;
-        public DbSet<LearningInterestsStudent> LearningInterestsStudents { get; set; } = null!;
+        public DbSet<TeacherSkill> TeacherSkills { get; set; } = null!;
+         public DbSet<LearningInterestsStudent> LearningInterestsStudents { get; set; } = null!;
         public DbSet<Exame> Exames { get; set; } = null!;
 
         // Teacher Preferences Tables
@@ -227,6 +227,23 @@ namespace Academix.Infrastructure.Data
                       .WithMany(li => li.LearningInterests)
                       .HasForeignKey(lis => lis.FieldId)
                       .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // TeacherSkill configuration
+            modelBuilder.Entity<TeacherSkill>(entity =>
+            {
+                entity.HasOne(ts => ts.Teacher)
+                      .WithMany(t => t.Skills)
+                      .HasForeignKey(ts => ts.TeacherId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(ts => ts.Skill)
+                      .WithMany(s => s.TeacherSkills)
+                      .HasForeignKey(ts => ts.SkillId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasIndex(ts => new { ts.TeacherId, ts.SkillId })
+                      .IsUnique();
             });
         }
     }

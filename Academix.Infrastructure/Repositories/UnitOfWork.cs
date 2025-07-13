@@ -31,6 +31,7 @@ namespace Academix.Infrastructure.Repositories
         public IGenericRepository<Experience> Experiences => GetRepository<Experience>();
         public IGenericRepository<StudentSkill> StudentSkills => GetRepository<StudentSkill>();
         public IGenericRepository<StudentExperience> StudentExperiences => GetRepository<StudentExperience>();
+        public IGenericRepository<TeacherSkill> TeacherSkills => GetRepository<TeacherSkill>();
 
 
         public IGenericRepository<GraduationStatus> GenericRepository => throw new NotImplementedException();
