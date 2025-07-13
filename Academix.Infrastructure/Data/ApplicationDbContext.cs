@@ -258,7 +258,7 @@ namespace Academix.Infrastructure.Data
                 entity.HasOne(c => c.Teacher)
                       .WithMany(t => t.Comments)
                       .HasForeignKey(c => c.TeacherId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasIndex(c => new { c.StudentId, c.TeacherId })
                       .IsUnique(); // Ensure one comment per student per teacher
