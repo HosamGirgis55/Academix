@@ -13,6 +13,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Academix.Helpers;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,14 +70,18 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 // Add JWT Configuration
-var jwtSettings = new JwtSettings();
-builder.Configuration.Bind(nameof(JwtSettings), jwtSettings);
-builder.Services.AddSingleton(jwtSettings);
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
+
+// Validate JWT Configuration at startup
+var jwtConfig = new JwtSettings();
+builder.Configuration.GetSection(nameof(JwtSettings)).Bind(jwtConfig);
+if (string.IsNullOrEmpty(jwtConfig.Key))
+{
+    throw new InvalidOperationException("JWT Key is not configured in appsettings.json. Please ensure JwtSettings.Key has a value.");
+}
 
 // Add Email Configuration
-var emailSettings = new EmailSettings();
-builder.Configuration.Bind(nameof(EmailSettings), emailSettings);
-builder.Services.AddSingleton(emailSettings);
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
 
 // Add Services
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -87,6 +92,10 @@ builder.Services.AddScoped<ResponseHelper>();
 // Add MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ICommand<>).Assembly));
+
+// Add FluentValidation
+builder.Services.AddValidatorsFromAssembly(typeof(ICommand<>).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 var app = builder.Build();
 

@@ -18,6 +18,12 @@ public static class UserManagerExtensions
         ApplicationUser user,
         IOptions<JwtSettings> jwtSettings)
     {
+        // Validate JWT settings
+        if (string.IsNullOrEmpty(jwtSettings.Value.Key))
+        {
+            throw new InvalidOperationException("JWT Key is not configured. Please check your appsettings.json JwtSettings.Key");
+        }
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(jwtSettings.Value.Key);
         
