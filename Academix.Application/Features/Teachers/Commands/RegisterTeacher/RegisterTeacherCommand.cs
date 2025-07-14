@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
 {
-    public class RegisterTeacherCommand : IRequest<Result>
+    public class RegisterTeacherCommand : IRequest<Result<AuthenticationResult>>
     {
         // User Info
         public string Email { get; set; } = string.Empty;

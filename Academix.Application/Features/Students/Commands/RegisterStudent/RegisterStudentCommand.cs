@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Academix.Application.Features.Students.Commands.RegisterStudent
 {
-    public class RegisterStudentCommand : IRequest<Result>
+    public class RegisterStudentCommand : IRequest<Result<AuthenticationResult>>
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }

@@ -34,7 +34,7 @@ namespace Academix.WebAPI.Features.Students
 
                 if (result.IsSuccess)
                 {
-                    return Results.Ok(response.Created(result));
+                    return Results.Ok(response.Success(result.Value, result.SuccessMessage));
                 }
 
                 if (result.Errors.Any())
