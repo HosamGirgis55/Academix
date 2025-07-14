@@ -56,7 +56,7 @@ namespace Academix.Application.Features.Students.Query.GetById
                     LastName = student.User.LastName,
                     ProfilePictureUrl = student.ProfilePictureUrl,
                     Email = student.User.Email,
-                    PhoneNumber = student.User.PhoneNumber
+                    BirthDate = student.BirthDate
                 };
 
                 return Result<StudentDto>.Success(dto);

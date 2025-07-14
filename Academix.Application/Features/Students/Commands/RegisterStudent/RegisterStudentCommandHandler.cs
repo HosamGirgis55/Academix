@@ -143,7 +143,8 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                     Github = request.Github,
                     ConnectProgramming = request.ConnectProgramming,
                     ProfilePictureUrl = request.ProfilePictureUrl,
-                     ResidenceCountryId = request.ResidenceCountryId,
+                    BirthDate = request.BirthDate,
+                    ResidenceCountryId = request.ResidenceCountryId,
                     LevelId = request.LevelId,
                     GraduationStatusId = request.GraduationStatusId,
                     SpecialistId = request.SpecialistId

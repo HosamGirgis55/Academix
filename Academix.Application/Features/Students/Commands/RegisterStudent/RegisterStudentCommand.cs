@@ -16,7 +16,8 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public required string Email { get; set; }
         public required string Password { get; set; }
         public required string ConfirmPassword { get; set; }
-         public int Gender { get; set; }
+        public int Gender { get; set; }
+        public DateTime? BirthDate { get; set; }
         public Guid ResidenceCountryId { get; set; }
         public string? ProfilePictureUrl { get; set; }
         public string? Bio { get; set; }
@@ -30,25 +31,24 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public List<LearningInterestsDto> LearningInterests { get; set; } = new();
     }
 
-     
     public class LearningInterestsDto
     {
-      public  Guid LearningInterestId { get; set; }
+        public Guid LearningInterestId { get; set; }
     }
+    
     public class StudentSkillDto
     {
         public Guid SkillId { get; set; }
-     }
+    }
 
     public class ExperienceDTO
     {
         public Guid Id { get; set; }
-
     }
+    
     public class StudentSkillDTO
     {
         public Guid SkillId { get; set; }
-        
     }
 
     public class StudentRegistrationResponse
@@ -58,9 +58,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
         public string Email { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
-         
         public bool RequiresEmailVerification { get; set; }
-      
         public StudentPreferencesDto? Preferences { get; set; }
     }
 } 

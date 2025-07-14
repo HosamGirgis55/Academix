@@ -33,10 +33,6 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                 .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$")
                 .WithMessage(_localizationService.GetLocalizedString("PasswordComplexity"));
 
-            RuleFor(x => x.PhoneNumber)
-                .NotEmpty().WithMessage(_localizationService.GetLocalizedString("PhoneNumberIsRequired"))
-                .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage(_localizationService.GetLocalizedString("InvalidPhoneNumber"));
-
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage(_localizationService.GetLocalizedString("InvalidGender"));
 
@@ -116,6 +112,30 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     certificate.RuleFor(c => c.IssuedDate)
                         .NotEmpty().WithMessage(_localizationService.GetLocalizedString("IssuedDateRequired"))
                         .LessThanOrEqualTo(DateTime.UtcNow).WithMessage(_localizationService.GetLocalizedString("IssuedDateInFuture"));
+                });
+
+            RuleForEach(x => x.Exams)
+                .ChildRules(exam =>
+                {
+                    exam.RuleFor(e => e.Name)
+                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("ExamNameRequired"))
+                        .MaximumLength(100).WithMessage(_localizationService.GetLocalizedString("ExamNameMaxLength"));
+
+                    exam.RuleFor(e => e.ExamResult)
+                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("ExamResultRequired"))
+                        .MaximumLength(50).WithMessage(_localizationService.GetLocalizedString("ExamResultMaxLength"));
+
+                    exam.RuleFor(e => e.IssuedBy)
+                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("ExamIssuedByRequired"))
+                        .MaximumLength(100).WithMessage(_localizationService.GetLocalizedString("ExamIssuedByMaxLength"));
+
+                    exam.RuleFor(e => e.IssuedDate)
+                        .NotEmpty().WithMessage(_localizationService.GetLocalizedString("ExamIssuedDateRequired"))
+                        .LessThanOrEqualTo(DateTime.UtcNow).WithMessage(_localizationService.GetLocalizedString("ExamIssuedDateInFuture"));
+
+                    exam.RuleFor(e => e.ExameCertificateUrl)
+                        .Must(uri => string.IsNullOrEmpty(uri) || Uri.TryCreate(uri, UriKind.Absolute, out _))
+                        .WithMessage(_localizationService.GetLocalizedString("InvalidExamCertificateUrl"));
                 });
 
             RuleForEach(x => x.Skills)

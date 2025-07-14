@@ -339,4 +339,10 @@
   <data name="SkillLevelRange" xml:space="preserve">
     <value>Skill level must be between 1 and 5</value>
   </data>
+  <data name="BirthDateMustBeInPast" xml:space="preserve">
+    <value>Birth date must be in the past</value>
+  </data>
+  <data name="MinimumAgeRequired" xml:space="preserve">
+    <value>You must be at least 13 years old to register</value>
+  </data>
 </root> 

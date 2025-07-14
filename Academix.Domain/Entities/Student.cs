@@ -19,6 +19,7 @@ namespace Academix.Domain.Entities
         public string Github { get; set; }
         public bool ConnectProgramming { get; set; }
         public string ProfilePictureUrl { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         // Foreign Keys
        

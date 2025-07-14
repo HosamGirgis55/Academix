@@ -13,8 +13,6 @@ namespace Academix.Domain.DTOs
         public string LastName { get; set; } = string.Empty;
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
-
-
+        public DateTime? BirthDate { get; set; }
     }
 }

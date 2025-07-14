@@ -39,7 +39,11 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage(_localizationService.GetLocalizedString("InvalidGender"));
 
-             
+            RuleFor(x => x.BirthDate)
+                .Must(birthDate => !birthDate.HasValue || birthDate.Value <= DateTime.Today)
+                .WithMessage(_localizationService.GetLocalizedString("BirthDateMustBeInPast"))
+                .Must(birthDate => !birthDate.HasValue || birthDate.Value <= DateTime.Today.AddYears(-13))
+                .WithMessage(_localizationService.GetLocalizedString("MinimumAgeRequired"));
 
             RuleFor(x => x.ResidenceCountryId)
                 .NotEmpty().WithMessage(_localizationService.GetLocalizedString("CountryIsRequired"));

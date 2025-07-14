@@ -59,11 +59,8 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     Email = request.Email,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    PhoneNumber = request.PhoneNumber,
                     Gender = (Gender)request.Gender,
                     CountryId = request.CountryId,
-                    ProfilePictureUrl = request.ProfilePictureUrl,
-                    CreatedAt = DateTime.UtcNow,
                     EmailConfirmed = false
                 };
 
@@ -85,7 +82,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     Bio = request.Bio,
                     ProfilePictureUrl = request.ProfilePictureUrl,
                     AdditionalInterests = request.AdditionalInterests,
-                     CountryId = request.CountryId,
+                    CountryId = request.CountryId,
                     Educations = request.Educations.Select(e => new TeacherEducation
                     {
                         Institution = e.Institution,
@@ -157,7 +154,25 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     });
                 }
 
+                // Save teacher first to get the ID
                 await _unitOfWork.Repository<Teacher>().AddAsync(teacher);
+                await _unitOfWork.SaveChangesAsync();
+
+                // Add Exams
+                foreach (var examDto in request.Exams)
+                {
+                    var exam = new Exame
+                    {
+                        Name = examDto.Name,
+                        ExamResult = examDto.ExamResult,
+                        IssuedBy = examDto.IssuedBy,
+                        IssuedDate = examDto.IssuedDate,
+                        ExameCertificateUrl = examDto.ExameCertificateUrl,
+                        Teacher = teacher
+                    };
+                    await _unitOfWork.Repository<Exame>().AddAsync(exam);
+                }
+
                 await _unitOfWork.SaveChangesAsync();
 
                 // Generate and send email verification OTP

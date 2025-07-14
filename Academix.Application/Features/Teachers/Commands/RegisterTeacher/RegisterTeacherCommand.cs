@@ -12,7 +12,6 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
         public string Password { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
         public int Gender { get; set; }
 
         // Basic Info
@@ -26,6 +25,9 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
         // Education
         public List<TeacherEducationDto> Educations { get; set; } = new();
         public List<TeacherCertificateDto> Certificates { get; set; } = new();
+
+        // Exams
+        public List<TeacherExamDto> Exams { get; set; } = new();
 
         // Teaching Preferences
         public List<Guid> TeachingAreaIds { get; set; } = new();
@@ -56,6 +58,15 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
         public string IssuedBy { get; set; } = string.Empty;
         public DateTime IssuedDate { get; set; }
         public string ExamResult { get; set; } = string.Empty;
+    }
+
+    public class TeacherExamDto
+    {
+        public string Name { get; set; } = string.Empty;
+        public string ExamResult { get; set; } = string.Empty;
+        public string IssuedBy { get; set; } = string.Empty;
+        public DateTime IssuedDate { get; set; }
+        public string ExameCertificateUrl { get; set; } = string.Empty;
     }
 
     public class TeacherSkillRegistrationDto

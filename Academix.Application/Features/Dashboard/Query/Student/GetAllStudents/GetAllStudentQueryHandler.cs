@@ -48,7 +48,7 @@ namespace Academix.Application.Features.Dashboard.Query.Student.GetAllStudents
                     FirstName = s.User.FirstName,
                     LastName = s.User.LastName,
                     Email = s.User.Email,
-                    PhoneNumber = s.User.PhoneNumber,
+                    BirthDate = s.BirthDate,
                 }).ToList();
 
                 return Result<List<StudentDto>>.Success(studentDtos);

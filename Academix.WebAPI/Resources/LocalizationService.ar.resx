@@ -246,4 +246,10 @@
   <data name="SkillLevelRange" xml:space="preserve">
     <value>يجب أن يكون مستوى المهارة بين 1 و 5</value>
   </data>
+  <data name="BirthDateMustBeInPast" xml:space="preserve">
+    <value>يجب أن يكون تاريخ الميلاد في الماضي</value>
+  </data>
+  <data name="MinimumAgeRequired" xml:space="preserve">
+    <value>يجب أن تكون عمرك 13 سنة على الأقل للتسجيل</value>
+  </data>
 </root> 
