@@ -24,6 +24,7 @@ namespace Academix.Infrastructure
             services.AddScoped<ILocalizationService, LocalizationService>();
             services.AddScoped<ITimeZoneService, TimeZoneService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IFirebaseNotificationService, FirebaseNotificationService>();
 
             // Add repositories
             services.AddScoped<IFieldRepository, FieldRepository>();

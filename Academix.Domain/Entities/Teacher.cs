@@ -20,6 +20,9 @@ namespace Academix.Domain.Entities
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public List<string> AdditionalInterests { get; set; } = new();
         public decimal Salary { get; set; }
+        
+        // Points System
+        public int Points { get; set; } = 0;
 
        
         public Guid CountryId { get; set; }
@@ -44,6 +47,10 @@ namespace Academix.Domain.Entities
         
         // Comments
         public List<Comment> Comments { get; set; } = new();
+        
+        // Session Requests and Sessions
+        public List<SessionRequest> SessionRequests { get; set; } = new();
+        public List<Session> Sessions { get; set; } = new();
 
         public Status Status { get; set; } = Status.panding;
     }

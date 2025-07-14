@@ -40,6 +40,10 @@ namespace Academix.Infrastructure.Data
         public DbSet<TeacherCommunicationMethod> TeacherCommunicationMethods { get; set; } = null!;
         public DbSet<TeacherTeachingLanguage> TeacherTeachingLanguages { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
+        
+        // Session Management
+        public DbSet<SessionRequest> SessionRequests { get; set; } = null!;
+        public DbSet<Session> Sessions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

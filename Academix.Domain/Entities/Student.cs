@@ -20,6 +20,9 @@ namespace Academix.Domain.Entities
         public bool ConnectProgramming { get; set; }
         public string ProfilePictureUrl { get; set; }
         public DateTime? BirthDate { get; set; }
+        
+        // Points System
+        public int Points { get; set; } = 0;
 
         // Foreign Keys
        
@@ -45,6 +48,10 @@ namespace Academix.Domain.Entities
         
         // Comments
         public List<Comment> Comments { get; set; } = new();
+        
+        // Session Requests and Sessions
+        public List<SessionRequest> SessionRequests { get; set; } = new();
+        public List<Session> Sessions { get; set; } = new();
     }
     public class LearningInterestsStudent : BaseEntity
     {

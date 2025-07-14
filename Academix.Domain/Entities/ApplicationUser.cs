@@ -22,5 +22,8 @@ namespace Academix.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
         public Guid? CountryId { get; set; }
         public Country? Country { get; set; }
+        
+        // Firebase Notification
+        public string? DeviceToken { get; set; }
     }
 }
