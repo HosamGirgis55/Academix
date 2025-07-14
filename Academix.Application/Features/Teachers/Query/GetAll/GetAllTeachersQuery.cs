@@ -13,6 +13,9 @@ namespace Academix.Application.Features.Teachers.Query.GetAll
         // Skills filtering (optional)
         public List<Guid> SkillIds { get; set; } = new();
         
+        // Specialist/Teaching Area filtering (optional)
+        public List<Guid> TeachingAreaIds { get; set; } = new();
+        
         // Ordering
         public bool OrderByRating { get; set; } = true; // Default to order by rating
     }

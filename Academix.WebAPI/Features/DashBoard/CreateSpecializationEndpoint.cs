@@ -14,7 +14,7 @@ public class CreateSpecializationEndpoint : IEndpoint
         app.MapPost("/api/dashboard/specializations", CreateSpecializationAsync)
             .WithName("CreateSpecialization")
             .WithTags("Dashboard")
-            .RequireAuthorization()
+           // .RequireAuthorization()
             .Produces(200)
             .Produces(400);
     }

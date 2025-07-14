@@ -71,11 +71,20 @@ GET {{Academix.WebAPI_HostAddress}}/api/teachers?pageNumber=1&pageSize=5
 ### Get Teachers Filtered by Skills
 GET {{Academix.WebAPI_HostAddress}}/api/teachers?skillIds={{SKILL_ID_1}}&skillIds={{SKILL_ID_2}}&pageNumber=1&pageSize=10
 
+### Get Teachers Filtered by Teaching Areas/Specialists
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?teachingAreaIds={{TEACHING_AREA_ID_1}}&teachingAreaIds={{TEACHING_AREA_ID_2}}&pageNumber=1&pageSize=10
+
+### Get Teachers Filtered by Both Skills and Teaching Areas
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?skillIds={{SKILL_ID_1}}&teachingAreaIds={{TEACHING_AREA_ID_1}}&pageNumber=1&pageSize=10
+
 ### Get Teachers with Custom Pagination and No Rating Order
 GET {{Academix.WebAPI_HostAddress}}/api/teachers?pageNumber=2&pageSize=15&orderByRating=false
 
-### Get Teachers with All Parameters
-GET {{Academix.WebAPI_HostAddress}}/api/teachers?pageNumber=1&pageSize=20&skillIds={{SKILL_ID_1}}&skillIds={{SKILL_ID_2}}&orderByRating=true
+### Get Teachers with All Parameters (Skills + Teaching Areas + Pagination + Rating)
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?pageNumber=1&pageSize=20&skillIds={{SKILL_ID_1}}&skillIds={{SKILL_ID_2}}&teachingAreaIds={{TEACHING_AREA_ID_1}}&orderByRating=true
+
+### Get Teachers by Specialist Area Only
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?teachingAreaIds={{TEACHING_AREA_ID_1}}&pageSize=25
 
 ### ==== TEACHER PROFILE UPDATE ====
 
@@ -128,23 +137,22 @@ Authorization: Bearer {{TEACHER_JWT_TOKEN}}
       "certificateUrl": "https://example.com/cert2.pdf", 
       "issuedBy": "Digital Learning Academy",
       "issuedDate": "2020-12-10T00:00:00Z",
-      "examResult": "Certified Professional"
+      "examResult": "Excellent"
     }
   ],
   "skills": [
     {
-      "skillId": "{{MATH_SKILL_ID}}"
+      "name": "Mathematics Teaching",
+      "level": "Expert"
     },
     {
-      "skillId": "{{TEACHING_SKILL_ID}}"
-    },
-    {
-      "skillId": "{{COMMUNICATION_SKILL_ID}}"
+      "name": "Online Learning Platforms",
+      "level": "Advanced"
     }
   ],
   "teachingAreaIds": [
-    "{{MATHEMATICS_AREA_ID}}",
-    "{{STATISTICS_AREA_ID}}"
+    "{{HIGH_SCHOOL_AGE_ID}}",
+    "{{UNIVERSITY_AGE_ID}}"
   ],
   "ageGroupIds": [
     "{{HIGH_SCHOOL_AGE_ID}}",
@@ -181,3 +189,75 @@ Authorization: Bearer {{TEACHER_JWT_TOKEN}}
   "communicationMethodIds": [],
   "teachingLanguageIds": []
 }
+
+### ==== DASHBOARD PAGINATION EXAMPLES ====
+
+### Get All Students (Basic Pagination)
+GET {{Academix.WebAPI_HostAddress}}/api/GetStudents
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Students with Pagination (Page 2, 20 items per page)
+GET {{Academix.WebAPI_HostAddress}}/api/GetStudents?pageNumber=2&pageSize=20
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Students (First Page, 5 items per page)
+GET {{Academix.WebAPI_HostAddress}}/api/GetStudents?pageNumber=1&pageSize=5
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Students (Large Page Size - Max 100)
+GET {{Academix.WebAPI_HostAddress}}/api/GetStudents?pageNumber=1&pageSize=100
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Teachers with Status Filter (Basic Pagination)
+GET {{Academix.WebAPI_HostAddress}}/api/GetTeachers?status=Active
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Teachers with Status Filter and Pagination (Page 2, 15 items per page)
+GET {{Academix.WebAPI_HostAddress}}/api/GetTeachers?status=Active&pageNumber=2&pageSize=15
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Teachers with Status Filter (Page 1, 10 items per page)
+GET {{Academix.WebAPI_HostAddress}}/api/GetTeachers?status=Pending&pageNumber=1&pageSize=10
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Teachers with Status Filter (Custom Page Size)
+GET {{Academix.WebAPI_HostAddress}}/api/GetTeachers?status=Inactive&pageNumber=1&pageSize=25
+Authorization: Bearer {{JWT_TOKEN}}
+
+### ==== SKILLS CRUD OPERATIONS (Dashboard) ====
+
+### Get All Skills
+GET {{Academix.WebAPI_HostAddress}}/api/dashboard/skills
+
+### Get Skill by ID
+GET {{Academix.WebAPI_HostAddress}}/api/dashboard/skills/{{SKILL_ID}}
+
+### Create New Skill
+POST {{Academix.WebAPI_HostAddress}}/api/dashboard/skills
+Content-Type: application/json
+
+{
+  "nameAr": "البرمجة",
+  "nameEn": "Programming"
+}
+
+### Create Another Skill
+POST {{Academix.WebAPI_HostAddress}}/api/dashboard/skills
+Content-Type: application/json
+
+{
+  "nameAr": "الرياضيات",
+  "nameEn": "Mathematics"
+}
+
+### Update Skill
+PUT {{Academix.WebAPI_HostAddress}}/api/dashboard/skills/{{SKILL_ID}}
+Content-Type: application/json
+
+{
+  "nameAr": "علوم الحاسوب",
+  "nameEn": "Computer Science"
+}
+
+### Delete Skill
+DELETE {{Academix.WebAPI_HostAddress}}/api/dashboard/skills/{{SKILL_ID}}

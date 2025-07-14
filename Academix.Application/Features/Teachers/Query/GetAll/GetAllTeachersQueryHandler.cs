@@ -36,6 +36,8 @@ namespace Academix.Application.Features.Teachers.Query.GetAll
                     .Include(t => t.User)
                     .Include(t => t.Skills)
                         .ThenInclude(ts => ts.Skill)
+                    .Include(t => t.TeacherTeachingAreas)
+                        .ThenInclude(tta => tta.TeachingArea)
                     .Include(t => t.Comments)
                     .Where(t => t.Status == Domain.Enums.Status.Accepted);
 
@@ -44,6 +46,13 @@ namespace Academix.Application.Features.Teachers.Query.GetAll
                 {
                     baseQuery = baseQuery.Where(t => 
                         t.Skills.Any(ts => request.SkillIds.Contains(ts.SkillId)));
+                }
+
+                // Apply teaching area/specialist filtering if provided
+                if (request.TeachingAreaIds != null && request.TeachingAreaIds.Any())
+                {
+                    baseQuery = baseQuery.Where(t => 
+                        t.TeacherTeachingAreas.Any(tta => request.TeachingAreaIds.Contains(tta.TeachingAreaId)));
                 }
 
                 // Get total count before pagination
@@ -80,6 +89,12 @@ namespace Academix.Application.Features.Teachers.Query.GetAll
                             SkillId = s.SkillId,
                             SkillName = s.Skill.NameAr
                         }).ToList() ?? new List<TeacherSkillDto>(),
+                        Specialists = teacher.TeacherTeachingAreas?.Select(tta => new TeacherSpecialistDto
+                        {
+                            TeachingAreaId = tta.TeachingAreaId,
+                            NameAr = tta.TeachingArea.NameAr,
+                            NameEn = tta.TeachingArea.NameEn
+                        }).ToList() ?? new List<TeacherSpecialistDto>(),
                         Rating = new TeacherRatingInfoDto
                         {
                             AverageRating = Math.Round(averageRating, 1),

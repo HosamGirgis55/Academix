@@ -23,6 +23,7 @@ public class GetAllTeachersEndpoint : IEndpoint
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] Guid[]? skillIds = null,
+        [FromQuery] Guid[]? teachingAreaIds = null,
         [FromQuery] bool orderByRating = true,
         CancellationToken cancellationToken = default)
     {
@@ -38,6 +39,7 @@ public class GetAllTeachersEndpoint : IEndpoint
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 SkillIds = skillIds?.ToList() ?? new List<Guid>(),
+                TeachingAreaIds = teachingAreaIds?.ToList() ?? new List<Guid>(),
                 OrderByRating = orderByRating
             };
 
