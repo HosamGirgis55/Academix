@@ -25,3 +25,37 @@ Content-Type: application/json
   "email": "user@example.com",
   "password": "SecurePassword123!"
 }
+
+### ==== SPECIALIZATION CRUD OPERATIONS (Dashboard) ====
+
+### Get All Specializations
+GET {{Academix.WebAPI_HostAddress}}/api/dashboard/specializations
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Get Specialization by ID
+GET {{Academix.WebAPI_HostAddress}}/api/dashboard/specializations/{{SPECIALIZATION_ID}}
+Authorization: Bearer {{JWT_TOKEN}}
+
+### Create New Specialization
+POST {{Academix.WebAPI_HostAddress}}/api/dashboard/specializations
+Content-Type: application/json
+Authorization: Bearer {{JWT_TOKEN}}
+
+{
+  "nameAr": "علوم الحاسوب",
+  "nameEn": "Computer Science"
+}
+
+### Update Specialization
+PUT {{Academix.WebAPI_HostAddress}}/api/dashboard/specializations/{{SPECIALIZATION_ID}}
+Content-Type: application/json
+Authorization: Bearer {{JWT_TOKEN}}
+
+{
+  "nameAr": "هندسة البرمجيات",
+  "nameEn": "Software Engineering"
+}
+
+### Delete Specialization
+DELETE {{Academix.WebAPI_HostAddress}}/api/dashboard/specializations/{{SPECIALIZATION_ID}}
+Authorization: Bearer {{JWT_TOKEN}}

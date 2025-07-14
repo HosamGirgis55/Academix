@@ -255,4 +255,70 @@
   <data name="Failed to update device token" xml:space="preserve">
     <value>فشل في تحديث رمز الجهاز</value>
   </data>
+  <data name="SpecializationArAlreadyExists" xml:space="preserve">
+    <value>اسم التخصص العربي موجود بالفعل</value>
+  </data>
+  <data name="SpecializationEnAlreadyExists" xml:space="preserve">
+    <value>اسم التخصص الإنجليزي موجود بالفعل</value>
+  </data>
+  <data name="SpecializationCreatedSuccessfully" xml:space="preserve">
+    <value>تم إنشاء التخصص بنجاح</value>
+  </data>
+  <data name="SpecializationCreateFailed" xml:space="preserve">
+    <value>فشل في إنشاء التخصص</value>
+  </data>
+  <data name="SpecializationNotFound" xml:space="preserve">
+    <value>التخصص غير موجود</value>
+  </data>
+  <data name="SpecializationUpdatedSuccessfully" xml:space="preserve">
+    <value>تم تحديث التخصص بنجاح</value>
+  </data>
+  <data name="SpecializationUpdateFailed" xml:space="preserve">
+    <value>فشل في تحديث التخصص</value>
+  </data>
+  <data name="SpecializationHasStudentsCannotDelete" xml:space="preserve">
+    <value>لا يمكن حذف التخصص لأنه يحتوي على طلاب</value>
+  </data>
+  <data name="SpecializationDeletedSuccessfully" xml:space="preserve">
+    <value>تم حذف التخصص بنجاح</value>
+  </data>
+  <data name="SpecializationDeleteFailed" xml:space="preserve">
+    <value>فشل في حذف التخصص</value>
+  </data>
+  <data name="NoSpecializationsFound" xml:space="preserve">
+    <value>لم يتم العثور على تخصصات</value>
+  </data>
+  <data name="SpecializationsRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرداد التخصصات بنجاح</value>
+  </data>
+  <data name="SpecializationsRetrieveFailed" xml:space="preserve">
+    <value>فشل في استرداد التخصصات</value>
+  </data>
+  <data name="SpecializationRetrievedSuccessfully" xml:space="preserve">
+    <value>تم استرداد التخصص بنجاح</value>
+  </data>
+  <data name="SpecializationRetrieveFailed" xml:space="preserve">
+    <value>فشل في استرداد التخصص</value>
+  </data>
+  <data name="SpecializationIdRequired" xml:space="preserve">
+    <value>معرف التخصص مطلوب</value>
+  </data>
+  <data name="SpecializationNameArRequired" xml:space="preserve">
+    <value>اسم التخصص العربي مطلوب</value>
+  </data>
+  <data name="SpecializationNameArMinLength" xml:space="preserve">
+    <value>يجب أن يكون اسم التخصص العربي على الأقل حرفين</value>
+  </data>
+  <data name="SpecializationNameArMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز اسم التخصص العربي 100 حرف</value>
+  </data>
+  <data name="SpecializationNameEnRequired" xml:space="preserve">
+    <value>اسم التخصص الإنجليزي مطلوب</value>
+  </data>
+  <data name="SpecializationNameEnMinLength" xml:space="preserve">
+    <value>يجب أن يكون اسم التخصص الإنجليزي على الأقل حرفين</value>
+  </data>
+  <data name="SpecializationNameEnMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز اسم التخصص الإنجليزي 100 حرف</value>
+  </data>
 </root> 

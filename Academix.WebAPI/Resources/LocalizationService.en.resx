@@ -324,6 +324,72 @@
   <data name="Failed to update device token" xml:space="preserve">
     <value>Failed to update device token</value>
   </data>
+  <data name="SpecializationArAlreadyExists" xml:space="preserve">
+    <value>Arabic specialization name already exists</value>
+  </data>
+  <data name="SpecializationEnAlreadyExists" xml:space="preserve">
+    <value>English specialization name already exists</value>
+  </data>
+  <data name="SpecializationCreatedSuccessfully" xml:space="preserve">
+    <value>Specialization created successfully</value>
+  </data>
+  <data name="SpecializationCreateFailed" xml:space="preserve">
+    <value>Failed to create specialization</value>
+  </data>
+  <data name="SpecializationNotFound" xml:space="preserve">
+    <value>Specialization not found</value>
+  </data>
+  <data name="SpecializationUpdatedSuccessfully" xml:space="preserve">
+    <value>Specialization updated successfully</value>
+  </data>
+  <data name="SpecializationUpdateFailed" xml:space="preserve">
+    <value>Failed to update specialization</value>
+  </data>
+  <data name="SpecializationHasStudentsCannotDelete" xml:space="preserve">
+    <value>Cannot delete specialization because it has students</value>
+  </data>
+  <data name="SpecializationDeletedSuccessfully" xml:space="preserve">
+    <value>Specialization deleted successfully</value>
+  </data>
+  <data name="SpecializationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete specialization</value>
+  </data>
+  <data name="NoSpecializationsFound" xml:space="preserve">
+    <value>No specializations found</value>
+  </data>
+  <data name="SpecializationsRetrievedSuccessfully" xml:space="preserve">
+    <value>Specializations retrieved successfully</value>
+  </data>
+  <data name="SpecializationsRetrieveFailed" xml:space="preserve">
+    <value>Failed to retrieve specializations</value>
+  </data>
+  <data name="SpecializationRetrievedSuccessfully" xml:space="preserve">
+    <value>Specialization retrieved successfully</value>
+  </data>
+  <data name="SpecializationRetrieveFailed" xml:space="preserve">
+    <value>Failed to retrieve specialization</value>
+  </data>
+  <data name="SpecializationIdRequired" xml:space="preserve">
+    <value>Specialization ID is required</value>
+  </data>
+  <data name="SpecializationNameArRequired" xml:space="preserve">
+    <value>Arabic specialization name is required</value>
+  </data>
+  <data name="SpecializationNameArMinLength" xml:space="preserve">
+    <value>Arabic specialization name must be at least 2 characters</value>
+  </data>
+  <data name="SpecializationNameArMaxLength" xml:space="preserve">
+    <value>Arabic specialization name cannot exceed 100 characters</value>
+  </data>
+  <data name="SpecializationNameEnRequired" xml:space="preserve">
+    <value>English specialization name is required</value>
+  </data>
+  <data name="SpecializationNameEnMinLength" xml:space="preserve">
+    <value>English specialization name must be at least 2 characters</value>
+  </data>
+  <data name="SpecializationNameEnMaxLength" xml:space="preserve">
+    <value>English specialization name cannot exceed 100 characters</value>
+  </data>
   <data name="StudentRegisteredSuccessfullyCheckEmail" xml:space="preserve">
     <value>Student registered successfully. Please check your email to verify your account.</value>
   </data>
