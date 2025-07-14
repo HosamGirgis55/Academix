@@ -59,6 +59,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                     Email = request.Email,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
+                    PhoneNumber = request.PhoneNumber,
                     Gender = (Gender)request.Gender,
                     CountryId = request.CountryId,
                     ProfilePictureUrl = request.ProfilePictureUrl,
