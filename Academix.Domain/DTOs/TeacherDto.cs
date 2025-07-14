@@ -1,4 +1,5 @@
 ﻿using Academix.Domain.Entities;
+using Academix.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace Academix.Domain.DTOs
         public string LastName { get; set; } = string.Empty;
         public string Bio { get; set; } = string.Empty;
         public string ProfilePictureUrl { get; set; } = string.Empty;
-        public double salary { get; set; }
+        public decimal Salary { get; set; }
         public List<TeacherSkillDto> Skills { get; set; } = new();
         public List<TeacherCommentDto> Comments { get; set; } = new();
         public TeacherRatingInfoDto Rating { get; set; } = new();
+
+        public Status stutas { get; set; } = new();
     }
 
     public class TeacherSkillDto

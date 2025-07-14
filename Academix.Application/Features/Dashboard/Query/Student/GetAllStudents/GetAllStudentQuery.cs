@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Teachers.Query.GetAll
+namespace Academix.Application.Features.Dashboard.Query.Student.GetAllStudents
 {
-    public class GetAllTeachersQuery : IRequest<Result<List<TeacherDto>>>
+    public class GetAllStudentQuery : IRequest<Result<List<StudentDto>>>
     {
-       //public string Field {  get; set; }
+
     }
 }

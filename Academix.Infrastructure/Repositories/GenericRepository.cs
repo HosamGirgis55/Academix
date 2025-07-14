@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Academix.Domain.Interfaces;
+﻿using Academix.Domain.Interfaces;
 using Academix.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Academix.Infrastructure.Repositories
 {
@@ -43,5 +44,11 @@ namespace Academix.Infrastructure.Repositories
         {
             _dbSet.Update(entity);
         }
+
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
+        }
+        
     }
 }

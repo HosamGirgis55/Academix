@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Academix.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -43,6 +44,8 @@ namespace Academix.Domain.Entities
         
         // Comments
         public List<Comment> Comments { get; set; } = new();
+
+        public Status Status { get; set; } = Status.panding;
     }
 
     [Owned]

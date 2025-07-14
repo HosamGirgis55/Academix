@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Teachers.Query.GetAll
+namespace Academix.Application.Features.Students.Query.GetById
 {
-    public class GetAllTeachersQuery : IRequest<Result<List<TeacherDto>>>
+    public class GetStudentByIdQuery : IRequest<Result<StudentDto>>
     {
-       //public string Field {  get; set; }
+        public Guid Id { get; set; }
     }
 }

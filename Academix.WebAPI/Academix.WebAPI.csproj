@@ -29,4 +29,8 @@
     <Folder Include="Features\Common\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Features\Teachers\GetTeacherByIdEndpoint.cs" />
+  </ItemGroup>
+
 </Project>
