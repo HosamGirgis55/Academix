@@ -20,11 +20,28 @@ public class GetAllTeachersEndpoint : IEndpoint
         [FromServices] IMediator mediator,
         [FromServices] ResponseHelper response,
         [FromServices] ILocalizationService localizationService,
-        CancellationToken cancellationToken)
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] Guid[]? skillIds = null,
+        [FromQuery] Guid[]? teachingAreaIds = null,
+        [FromQuery] bool orderByRating = true,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            var query = new GetAllTeachersQuery();
+            // Validate pagination parameters
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+            if (pageSize > 100) pageSize = 100; // Limit page size to prevent abuse
+
+            var query = new GetAllTeachersQuery
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                SkillIds = skillIds?.ToList() ?? new List<Guid>(),
+                TeachingAreaIds = teachingAreaIds?.ToList() ?? new List<Guid>(),
+                OrderByRating = orderByRating
+            };
 
             var result = await mediator.Send(query, cancellationToken);
 

@@ -1,32 +1,33 @@
-using Academix.Application.Features.Dashboard.Commands.CreateSpecialization;
+using Academix.Application.Features.Dashboard.Commands.UpdateSkill;
 using Academix.Domain.DTOs;
 using Academix.WebAPI.Common;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Academix.WebAPI.Features.DashBoard;
 
-public class CreateSpecializationEndpoint : IEndpoint
+public class UpdateSkillEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/dashboard/specializations", CreateSpecializationAsync)
-            .WithName("CreateSpecialization")
+        app.MapPut("/api/dashboard/skills/{id:guid}", UpdateSkillAsync)
+            .WithName("UpdateSkill")
             .WithTags("Dashboard")
-           // .RequireAuthorization()
             .Produces(200)
-            .Produces(400);
+            .Produces(400)
+            .Produces(404);
     }
 
-    private static async Task<IResult> CreateSpecializationAsync(
-        IMediator mediator, 
-        [FromBody] CreateSpecializationDto dto)
+    private static async Task<IResult> UpdateSkillAsync(
+        Guid id, 
+        [FromBody] UpdateSkillDto dto, 
+        IMediator mediator)
     {
         try
         {
-            var command = new CreateSpecializationCommand
+            var command = new UpdateSkillCommand
             {
+                Id = id,
                 NameAr = dto.NameAr,
                 NameEn = dto.NameEn
             };
@@ -39,7 +40,7 @@ public class CreateSpecializationEndpoint : IEndpoint
         }
         catch (Exception ex)
         {
-            return Results.BadRequest(new { Success = false, Message = "An error occurred while creating the specialization.", Error = ex.Message });
+            return Results.BadRequest(new { Success = false, Message = "An error occurred while updating the skill.", Error = ex.Message });
         }
     }
 } 
