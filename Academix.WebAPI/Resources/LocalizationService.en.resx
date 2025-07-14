@@ -414,4 +414,131 @@
   <data name="MinimumAgeRequired" xml:space="preserve">
     <value>You must be at least 13 years old to register</value>
   </data>
+  <!-- Teacher Update Profile Messages -->
+  <data name="TeacherProfileUpdatedSuccessfully" xml:space="preserve">
+    <value>Teacher profile updated successfully</value>
+  </data>
+  <data name="TeacherUpdateFailed" xml:space="preserve">
+    <value>Failed to update teacher profile</value>
+  </data>
+  <data name="TeacherNotFound" xml:space="preserve">
+    <value>Teacher not found</value>
+  </data>
+  <data name="InvalidCountry" xml:space="preserve">
+    <value>Invalid country selected</value>
+  </data>
+  <data name="UserIdRequired" xml:space="preserve">
+    <value>User ID is required</value>
+  </data>
+  <data name="BioMaxLength" xml:space="preserve">
+    <value>Bio cannot exceed 1000 characters</value>
+  </data>
+  <data name="SalaryMustBePositive" xml:space="preserve">
+    <value>Salary must be greater than or equal to 0</value>
+  </data>
+  <data name="SalaryMaxValue" xml:space="preserve">
+    <value>Salary cannot exceed 10000</value>
+  </data>
+  <data name="InvalidProfilePictureUrl" xml:space="preserve">
+    <value>Invalid profile picture URL</value>
+  </data>
+  <data name="TooManyAdditionalInterests" xml:space="preserve">
+    <value>Cannot have more than 10 additional interests</value>
+  </data>
+  <data name="EmptyAdditionalInterest" xml:space="preserve">
+    <value>Additional interest cannot be empty</value>
+  </data>
+  <data name="AdditionalInterestLength" xml:space="preserve">
+    <value>Additional interest must be between 1 and 100 characters</value>
+  </data>
+  <data name="TooManyEducations" xml:space="preserve">
+    <value>Cannot have more than 10 education entries</value>
+  </data>
+  <data name="InstitutionRequired" xml:space="preserve">
+    <value>Institution name is required</value>
+  </data>
+  <data name="InstitutionLength" xml:space="preserve">
+    <value>Institution name must be between 2 and 200 characters</value>
+  </data>
+  <data name="DegreeRequired" xml:space="preserve">
+    <value>Degree is required</value>
+  </data>
+  <data name="DegreeLength" xml:space="preserve">
+    <value>Degree must be between 2 and 100 characters</value>
+  </data>
+  <data name="FieldRequired" xml:space="preserve">
+    <value>Field of study is required</value>
+  </data>
+  <data name="FieldLength" xml:space="preserve">
+    <value>Field must be between 2 and 100 characters</value>
+  </data>
+  <data name="StartDateRequired" xml:space="preserve">
+    <value>Start date is required</value>
+  </data>
+  <data name="StartDateInFuture" xml:space="preserve">
+    <value>Start date cannot be in the future</value>
+  </data>
+  <data name="EndDateAfterStartDate" xml:space="preserve">
+    <value>End date must be after start date</value>
+  </data>
+  <data name="DescriptionMaxLength" xml:space="preserve">
+    <value>Description cannot exceed 500 characters</value>
+  </data>
+  <data name="TooManyCertificates" xml:space="preserve">
+    <value>Cannot have more than 20 certificates</value>
+  </data>
+  <data name="CertificateNameRequired" xml:space="preserve">
+    <value>Certificate name is required</value>
+  </data>
+  <data name="CertificateNameLength" xml:space="preserve">
+    <value>Certificate name must be between 2 and 200 characters</value>
+  </data>
+  <data name="IssuedByRequired" xml:space="preserve">
+    <value>Issuing organization is required</value>
+  </data>
+  <data name="IssuedByLength" xml:space="preserve">
+    <value>Issuing organization must be between 2 and 200 characters</value>
+  </data>
+  <data name="IssuedDateRequired" xml:space="preserve">
+    <value>Issue date is required</value>
+  </data>
+  <data name="IssuedDateInFuture" xml:space="preserve">
+    <value>Issue date cannot be in the future</value>
+  </data>
+  <data name="InvalidCertificateUrl" xml:space="preserve">
+    <value>Invalid certificate URL</value>
+  </data>
+  <data name="ExamResultMaxLength" xml:space="preserve">
+    <value>Exam result cannot exceed 100 characters</value>
+  </data>
+  <data name="TooManySkills" xml:space="preserve">
+    <value>Cannot have more than 50 skills</value>
+  </data>
+  <data name="TooManyTeachingAreas" xml:space="preserve">
+    <value>Cannot have more than 20 teaching areas</value>
+  </data>
+  <data name="TooManyAgeGroups" xml:space="preserve">
+    <value>Cannot have more than 10 age groups</value>
+  </data>
+  <data name="TooManyCommunicationMethods" xml:space="preserve">
+    <value>Cannot have more than 10 communication methods</value>
+  </data>
+  <data name="TooManyTeachingLanguages" xml:space="preserve">
+    <value>Cannot have more than 10 teaching languages</value>
+  </data>
+  <data name="DuplicateTeachingAreas" xml:space="preserve">
+    <value>Duplicate teaching areas are not allowed</value>
+  </data>
+  <data name="DuplicateAgeGroups" xml:space="preserve">
+    <value>Duplicate age groups are not allowed</value>
+  </data>
+  <data name="DuplicateCommunicationMethods" xml:space="preserve">
+    <value>Duplicate communication methods are not allowed</value>
+  </data>
+  <data name="DuplicateTeachingLanguages" xml:space="preserve">
+    <value>Duplicate teaching languages are not allowed</value>
+  </data>
+  <data name="DuplicateSkills" xml:space="preserve">
+    <value>Duplicate skills are not allowed</value>
+  </data>
 </root> 

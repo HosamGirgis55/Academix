@@ -59,3 +59,125 @@ Authorization: Bearer {{JWT_TOKEN}}
 ### Delete Specialization
 DELETE {{Academix.WebAPI_HostAddress}}/api/dashboard/specializations/{{SPECIALIZATION_ID}}
 Authorization: Bearer {{JWT_TOKEN}}
+
+### ==== TEACHERS API WITH FILTERS & PAGINATION ====
+
+### Get All Teachers (Basic - First Page)
+GET {{Academix.WebAPI_HostAddress}}/api/teachers
+
+### Get All Teachers with Pagination
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?pageNumber=1&pageSize=5
+
+### Get Teachers Filtered by Skills
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?skillIds={{SKILL_ID_1}}&skillIds={{SKILL_ID_2}}&pageNumber=1&pageSize=10
+
+### Get Teachers with Custom Pagination and No Rating Order
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?pageNumber=2&pageSize=15&orderByRating=false
+
+### Get Teachers with All Parameters
+GET {{Academix.WebAPI_HostAddress}}/api/teachers?pageNumber=1&pageSize=20&skillIds={{SKILL_ID_1}}&skillIds={{SKILL_ID_2}}&orderByRating=true
+
+### ==== TEACHER PROFILE UPDATE ====
+
+### Update Teacher Profile (Complete Example)
+PUT {{Academix.WebAPI_HostAddress}}/api/teachers/profile
+Content-Type: application/json
+Authorization: Bearer {{TEACHER_JWT_TOKEN}}
+
+{
+  "firstName": "Ahmed",
+  "lastName": "Mohamed",
+  "profilePictureUrl": "https://example.com/profile.jpg",
+  "countryId": "{{COUNTRY_ID}}",
+  "gender": "Male",
+  "bio": "Experienced Mathematics teacher with 10+ years in education. Passionate about helping students achieve their goals.",
+  "salary": 150.00,
+  "additionalInterests": [
+    "Technology in Education",
+    "Student Psychology",
+    "Educational Research"
+  ],
+  "educations": [
+    {
+      "institution": "Cairo University",
+      "degree": "Bachelor's Degree",
+      "field": "Mathematics",
+      "startDate": "2010-09-01T00:00:00Z",
+      "endDate": "2014-06-01T00:00:00Z",
+      "description": "Graduated with honors in Pure Mathematics"
+    },
+    {
+      "institution": "Alexandria University",
+      "degree": "Master's Degree", 
+      "field": "Educational Mathematics",
+      "startDate": "2015-02-01T00:00:00Z",
+      "endDate": "2017-12-01T00:00:00Z",
+      "description": "Specialized in curriculum development and teaching methodologies"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Advanced Teaching Methodology",
+      "certificateUrl": "https://example.com/cert1.pdf",
+      "issuedBy": "Educational Institute",
+      "issuedDate": "2018-08-15T00:00:00Z",
+      "examResult": "Excellence"
+    },
+    {
+      "name": "Online Education Certification",
+      "certificateUrl": "https://example.com/cert2.pdf", 
+      "issuedBy": "Digital Learning Academy",
+      "issuedDate": "2020-12-10T00:00:00Z",
+      "examResult": "Certified Professional"
+    }
+  ],
+  "skills": [
+    {
+      "skillId": "{{MATH_SKILL_ID}}"
+    },
+    {
+      "skillId": "{{TEACHING_SKILL_ID}}"
+    },
+    {
+      "skillId": "{{COMMUNICATION_SKILL_ID}}"
+    }
+  ],
+  "teachingAreaIds": [
+    "{{MATHEMATICS_AREA_ID}}",
+    "{{STATISTICS_AREA_ID}}"
+  ],
+  "ageGroupIds": [
+    "{{HIGH_SCHOOL_AGE_ID}}",
+    "{{UNIVERSITY_AGE_ID}}"
+  ],
+  "communicationMethodIds": [
+    "{{VIDEO_CALL_ID}}",
+    "{{IN_PERSON_ID}}"
+  ],
+  "teachingLanguageIds": [
+    "{{ARABIC_LANG_ID}}",
+    "{{ENGLISH_LANG_ID}}"
+  ]
+}
+
+### Update Teacher Profile (Minimal Example)
+PUT {{Academix.WebAPI_HostAddress}}/api/teachers/profile
+Content-Type: application/json
+Authorization: Bearer {{TEACHER_JWT_TOKEN}}
+
+{
+  "firstName": "Sara",
+  "lastName": "Ahmed",
+  "countryId": "{{COUNTRY_ID}}",
+  "gender": "Female",
+  "bio": "Computer Science teacher with passion for coding.",
+  "salary": 120.00,
+  "additionalInterests": [],
+  "educations": [],
+  "certificates": [],
+  "skills": [],
+  "teachingAreaIds": [],
+  "ageGroupIds": [],
+  "communicationMethodIds": [],
+  "teachingLanguageIds": []
+}
