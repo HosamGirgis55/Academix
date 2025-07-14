@@ -10,6 +10,7 @@ namespace Academix.Application.Features.Dashboard.Commands.AddSkills
 {
     public class AddSkillsCommand : IRequest<Result>
     {
-        public string Name { get; set; }
+        public string NameAr { get; set; }
+
     }
 }
