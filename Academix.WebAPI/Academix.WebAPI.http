@@ -4,3 +4,24 @@ GET {{Academix.WebAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+### Login with FCM Token for Firebase Notifications
+POST {{Academix.WebAPI_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "SecurePassword123!",
+  "fcmToken": "dGhpcyBpcyBhIGZha2UgRkNNIHRva2VuIGV4YW1wbGU6Y0hWblV6QlRWRE5UZEdKYVkzWnNaWEk"
+}
+
+### Login without FCM Token (optional)
+POST {{Academix.WebAPI_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "SecurePassword123!"
+}

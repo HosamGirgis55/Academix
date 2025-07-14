@@ -41,6 +41,17 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<Authenti
             return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("InvalidCredentials"));
         }
 
+        // Update FCM token if provided
+        if (!string.IsNullOrWhiteSpace(request.FcmToken))
+        {
+            user.DeviceToken = request.FcmToken;
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("Failed to update device token"));
+            }
+        }
+
         var authResult = await _userManager.GenerateTokenAsync(user, _jwtSettings);
         
         return Result<AuthenticationResult>.Success(authResult, _localizationService.GetLocalizedString("LoginSuccessful"));

@@ -30,7 +30,8 @@ public class LoginEndpoint : IEndpoint
             var command = new LoginCommand
             {
                 Email = loginDto.Email,
-                Password = loginDto.Password
+                Password = loginDto.Password,
+                FcmToken = loginDto.FcmToken
             };
 
             var result = await mediator.Send(command);

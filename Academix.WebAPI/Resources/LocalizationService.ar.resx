@@ -252,4 +252,7 @@
   <data name="MinimumAgeRequired" xml:space="preserve">
     <value>يجب أن تكون عمرك 13 سنة على الأقل للتسجيل</value>
   </data>
+  <data name="Failed to update device token" xml:space="preserve">
+    <value>فشل في تحديث رمز الجهاز</value>
+  </data>
 </root> 
