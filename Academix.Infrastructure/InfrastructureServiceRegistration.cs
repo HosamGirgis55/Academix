@@ -17,6 +17,9 @@ namespace Academix.Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+            // HTTP Context Accessor
+            services.AddHttpContextAccessor();
+
             // HttpClient for PayPal
             services.AddHttpClient<IPayPalService, PayPalService>();
 

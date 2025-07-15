@@ -1,4 +1,5 @@
 using Academix.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -11,15 +12,17 @@ namespace Academix.Infrastructure.Services
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly ILogger<PayPalService> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _clientId;
         private readonly string _clientSecret;
         private readonly string _baseUrl;
 
-        public PayPalService(HttpClient httpClient, IConfiguration configuration, ILogger<PayPalService> logger)
+        public PayPalService(HttpClient httpClient, IConfiguration configuration, ILogger<PayPalService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _configuration = configuration;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
             
             _clientId = _configuration["PayPal:ClientId"] ?? "";
             _clientSecret = _configuration["PayPal:ClientSecret"] ?? "";
@@ -40,6 +43,9 @@ namespace Academix.Infrastructure.Services
                     };
                 }
 
+                // Build dynamic URLs based on current request context
+                var (returnUrl, cancelUrl) = GetDynamicUrls();
+
                 var orderRequest = new
                 {
                     intent = "CAPTURE",
@@ -57,8 +63,8 @@ namespace Academix.Infrastructure.Services
                     },
                     application_context = new
                     {
-                        return_url = _configuration["PayPal:ReturnUrl"] ?? "http://localhost:5219/payment/success",
-                        cancel_url = _configuration["PayPal:CancelUrl"] ?? "http://localhost:5219/payment/cancel"
+                        return_url = returnUrl,
+                        cancel_url = cancelUrl
                     }
                 };
 
@@ -89,7 +95,8 @@ namespace Academix.Infrastructure.Services
                         }
                     }
 
-                    _logger.LogInformation("PayPal order created successfully. OrderId: {OrderId}", orderId);
+                    _logger.LogInformation("PayPal order created successfully. OrderId: {OrderId}, ReturnUrl: {ReturnUrl}, CancelUrl: {CancelUrl}", 
+                        orderId, returnUrl, cancelUrl);
 
                     return new PayPalCreateOrderResult
                     {
@@ -116,7 +123,7 @@ namespace Academix.Infrastructure.Services
                 return new PayPalCreateOrderResult
                 {
                     IsSuccess = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = $"PayPal service error: {ex.Message}"
                 };
             }
         }
@@ -290,6 +297,36 @@ namespace Academix.Infrastructure.Services
                 _logger.LogError(ex, "Error getting PayPal access token");
                 return null;
             }
+        }
+
+        private (string returnUrl, string cancelUrl) GetDynamicUrls()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            
+            if (httpContext == null)
+            {
+                // Fallback to configuration values if no HTTP context
+                var fallbackReturnUrl = _configuration["PayPal:ReturnUrl"] ?? "http://localhost:5219/payment/success";
+                var fallbackCancelUrl = _configuration["PayPal:CancelUrl"] ?? "http://localhost:5219/payment/cancel";
+                
+                _logger.LogWarning("HTTP context not available, using fallback URLs: {ReturnUrl}, {CancelUrl}", 
+                    fallbackReturnUrl, fallbackCancelUrl);
+                
+                return (fallbackReturnUrl, fallbackCancelUrl);
+            }
+
+            var request = httpContext.Request;
+            var scheme = request.Scheme; // http or https
+            var host = request.Host.Value; // localhost:5219 or your domain
+            
+            var baseUrl = $"{scheme}://{host}";
+            var returnUrl = $"{baseUrl}/payment/success";
+            var cancelUrl = $"{baseUrl}/payment/cancel";
+
+            _logger.LogInformation("Generated dynamic PayPal URLs: Return={ReturnUrl}, Cancel={CancelUrl}", 
+                returnUrl, cancelUrl);
+
+            return (returnUrl, cancelUrl);
         }
     }
 } 
