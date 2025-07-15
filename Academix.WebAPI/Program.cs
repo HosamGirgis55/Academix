@@ -195,4 +195,7 @@ app.UseAuthorization();
 // Map endpoints
 app.MapEndpoints();
 
+// Map controllers
+app.MapControllers();
+
 app.Run();
