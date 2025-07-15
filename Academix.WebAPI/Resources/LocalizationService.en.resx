@@ -547,4 +547,28 @@
   <data name="AdminRegistrationFailed" xml:space="preserve">
     <value>Admin registration failed</value>
   </data>
+  <data name="InvalidPaymentAmount" xml:space="preserve">
+    <value>Invalid payment amount</value>
+  </data>
+  <data name="PayPalOrderCreationFailed" xml:space="preserve">
+    <value>PayPal order creation failed</value>
+  </data>
+  <data name="PaymentCreationFailed" xml:space="preserve">
+    <value>Payment creation failed</value>
+  </data>
+  <data name="PaymentNotFound" xml:space="preserve">
+    <value>Payment not found</value>
+  </data>
+  <data name="PaymentInvalidStatus" xml:space="preserve">
+    <value>Payment is not in valid status</value>
+  </data>
+  <data name="PaymentCaptureFailed" xml:space="preserve">
+    <value>Payment capture failed</value>
+  </data>
+  <data name="InvalidPointsAmount" xml:space="preserve">
+    <value>Invalid points amount. Points must be greater than 0</value>
+  </data>
+  <data name="InvalidPointPrice" xml:space="preserve">
+    <value>Invalid point price. Price must be greater than 0</value>
+  </data>
 </root> 

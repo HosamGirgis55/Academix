@@ -11,10 +11,16 @@ namespace Academix.Infrastructure.Repositories
         {
         }
 
-         
-        
-      
+        public async Task<Student?> GetStudentByUserIdAsync(string userId)
+        {
+            return await _context.Students
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+        }
 
-         
+        public async Task UpdateAsync(Student student)
+        {
+            _context.Students.Update(student);
+            await _context.SaveChangesAsync();
+        }
     }
 } 

@@ -44,6 +44,9 @@ namespace Academix.Infrastructure.Data
         // Session Management
         public DbSet<SessionRequest> SessionRequests { get; set; } = null!;
         public DbSet<Session> Sessions { get; set; } = null!;
+        
+        // Payment Management
+        public DbSet<Payment> Payments { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

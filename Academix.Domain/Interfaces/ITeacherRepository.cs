@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Academix.Domain.Interfaces
 {
-    internal interface ITeacherRepository : IGenericRepository<Teacher>
+    public interface ITeacherRepository : IGenericRepository<Teacher>
     {
         Task<Teacher?> GetByEmailAsync(string email);
+        Task<Teacher?> GetTeacherByUserIdAsync(string userId);
+        Task UpdateAsync(Teacher teacher);
     }
 }

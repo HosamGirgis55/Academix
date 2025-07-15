@@ -442,4 +442,28 @@
   <data name="AdminRegistrationFailed" xml:space="preserve">
     <value>فشل تسجيل المدير</value>
   </data>
+  <data name="InvalidPaymentAmount" xml:space="preserve">
+    <value>مبلغ الدفع غير صحيح</value>
+  </data>
+  <data name="PayPalOrderCreationFailed" xml:space="preserve">
+    <value>فشل إنشاء أمر PayPal</value>
+  </data>
+  <data name="PaymentCreationFailed" xml:space="preserve">
+    <value>فشل إنشاء الدفع</value>
+  </data>
+  <data name="PaymentNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الدفع</value>
+  </data>
+  <data name="PaymentInvalidStatus" xml:space="preserve">
+    <value>حالة الدفع غير صحيحة</value>
+  </data>
+  <data name="PaymentCaptureFailed" xml:space="preserve">
+    <value>فشل تأكيد الدفع</value>
+  </data>
+  <data name="InvalidPointsAmount" xml:space="preserve">
+    <value>كمية النقاط غير صحيحة. يجب أن تكون النقاط أكبر من 0</value>
+  </data>
+  <data name="InvalidPointPrice" xml:space="preserve">
+    <value>سعر النقطة غير صحيح. يجب أن يكون السعر أكبر من 0</value>
+  </data>
 </root> 
