@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Academix.Helpers;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +43,41 @@ builder.Services.AddCors(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo 
+    { 
+        Title = "Academix API", 
+        Version = "v1",
+        Description = "API for Academix platform"
+    });
+
+    // Add JWT Authentication to Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter your JWT token (without 'Bearer' prefix)"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 // Add Infrastructure Services
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -79,6 +117,30 @@ if (string.IsNullOrEmpty(jwtConfig.Key))
 {
     throw new InvalidOperationException("JWT Key is not configured in appsettings.json. Please ensure JwtSettings.Key has a value.");
 }
+
+// Add JWT Bearer Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtConfig.Issuer,
+        ValidAudience = jwtConfig.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+// Add Authorization
+builder.Services.AddAuthorization();
 
 // Add Email Configuration
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
@@ -126,6 +188,8 @@ app.UseRequestLocalization();
 app.UseMiddleware<LocalizationMiddleware>();
 app.UseMiddleware<TimeZoneMiddleware>();
 
+// Authentication must come before Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Map endpoints
