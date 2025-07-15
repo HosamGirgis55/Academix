@@ -43,9 +43,19 @@ namespace Academix.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Payment>> GetPendingPaymentsAsync()
+        {
+            return await _context.Payments
+                .Include(p => p.User)
+                .Where(p => p.Status == "Pending" || p.Status == "Created")
+                .OrderBy(p => p.CreatedAt)
+                .ToListAsync();
+        }
+
         public async Task<Payment> UpdateAsync(Payment payment)
         {
             _context.Payments.Update(payment);
+            await _context.SaveChangesAsync(); // Auto-save changes
             return payment;
         }
 

@@ -25,5 +25,8 @@ namespace Academix.Domain.Entities
         
         // Firebase Notification
         public string? DeviceToken { get; set; }
+        
+        // Points system for all users
+        public int Points { get; set; } = 0;
     }
 }

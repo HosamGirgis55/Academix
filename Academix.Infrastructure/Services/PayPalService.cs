@@ -57,8 +57,8 @@ namespace Academix.Infrastructure.Services
                     },
                     application_context = new
                     {
-                        return_url = _configuration["PayPal:ReturnUrl"] ?? "http://localhost:3000/payment/success",
-                        cancel_url = _configuration["PayPal:CancelUrl"] ?? "http://localhost:3000/payment/cancel"
+                        return_url = _configuration["PayPal:ReturnUrl"] ?? "http://localhost:5219/payment/success",
+                        cancel_url = _configuration["PayPal:CancelUrl"] ?? "http://localhost:5219/payment/cancel"
                     }
                 };
 

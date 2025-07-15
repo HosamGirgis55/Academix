@@ -25,13 +25,13 @@ public class CreatePaymentOrderEndpoint : IEndpoint
     }
 
     private static async Task<IResult> CreatePaymentOrderAsync(
-        HttpContext httpContext,
-        IMediator mediator,
-        [FromBody] CreatePaymentOrderRequest request)
+        [FromBody] CreatePaymentOrderRequest request,
+        [FromServices] IMediator mediator,
+        [FromServices] ResponseHelper response,
+        HttpContext httpContext)
     {
         try
         {
-            // Get user ID from JWT token
             var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
@@ -40,12 +40,27 @@ public class CreatePaymentOrderEndpoint : IEndpoint
 
             var culture = httpContext.Request.Headers["Accept-Language"].FirstOrDefault() ?? "en";
 
+            // Ensure currency is always USD (fix "USA" to "USD")
+            var currency = "USD";
+            if (!string.IsNullOrEmpty(request.Currency))
+            {
+                // Convert common incorrect currency codes to USD
+                currency = request.Currency.ToUpperInvariant() switch
+                {
+                    "USA" => "USD",
+                    "US" => "USD",
+                    "DOLLAR" => "USD",
+                    "DOLLARS" => "USD",
+                    _ => request.Currency.ToUpperInvariant() == "USD" ? "USD" : "USD" // Default to USD for any invalid currency
+                };
+            }
+
             var command = new CreatePaymentOrderCommand
             {
                 UserId = userId,
                 PointsAmount = request.PointsAmount,
                 PointPrice = request.PointPrice,
-                Currency = request.Currency ?? "USD",
+                Currency = currency, // Always use validated USD currency
                 Description = request.Description,
                 Reference = request.Reference
             };
@@ -54,24 +69,18 @@ public class CreatePaymentOrderEndpoint : IEndpoint
 
             if (result.IsSuccess)
             {
-                var successMessage = culture == "ar" ? "تم إنشاء أمر الدفع بنجاح" : "Payment order created successfully";
-                return Results.Ok(new ResponseHelper()
-                    .Success(result.Value, culture)
-                    .WithMassage(successMessage));
+                return Results.Ok(response.Success(result.Value, culture));
             }
-            else
-            {
-                return Results.Ok(new ResponseHelper()
-                    .BadRequest(result.Error, culture));
-            }
+
+            return Results.BadRequest(response.BadRequest(result.Error ?? "Failed to create payment order", culture));
         }
         catch (Exception ex)
         {
-            var culture = httpContext.Request.Headers["Accept-Language"].FirstOrDefault() ?? "en";
-            var errorMessage = culture == "ar" ? "حدث خطأ غير متوقع أثناء إنشاء أمر الدفع" : "An unexpected error occurred while creating payment order";
-            
-            return Results.Ok(new ResponseHelper()
-                .ServerError($"{errorMessage}: {ex.Message}", culture));
+            return Results.Problem(
+                detail: ex.Message,
+                statusCode: 500,
+                title: "Internal Server Error"
+            );
         }
     }
 }

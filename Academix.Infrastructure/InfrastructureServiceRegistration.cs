@@ -28,6 +28,9 @@ namespace Academix.Infrastructure
             services.AddScoped<IPointsService, PointsService>();
             services.AddScoped<SeedDataService>();
 
+            // Background Services
+            services.AddHostedService<PaymentStatusCheckService>();
+
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

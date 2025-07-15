@@ -1,5 +1,7 @@
 using Academix.Application.Common.Interfaces;
+using Academix.Domain.Entities;
 using Academix.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace Academix.Infrastructure.Services
@@ -8,15 +10,18 @@ namespace Academix.Infrastructure.Services
     {
         private readonly IStudentRepository _studentRepository;
         private readonly ITeacherRepository _teacherRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<PointsService> _logger;
 
         public PointsService(
             IStudentRepository studentRepository,
             ITeacherRepository teacherRepository,
+            UserManager<ApplicationUser> userManager,
             ILogger<PointsService> logger)
         {
             _studentRepository = studentRepository;
             _teacherRepository = teacherRepository;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -44,7 +49,25 @@ namespace Academix.Infrastructure.Services
                     return true;
                 }
 
-                _logger.LogWarning($"User {userId} not found as student or teacher");
+                // If not student or teacher, add points to the base ApplicationUser
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    user.Points += points;
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation($"Added {points} points to user {userId}. New balance: {user.Points}");
+                        return true;
+                    }
+                    else
+                    {
+                        _logger.LogError($"Failed to update user {userId} points. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                        return false;
+                    }
+                }
+
+                _logger.LogWarning($"User {userId} not found in any user table");
                 return false;
             }
             catch (Exception ex)
@@ -72,7 +95,14 @@ namespace Academix.Infrastructure.Services
                     return teacher.Points;
                 }
 
-                _logger.LogWarning($"User {userId} not found as student or teacher");
+                // If not student or teacher, get points from the base ApplicationUser
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    return user.Points;
+                }
+
+                _logger.LogWarning($"User {userId} not found in any user table");
                 return 0;
             }
             catch (Exception ex)
@@ -97,8 +127,11 @@ namespace Academix.Infrastructure.Services
                         _logger.LogInformation($"Deducted {points} points from student {userId}. New balance: {student.Points}");
                         return true;
                     }
-                    _logger.LogWarning($"Student {userId} has insufficient points. Required: {points}, Available: {student.Points}");
-                    return false;
+                    else
+                    {
+                        _logger.LogWarning($"Student {userId} has insufficient points. Required: {points}, Available: {student.Points}");
+                        return false;
+                    }
                 }
 
                 // If not a student, check if user is a teacher
@@ -112,11 +145,40 @@ namespace Academix.Infrastructure.Services
                         _logger.LogInformation($"Deducted {points} points from teacher {userId}. New balance: {teacher.Points}");
                         return true;
                     }
-                    _logger.LogWarning($"Teacher {userId} has insufficient points. Required: {points}, Available: {teacher.Points}");
-                    return false;
+                    else
+                    {
+                        _logger.LogWarning($"Teacher {userId} has insufficient points. Required: {points}, Available: {teacher.Points}");
+                        return false;
+                    }
                 }
 
-                _logger.LogWarning($"User {userId} not found as student or teacher");
+                // If not student or teacher, deduct points from the base ApplicationUser
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    if (user.Points >= points)
+                    {
+                        user.Points -= points;
+                        var result = await _userManager.UpdateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            _logger.LogInformation($"Deducted {points} points from user {userId}. New balance: {user.Points}");
+                            return true;
+                        }
+                        else
+                        {
+                            _logger.LogError($"Failed to update user {userId} points. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"User {userId} has insufficient points. Required: {points}, Available: {user.Points}");
+                        return false;
+                    }
+                }
+
+                _logger.LogWarning($"User {userId} not found in any user table");
                 return false;
             }
             catch (Exception ex)
@@ -128,8 +190,16 @@ namespace Academix.Infrastructure.Services
 
         public async Task<bool> HasSufficientPointsAsync(string userId, int requiredPoints)
         {
-            var currentPoints = await GetUserPointsAsync(userId);
-            return currentPoints >= requiredPoints;
+            try
+            {
+                var userPoints = await GetUserPointsAsync(userId);
+                return userPoints >= requiredPoints;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error checking points for user {userId}");
+                return false;
+            }
         }
     }
 } 

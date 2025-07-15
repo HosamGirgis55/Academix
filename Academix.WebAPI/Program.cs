@@ -82,6 +82,9 @@ builder.Services.AddSwaggerGen(c =>
 // Add Infrastructure Services
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+// Add ResponseHelper
+builder.Services.AddScoped<ResponseHelper>();
+
 // Add Memory Cache
 builder.Services.AddMemoryCache();
 
