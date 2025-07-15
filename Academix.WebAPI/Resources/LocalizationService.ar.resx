@@ -436,4 +436,10 @@
   <data name="DuplicateSkills" xml:space="preserve">
     <value>المهارات المكررة غير مسموحة</value>
   </data>
+  <data name="AdminRegistrationSuccessful" xml:space="preserve">
+    <value>تم تسجيل المدير بنجاح</value>
+  </data>
+  <data name="AdminRegistrationFailed" xml:space="preserve">
+    <value>فشل تسجيل المدير</value>
+  </data>
 </root> 

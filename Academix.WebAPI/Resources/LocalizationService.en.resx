@@ -541,4 +541,10 @@
   <data name="DuplicateSkills" xml:space="preserve">
     <value>Duplicate skills are not allowed</value>
   </data>
+  <data name="AdminRegistrationSuccessful" xml:space="preserve">
+    <value>Admin registered successfully</value>
+  </data>
+  <data name="AdminRegistrationFailed" xml:space="preserve">
+    <value>Admin registration failed</value>
+  </data>
 </root> 
