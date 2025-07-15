@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Academix.Domain\Academix.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Dashboard\Interview\Queries\" />
+  </ItemGroup>
+
 </Project>

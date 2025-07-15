@@ -53,6 +53,8 @@ namespace Academix.Domain.Entities
         public List<Session> Sessions { get; set; } = new();
 
         public Status Status { get; set; } = Status.panding;
+
+        public ICollection<Interview> Interviews { get; set; }
     }
 
     [Owned]
