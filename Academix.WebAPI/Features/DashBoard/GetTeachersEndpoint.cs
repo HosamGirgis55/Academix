@@ -15,7 +15,7 @@ namespace Academix.WebAPI.Features.DashBoard
         {
             app.MapGet("/api/GetTeachers", HandleAsync)
                 .WithName("GetTeachers")
-                .WithTags("DashBoard")
+                .WithTags("Dashboard")
                 .Produces<ResponseHelper>(200)
                 .Produces<ResponseHelper>(400);
         }

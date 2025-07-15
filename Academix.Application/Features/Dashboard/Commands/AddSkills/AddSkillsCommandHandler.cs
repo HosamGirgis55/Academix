@@ -28,7 +28,7 @@ namespace Academix.Application.Features.Dashboard.Commands.AddSkills
             {
                 // Check if skill already exists (case-insensitive)
                 var exists = await _unitOfWork.Skills
-                    .AnyAsync(s => s.NameAr.ToLower() == request.NameAr.ToLower());
+                    .AnyAsync(s => s.NameEn.ToLower() == request.NameEn.ToLower());
 
                 if (exists)
                 {
@@ -39,8 +39,8 @@ namespace Academix.Application.Features.Dashboard.Commands.AddSkills
                 // Create and save new skill
                 var skill = new Skill
                 {
-                    NameAr = request.NameAr,
-                    NameEn = string.Empty
+                    NameAr = string.Empty,
+                    NameEn = request.NameEn
                 };
 
                 await _unitOfWork.Skills.AddAsync(skill);

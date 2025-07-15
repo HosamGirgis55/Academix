@@ -16,7 +16,7 @@ namespace Academix.WebAPI.Features.DashBoard
         {
             app.MapPost("/api/skills/add", HandleAsync)
                 .WithName("AddSkilles")
-                .WithTags("DashBoard")
+                .WithTags("Dashboard")
                 .Accepts<AddSkillsCommand>("application/json")
                 .Produces<ResponseHelper>(200)
                 .Produces<ResponseHelper>(400);

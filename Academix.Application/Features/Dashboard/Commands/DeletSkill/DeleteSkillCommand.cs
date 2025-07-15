@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Dashboard.Commands.AddSkills
+namespace Academix.Application.Features.Dashboard.Commands.DeletSkill
 {
-    public class AddSkillsCommand : IRequest<Result>
+    public class DeleteSkillCommand : IRequest<Result>
     {
-        public string NameEn { get; set; }
+        public Guid Id { get; set; }
 
     }
 }
