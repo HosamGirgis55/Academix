@@ -27,20 +27,30 @@ namespace Academix.Application.Features.Dashboard.Commands.AddSkills
             try
             {
                 // Check if skill already exists (case-insensitive)
-                var exists = await _unitOfWork.Skills
+                var existsAr = await _unitOfWork.Skills
+                    .AnyAsync(s => s.NameAr.ToLower() == request.NameAr.ToLower());
+
+                var existsEn = await _unitOfWork.Skills
                     .AnyAsync(s => s.NameEn.ToLower() == request.NameEn.ToLower());
 
-                if (exists)
+                if (existsAr)
                 {
-                    var message = _localizationService.GetLocalizedString("SkillAlreadyExists");
+                    var message = _localizationService.GetLocalizedString("SkillArAlreadyExists");
+                    return Result.Failure(message);
+                }
+
+                if (existsEn)
+                {
+                    var message = _localizationService.GetLocalizedString("SkillEnAlreadyExists");
                     return Result.Failure(message);
                 }
 
                 // Create and save new skill
                 var skill = new Skill
                 {
-                    NameAr = string.Empty,
-                    NameEn = request.NameEn
+                    NameAr = request.NameAr.Trim(),
+                    NameEn = request.NameEn.Trim(),
+                    CreatedAt = DateTime.UtcNow
                 };
 
                 await _unitOfWork.Skills.AddAsync(skill);
@@ -53,7 +63,6 @@ namespace Academix.Application.Features.Dashboard.Commands.AddSkills
             {
                 var errorMessage = _localizationService.GetLocalizedString("SkillAddFailed");
                 return Result.Failure($"{errorMessage}: {ex.InnerException?.Message ?? ex.Message}");
-
             }
         }
     }

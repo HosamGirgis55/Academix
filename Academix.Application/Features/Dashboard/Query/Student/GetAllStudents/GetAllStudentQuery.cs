@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Academix.Application.Features.Dashboard.Query.Student.GetAllStudents
 {
-    public class GetAllStudentQuery : IRequest<Result<List<StudentDto>>>
+    public class GetAllStudentQuery : IRequest<Result<StudentsPagedResult>>
     {
-
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 }

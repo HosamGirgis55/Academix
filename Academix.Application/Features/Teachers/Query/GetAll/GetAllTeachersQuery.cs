@@ -1,16 +1,33 @@
 ﻿using Academix.Application.Common.Models;
 using Academix.Domain.DTOs;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Academix.Application.Features.Teachers.Query.GetAll
 {
-    public class GetAllTeachersQuery : IRequest<Result<List<TeacherDto>>>
+    public class GetAllTeachersQuery : IRequest<Result<TeachersPagedResult>>
     {
-       //public string Field {  get; set; }
+        // Pagination
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
+        
+        // Skills filtering (optional)
+        public List<Guid> SkillIds { get; set; } = new();
+        
+        // Specialist/Teaching Area filtering (optional)
+        public List<Guid> TeachingAreaIds { get; set; } = new();
+        
+        // Ordering
+        public bool OrderByRating { get; set; } = true; // Default to order by rating
+    }
+    
+    public class TeachersPagedResult
+    {
+        public List<TeacherDto> Teachers { get; set; } = new();
+        public int TotalCount { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public int TotalPages { get; set; }
+        public bool HasPreviousPage { get; set; }
+        public bool HasNextPage { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
+using Academix.Application.Common.Extensions;
 using Academix.Domain.Entities;
 using Academix.Domain.Enums;
 using Academix.Domain.Interfaces;
@@ -11,29 +12,33 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Academix.Application.Features.Students.Commands.RegisterStudent
 {
-    public class RegisterStudentCommandHandler : IRequestHandler<RegisterStudentCommand, Result>
+    public class RegisterStudentCommandHandler : IRequestHandler<RegisterStudentCommand, Result<AuthenticationResult>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILocalizationService _localizationService;
         private readonly IEmailService _emailService;
+        private readonly IOptions<JwtSettings> _jwtSettings;
 
         public RegisterStudentCommandHandler(
             UserManager<ApplicationUser> userManager, 
             IUnitOfWork unitOfWork,
             ILocalizationService localizationService,
-            IEmailService emailService)
+            IEmailService emailService,
+            IOptions<JwtSettings> jwtSettings)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _localizationService = localizationService;
             _emailService = emailService;
+            _jwtSettings = jwtSettings;
         }
 
-        public async Task<Result> Handle(RegisterStudentCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AuthenticationResult>> Handle(RegisterStudentCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -43,25 +48,25 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 var residenceCountry = await _unitOfWork.Repository<Country>().GetByIdAsync(request.ResidenceCountryId);
                 if (residenceCountry == null)
                 {
-                    return Result.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
+                    return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
                 }
 
                 var level = await _unitOfWork.Repository<Level>().GetByIdAsync(request.LevelId);
                 if (level == null)
                 {
-                    return Result.Failure(_localizationService.GetLocalizedString("LevelNotFound"));
+                    return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("LevelNotFound"));
                 }
 
                 var graduationStatus = await _unitOfWork.Repository<GraduationStatus>().GetByIdAsync(request.GraduationStatusId);
                 if (graduationStatus == null)
                 {
-                    return Result.Failure(_localizationService.GetLocalizedString("GraduationStatusNotFound"));
+                    return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("GraduationStatusNotFound"));
                 }
 
                 var specialist = await _unitOfWork.Repository<Specialization>().GetByIdAsync(request.SpecialistId);
                 if (specialist == null)
                 {
-                    return Result.Failure(_localizationService.GetLocalizedString("SpecializationNotFound"));
+                    return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("SpecializationNotFound"));
                 }
 
                 // Validate experiences
@@ -73,7 +78,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
 
                     if (existingExperiences.Count() != experienceIds.Count)
                     {
-                        return Result.Failure(_localizationService.GetLocalizedString("InvalidExperience"));
+                        return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("InvalidExperience"));
                     }
                 }
 
@@ -86,7 +91,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
 
                     if (existingSkills.Count() != skillIds.Count)
                     {
-                        return Result.Failure(_localizationService.GetLocalizedString("InvalidSkill"));
+                        return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("InvalidSkill"));
                     }
                 }
 
@@ -99,7 +104,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
 
                     if (existingInterests.Count() != learningInterestIds.Count)
                     {
-                        return Result.Failure(_localizationService.GetLocalizedString("InvalidLearningInterest"));
+                        return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("InvalidLearningInterest"));
                     }
                 }
 
@@ -107,7 +112,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 var existingUser = await _userManager.FindByEmailAsync(request.Email);
                 if (existingUser != null)
                 {
-                    return Result.Failure(_localizationService.GetLocalizedString("UserAlreadyExists"));
+                    return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("UserAlreadyExists"));
                 }
 
                 // Create ApplicationUser
@@ -128,7 +133,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 if (!result.Succeeded)
                 {
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                    return Result.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
+                    return Result<AuthenticationResult>.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
                 }
 
                 // Add to Student role
@@ -201,11 +206,14 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
                 var otp = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var emailSent = await _emailService.SendRegistrationConfirmationAsync(user.Email!, otp);
 
-                return Result.Success();
+                // Generate JWT tokens for automatic login
+                var authResult = await _userManager.GenerateTokenAsync(user, _jwtSettings);
+
+                return Result<AuthenticationResult>.Success(authResult, _localizationService.GetLocalizedString("StudentRegistrationSuccessful"));
             }
             catch (Exception ex)
             {
-                return Result.Failure($"{_localizationService.GetLocalizedString("RegistrationFailed")}: {ex.Message}");
+                return Result<AuthenticationResult>.Failure($"{_localizationService.GetLocalizedString("RegistrationFailed")}: {ex.Message}");
             }
         }
     }

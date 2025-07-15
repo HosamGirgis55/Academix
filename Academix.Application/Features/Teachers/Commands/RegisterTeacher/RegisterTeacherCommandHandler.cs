@@ -4,35 +4,40 @@ using System.Threading;
 using System.Threading.Tasks;
 using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
+using Academix.Application.Common.Extensions;
 using Academix.Domain.Entities;
 using Academix.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using Academix.Domain.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
 {
-    public class RegisterTeacherCommandHandler : IRequestHandler<RegisterTeacherCommand, Result>
+    public class RegisterTeacherCommandHandler : IRequestHandler<RegisterTeacherCommand, Result<AuthenticationResult>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILocalizationService _localizationService;
         private readonly IEmailService _emailService;
+        private readonly IOptions<JwtSettings> _jwtSettings;
 
         public RegisterTeacherCommandHandler(
             UserManager<ApplicationUser> userManager,
             IUnitOfWork unitOfWork,
             ILocalizationService localizationService,
-            IEmailService emailService)
+            IEmailService emailService,
+            IOptions<JwtSettings> jwtSettings)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _localizationService = localizationService;
             _emailService = emailService;
+            _jwtSettings = jwtSettings;
         }
 
-        public async Task<Result> Handle(RegisterTeacherCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AuthenticationResult>> Handle(RegisterTeacherCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -40,7 +45,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                 var existingUser = await _userManager.FindByEmailAsync(request.Email);
                 if (existingUser != null)
                 {
-                    return Result.Failure(_localizationService.GetLocalizedString("UserAlreadyExists"));
+                    return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("UserAlreadyExists"));
                 }
 
                 // Check if country exists
@@ -49,7 +54,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
 
                 if (countryExists == null)
                 {
-                    return Result.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
+                    return Result<AuthenticationResult>.Failure(_localizationService.GetLocalizedString("CountryNotFound"));
                 }
 
                 // Create ApplicationUser
@@ -68,7 +73,7 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                 if (!result.Succeeded)
                 {
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                    return Result.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
+                    return Result<AuthenticationResult>.Failure($"{_localizationService.GetLocalizedString("UserCreationFailed")}: {errors}");
                 }
 
                 // Add to Teacher role
@@ -179,11 +184,14 @@ namespace Academix.Application.Features.Teachers.Commands.RegisterTeacher
                 var otp = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var emailSent = await _emailService.SendRegistrationConfirmationAsync(user.Email!, otp);
 
-                return Result.Success();
+                // Generate JWT tokens for automatic login
+                var authResult = await _userManager.GenerateTokenAsync(user, _jwtSettings);
+
+                return Result<AuthenticationResult>.Success(authResult, _localizationService.GetLocalizedString("TeacherRegistrationSuccessful"));
             }
             catch (Exception ex)
             {
-                return Result.Failure($"{_localizationService.GetLocalizedString("TeacherRegistrationFailed")}: {ex.Message}");
+                return Result<AuthenticationResult>.Failure($"{_localizationService.GetLocalizedString("TeacherRegistrationFailed")}: {ex.Message}");
             }
         }
     }

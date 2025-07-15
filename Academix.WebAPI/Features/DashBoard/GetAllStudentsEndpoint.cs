@@ -24,11 +24,22 @@ namespace Academix.WebAPI.Features.DashBoard
             [FromServices] IMediator mediator,
             [FromServices] ResponseHelper response,
             [FromServices] ILocalizationService localizationService,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                var query = new GetAllStudentQuery();
+                // Validate pagination parameters
+                if (pageNumber < 1) pageNumber = 1;
+                if (pageSize < 1) pageSize = 10;
+                if (pageSize > 100) pageSize = 100;
+
+                var query = new GetAllStudentQuery
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
 
                 var result = await mediator.Send(query, cancellationToken);
 

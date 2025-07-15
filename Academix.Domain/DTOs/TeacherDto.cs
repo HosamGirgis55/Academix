@@ -17,6 +17,7 @@ namespace Academix.Domain.DTOs
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public decimal Salary { get; set; }
         public List<TeacherSkillDto> Skills { get; set; } = new();
+        public List<TeacherSpecialistDto> Specialists { get; set; } = new();
         public List<TeacherCommentDto> Comments { get; set; } = new();
         public TeacherRatingInfoDto Rating { get; set; } = new();
 
@@ -27,7 +28,15 @@ namespace Academix.Domain.DTOs
     {
         public Guid SkillId { get; set; }
         public string SkillName { get; set; } = string.Empty;
-        public int Level { get; set; }
+        
+        
+    }
+
+    public class TeacherSpecialistDto
+    {
+        public Guid TeachingAreaId { get; set; }
+        public string NameAr { get; set; } = string.Empty;
+        public string NameEn { get; set; } = string.Empty;
     }
 
     public class TeacherCommentDto

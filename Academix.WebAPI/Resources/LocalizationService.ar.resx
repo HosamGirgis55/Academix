@@ -321,4 +321,119 @@
   <data name="SpecializationNameEnMaxLength" xml:space="preserve">
     <value>لا يمكن أن يتجاوز اسم التخصص الإنجليزي 100 حرف</value>
   </data>
+  <!-- Teacher Update Profile Messages -->
+  <data name="TeacherProfileUpdatedSuccessfully" xml:space="preserve">
+    <value>تم تحديث ملف المدرس بنجاح</value>
+  </data>
+  <data name="TeacherUpdateFailed" xml:space="preserve">
+    <value>فشل في تحديث ملف المدرس</value>
+  </data>
+  <data name="TeacherNotFound" xml:space="preserve">
+    <value>المدرس غير موجود</value>
+  </data>
+  <data name="InvalidCountry" xml:space="preserve">
+    <value>البلد المحدد غير صالح</value>
+  </data>
+  <data name="UserIdRequired" xml:space="preserve">
+    <value>معرف المستخدم مطلوب</value>
+  </data>
+  <data name="BioMaxLength" xml:space="preserve">
+    <value>لا يمكن أن تتجاوز السيرة الذاتية 1000 حرف</value>
+  </data>
+  <data name="SalaryMustBePositive" xml:space="preserve">
+    <value>يجب أن يكون الراتب أكبر من أو يساوي 0</value>
+  </data>
+  <data name="SalaryMaxValue" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الراتب 10000</value>
+  </data>
+  <data name="InvalidProfilePictureUrl" xml:space="preserve">
+    <value>رابط الصورة الشخصية غير صالح</value>
+  </data>
+  <data name="TooManyAdditionalInterests" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 10 اهتمامات إضافية</value>
+  </data>
+  <data name="EmptyAdditionalInterest" xml:space="preserve">
+    <value>الاهتمام الإضافي لا يمكن أن يكون فارغاً</value>
+  </data>
+  <data name="AdditionalInterestLength" xml:space="preserve">
+    <value>يجب أن يكون الاهتمام الإضافي بين 1 و 100 حرف</value>
+  </data>
+  <data name="TooManyEducations" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 10 مدخلات تعليمية</value>
+  </data>
+  <data name="InstitutionLength" xml:space="preserve">
+    <value>يجب أن يكون اسم المؤسسة بين 2 و 200 حرف</value>
+  </data>
+  <data name="DegreeLength" xml:space="preserve">
+    <value>يجب أن تكون الدرجة العلمية بين 2 و 100 حرف</value>
+  </data>
+  <data name="FieldRequired" xml:space="preserve">
+    <value>مجال الدراسة مطلوب</value>
+  </data>
+  <data name="FieldLength" xml:space="preserve">
+    <value>يجب أن يكون المجال بين 2 و 100 حرف</value>
+  </data>
+  <data name="StartDateRequired" xml:space="preserve">
+    <value>تاريخ البداية مطلوب</value>
+  </data>
+  <data name="StartDateInFuture" xml:space="preserve">
+    <value>لا يمكن أن يكون تاريخ البداية في المستقبل</value>
+  </data>
+  <data name="EndDateAfterStartDate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ النهاية بعد تاريخ البداية</value>
+  </data>
+  <data name="DescriptionMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الوصف 500 حرف</value>
+  </data>
+  <data name="TooManyCertificates" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 20 شهادة</value>
+  </data>
+  <data name="CertificateNameLength" xml:space="preserve">
+    <value>يجب أن يكون اسم الشهادة بين 2 و 200 حرف</value>
+  </data>
+  <data name="IssuedByRequired" xml:space="preserve">
+    <value>جهة الإصدار مطلوبة</value>
+  </data>
+  <data name="IssuedByLength" xml:space="preserve">
+    <value>يجب أن تكون جهة الإصدار بين 2 و 200 حرف</value>
+  </data>
+  <data name="IssuedDateRequired" xml:space="preserve">
+    <value>تاريخ الإصدار مطلوب</value>
+  </data>
+  <data name="IssuedDateInFuture" xml:space="preserve">
+    <value>لا يمكن أن يكون تاريخ الإصدار في المستقبل</value>
+  </data>
+  <data name="ExamResultMaxLength" xml:space="preserve">
+    <value>لا يمكن أن تتجاوز نتيجة الامتحان 100 حرف</value>
+  </data>
+  <data name="TooManySkills" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 50 مهارة</value>
+  </data>
+  <data name="TooManyTeachingAreas" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 20 مجال تدريس</value>
+  </data>
+  <data name="TooManyAgeGroups" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 10 فئات عمرية</value>
+  </data>
+  <data name="TooManyCommunicationMethods" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 10 طرق تواصل</value>
+  </data>
+  <data name="TooManyTeachingLanguages" xml:space="preserve">
+    <value>لا يمكن أن تكون لديك أكثر من 10 لغات تدريس</value>
+  </data>
+  <data name="DuplicateTeachingAreas" xml:space="preserve">
+    <value>مجالات التدريس المكررة غير مسموحة</value>
+  </data>
+  <data name="DuplicateAgeGroups" xml:space="preserve">
+    <value>الفئات العمرية المكررة غير مسموحة</value>
+  </data>
+  <data name="DuplicateCommunicationMethods" xml:space="preserve">
+    <value>طرق التواصل المكررة غير مسموحة</value>
+  </data>
+  <data name="DuplicateTeachingLanguages" xml:space="preserve">
+    <value>لغات التدريس المكررة غير مسموحة</value>
+  </data>
+  <data name="DuplicateSkills" xml:space="preserve">
+    <value>المهارات المكررة غير مسموحة</value>
+  </data>
 </root> 
