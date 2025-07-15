@@ -15,10 +15,10 @@ namespace Academix.WebAPI.Features.DashBoard
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("/api/skills/updateStatusTeacher/{id:guid}", HandleAsync)
+            app.MapPut("/api/updateStatusTeacher/{id:guid}", HandleAsync)
                 .WithName("UpdateTeacherStatus")
                 .WithTags("Dashboard")
-                .RequireAuthorization()
+                //.RequireAuthorization()
                 .Produces(200)
                 .Produces(400)
                 .Produces(404);
