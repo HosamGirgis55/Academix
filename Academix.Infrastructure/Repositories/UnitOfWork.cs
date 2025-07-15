@@ -33,8 +33,8 @@ namespace Academix.Infrastructure.Repositories
         public IGenericRepository<StudentExperience> StudentExperiences => GetRepository<StudentExperience>();
         public IGenericRepository<TeacherSkill> TeacherSkills => GetRepository<TeacherSkill>();
 
+        public IGenericRepository<Interview> Interviews => GetRepository<Interview>();
 
-        public IGenericRepository<GraduationStatus> GenericRepository => throw new NotImplementedException();
 
         public IGenericRepository<T> Repository<T>() where T : BaseEntity
         {
