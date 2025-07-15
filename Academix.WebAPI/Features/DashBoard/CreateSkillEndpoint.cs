@@ -25,7 +25,6 @@ public class CreateSkillEndpoint : IEndpoint
         {
             var command = new AddSkillsCommand
             {
-                NameAr = dto.NameAr,
                 NameEn = dto.NameEn
             };
 
