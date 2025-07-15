@@ -47,7 +47,7 @@ namespace Academix.Application.Features.Dashboard.Query.Student.GetAllStudents
                 var studentsQueryable = await _unitOfWork.Repository<Academix.Domain.Entities.Student>()
                     .GetAllAsync();
 
-                var allStudents = studentsQueryable.ToList();
+                var allStudents = studentsQueryable.Include(x=>x.User).ToList();
 
                 // Get total count for pagination
                 var totalCount = allStudents.Count;
@@ -71,8 +71,8 @@ namespace Academix.Application.Features.Dashboard.Query.Student.GetAllStudents
                 var studentDtos = paginatedStudents.Select(s => new StudentDto
                 {
                     Id = s.Id,
-                    FirstName = s.User.FirstName,
-                    LastName = s.User.LastName,
+                    FirstName = s?.User?.FirstName,
+                    LastName = s?.User?.LastName,
                     Email = s.User.Email,
                     BirthDate = s.BirthDate,
                 }).ToList();

@@ -4,6 +4,7 @@ using Academix.Application.Features.Teachers.Query.GetAll;
 using Academix.Domain.DTOs;
 using Academix.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +40,9 @@ namespace Academix.Application.Features.Dashboard.Query.Teacher.GetTeachers
                 if (request.PageSize > 100)
                     request.PageSize = 100;
 
-                var teachers = await _unitOfWork.Teachers.GetAllAsync();
-
+                var teachers = await _unitOfWork.Teachers
+                    .GetAllAsync();
+                teachers = teachers.Include(x => x.User);
                 // Apply status filtering
                 var filteredTeachers = teachers.Where(t => t.Status == request.Status).ToList();
 
