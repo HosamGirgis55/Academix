@@ -75,7 +75,7 @@ namespace Academix.Application.Features.Dashboard.Query.Teacher.GetTeachers
                     Salary = t.Salary,
                     Skills = t.Skills.Select(s => new TeacherSkillDto
                     {
-                        SkillName = s.Skill.NameAr
+                        SkillName = s.Skill.NameEn
                     }).ToList(),
                     stutas = t.Status
                 }).ToList();
