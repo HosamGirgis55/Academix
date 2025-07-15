@@ -1,4 +1,5 @@
-﻿using Academix.Application.Common.Models;
+using Academix.Application.Common.Models;
+using Academix.Domain.Enums;
 using MediatR;
 
 namespace Academix.Application.Features.Teachers.Commands.UpdateTeacher
@@ -8,29 +9,29 @@ namespace Academix.Application.Features.Teachers.Commands.UpdateTeacher
         // User identification (will be set from JWT token in endpoint)
         public string UserId { get; set; } = string.Empty;
         
-        // User Info
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
+        // User Info - nullable for partial updates
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public string? ProfilePictureUrl { get; set; }
-        public Guid CountryId { get; set; }
-        public string Gender { get; set; } = string.Empty;
+        public Guid? CountryId { get; set; }
+        public Gender? Gender { get; set; }
 
-        // Teacher-specific Info
-        public string Bio { get; set; } = string.Empty;
-        public decimal Salary { get; set; }
-        public List<string> AdditionalInterests { get; set; } = new();
+        // Teacher-specific Info - nullable for partial updates
+        public string? Bio { get; set; }
+        public decimal? Salary { get; set; }
+        public List<string>? AdditionalInterests { get; set; }
 
-        // Education and Certificates
-        public List<UpdateTeacherEducationDto> Educations { get; set; } = new();
-        public List<UpdateCertificateDto> Certificates { get; set; } = new();
+        // Education and Certificates - nullable for partial updates
+        public List<UpdateTeacherEducationDto>? Educations { get; set; }
+        public List<UpdateCertificateDto>? Certificates { get; set; }
 
-        // Skills
-        public List<UpdateTeacherSkillDto> Skills { get; set; } = new();
+        // Skills - nullable for partial updates
+        public List<UpdateTeacherSkillDto>? Skills { get; set; }
         
-        // Teaching Preferences
-        public List<Guid> TeachingAreaIds { get; set; } = new();
-        public List<Guid> AgeGroupIds { get; set; } = new();
-        public List<Guid> CommunicationMethodIds { get; set; } = new();
-        public List<Guid> TeachingLanguageIds { get; set; } = new();
+        // Teaching Preferences - nullable for partial updates
+        public List<Guid>? TeachingAreaIds { get; set; }
+        public List<Guid>? AgeGroupIds { get; set; }
+        public List<Guid>? CommunicationMethodIds { get; set; }
+        public List<Guid>? TeachingLanguageIds { get; set; }
     }
-}
+} 

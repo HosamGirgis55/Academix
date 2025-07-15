@@ -1,44 +1,42 @@
 using System.ComponentModel.DataAnnotations;
+using Academix.Domain.Enums;
 
 namespace Academix.Application.Features.Teachers.Commands.UpdateTeacher;
 
 public class UpdateTeacherDto
 {
-    [Required]
     [StringLength(100, MinimumLength = 2)]
-    public string FirstName { get; set; } = string.Empty;
+    public string? FirstName { get; set; }
     
-    [Required]
     [StringLength(100, MinimumLength = 2)]
-    public string LastName { get; set; } = string.Empty;
+    public string? LastName { get; set; }
     
     public string? ProfilePictureUrl { get; set; }
     
-    [Required]
-    public Guid CountryId { get; set; }
+    public Guid? CountryId { get; set; }
     
-    [Required]
-    public string Gender { get; set; } = string.Empty;
+    // Gender using enum directly - accepts both int (0/1) and string ("Male"/"Female") via JSON
+    public Gender? Gender { get; set; }
     
     // Teacher-specific fields
     [StringLength(1000)]
-    public string Bio { get; set; } = string.Empty;
+    public string? Bio { get; set; }
     
     [Range(0, 10000)]
-    public decimal Salary { get; set; }
+    public decimal? Salary { get; set; }
     
-    public List<string> AdditionalInterests { get; set; } = new();
+    public List<string>? AdditionalInterests { get; set; }
     
-    // Complex objects
-    public List<UpdateTeacherEducationDto> Educations { get; set; } = new();
-    public List<UpdateCertificateDto> Certificates { get; set; } = new();
-    public List<UpdateTeacherSkillDto> Skills { get; set; } = new();
+    // Complex objects - null means no change, empty list means clear all
+    public List<UpdateTeacherEducationDto>? Educations { get; set; }
+    public List<UpdateCertificateDto>? Certificates { get; set; }
+    public List<UpdateTeacherSkillDto>? Skills { get; set; }
     
-    // Teaching preferences
-    public List<Guid> TeachingAreaIds { get; set; } = new();
-    public List<Guid> AgeGroupIds { get; set; } = new();
-    public List<Guid> CommunicationMethodIds { get; set; } = new();
-    public List<Guid> TeachingLanguageIds { get; set; } = new();
+    // Teaching preferences - null means no change, empty list means clear all
+    public List<Guid>? TeachingAreaIds { get; set; }
+    public List<Guid>? AgeGroupIds { get; set; }
+    public List<Guid>? CommunicationMethodIds { get; set; }
+    public List<Guid>? TeachingLanguageIds { get; set; }
 }
 
 public class UpdateTeacherEducationDto

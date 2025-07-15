@@ -1,4 +1,5 @@
 using Academix.Application.Common.Interfaces;
+using Academix.Domain.Enums;
 using FluentValidation;
 
 namespace Academix.Application.Features.Teachers.Commands.UpdateTeacher;
@@ -7,45 +8,40 @@ public class UpdateTeacherCommandValidator : AbstractValidator<UpdateTeacherComm
 {
     public UpdateTeacherCommandValidator(ILocalizationService localizationService)
     {
-        // User ID validation
+        // User ID validation (required)
         RuleFor(x => x.UserId)
             .NotEmpty()
             .WithMessage(localizationService.GetLocalizedString("UserIdRequired"));
 
-        // User Info validation
+        // User Info validation - only validate if provided
         RuleFor(x => x.FirstName)
-            .NotEmpty()
-            .WithMessage(localizationService.GetLocalizedString("FirstNameRequired"))
             .Length(2, 100)
-            .WithMessage(localizationService.GetLocalizedString("FirstNameLength"));
+            .WithMessage(localizationService.GetLocalizedString("FirstNameLength"))
+            .When(x => !string.IsNullOrEmpty(x.FirstName));
 
         RuleFor(x => x.LastName)
-            .NotEmpty()
-            .WithMessage(localizationService.GetLocalizedString("LastNameRequired"))
             .Length(2, 100)
-            .WithMessage(localizationService.GetLocalizedString("LastNameLength"));
+            .WithMessage(localizationService.GetLocalizedString("LastNameLength"))
+            .When(x => !string.IsNullOrEmpty(x.LastName));
 
-        RuleFor(x => x.CountryId)
-            .NotEmpty()
-            .WithMessage(localizationService.GetLocalizedString("CountryRequired"));
-
+        // Gender validation - only validate if provided
         RuleFor(x => x.Gender)
-            .NotEmpty()
-            .WithMessage(localizationService.GetLocalizedString("GenderRequired"))
-            .Must(gender => gender.Equals("Male", StringComparison.OrdinalIgnoreCase) || 
-                          gender.Equals("Female", StringComparison.OrdinalIgnoreCase))
-            .WithMessage(localizationService.GetLocalizedString("InvalidGender"));
+            .IsInEnum()
+            .WithMessage(localizationService.GetLocalizedString("InvalidGender"))
+            .When(x => x.Gender.HasValue);
 
-        // Teacher-specific validation
+        // Teacher-specific validation - only validate if provided
         RuleFor(x => x.Bio)
             .MaximumLength(1000)
-            .WithMessage(localizationService.GetLocalizedString("BioMaxLength"));
+            .WithMessage(localizationService.GetLocalizedString("BioMaxLength"))
+            .When(x => !string.IsNullOrEmpty(x.Bio));
 
         RuleFor(x => x.Salary)
             .GreaterThanOrEqualTo(0)
             .WithMessage(localizationService.GetLocalizedString("SalaryMustBePositive"))
             .LessThanOrEqualTo(10000)
-            .WithMessage(localizationService.GetLocalizedString("SalaryMaxValue"));
+            .WithMessage(localizationService.GetLocalizedString("SalaryMaxValue"))
+            .When(x => x.Salary.HasValue);
 
         // Profile Picture URL validation
         RuleFor(x => x.ProfilePictureUrl)
@@ -62,7 +58,8 @@ public class UpdateTeacherCommandValidator : AbstractValidator<UpdateTeacherComm
             .NotEmpty()
             .WithMessage(localizationService.GetLocalizedString("EmptyAdditionalInterest"))
             .Length(1, 100)
-            .WithMessage(localizationService.GetLocalizedString("AdditionalInterestLength"));
+            .WithMessage(localizationService.GetLocalizedString("AdditionalInterestLength"))
+            .When(x => x.AdditionalInterests != null);
 
         // Education validation
         RuleFor(x => x.Educations)
@@ -103,7 +100,8 @@ public class UpdateTeacherCommandValidator : AbstractValidator<UpdateTeacherComm
             education.RuleFor(e => e.Description)
                 .MaximumLength(500)
                 .WithMessage(localizationService.GetLocalizedString("DescriptionMaxLength"));
-        });
+        })
+        .When(x => x.Educations != null);
 
         // Certificate validation
         RuleFor(x => x.Certificates)
@@ -138,7 +136,8 @@ public class UpdateTeacherCommandValidator : AbstractValidator<UpdateTeacherComm
             certificate.RuleFor(c => c.ExamResult)
                 .MaximumLength(100)
                 .WithMessage(localizationService.GetLocalizedString("ExamResultMaxLength"));
-        });
+        })
+        .When(x => x.Certificates != null);
 
         // Skills validation
         RuleFor(x => x.Skills)
@@ -150,7 +149,8 @@ public class UpdateTeacherCommandValidator : AbstractValidator<UpdateTeacherComm
             skill.RuleFor(s => s.SkillId)
                 .NotEmpty()
                 .WithMessage(localizationService.GetLocalizedString("SkillIdRequired"));
-        });
+        })
+        .When(x => x.Skills != null);
 
         // Teaching preferences validation
         RuleFor(x => x.TeachingAreaIds)
@@ -201,12 +201,13 @@ public class UpdateTeacherCommandValidator : AbstractValidator<UpdateTeacherComm
         if (string.IsNullOrEmpty(url))
             return true;
 
-        return Uri.TryCreate(url, UriKind.Absolute, out var result) && 
+        return Uri.TryCreate(url, UriKind.Absolute, out var result) &&
                (result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps);
     }
 
-    private static bool HaveUniqueValues(IList<Guid> values)
+    private static bool HaveUniqueValues<T>(IList<T>? values)
     {
+        if (values == null) return true;
         return values.Distinct().Count() == values.Count;
     }
 } 
