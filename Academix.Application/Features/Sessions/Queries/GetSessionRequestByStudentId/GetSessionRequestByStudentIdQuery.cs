@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher
+namespace Academix.Application.Features.Sessions.Queries.GetSessionRequestByStudentId
 {
-    public class GetSessionRequestByTeacherIdQuery : IRequest<Result<SessionRequestPageResult>>
+    public class GetSessionRequestByStudentIdQuery  :IRequest<Result<SessionRequestPageResult>>
     {
-        public Guid TeacherId { get; set; }
+        public Guid StudentId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
