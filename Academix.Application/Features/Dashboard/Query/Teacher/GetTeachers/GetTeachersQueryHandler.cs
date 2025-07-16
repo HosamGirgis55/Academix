@@ -3,6 +3,7 @@ using Academix.Application.Common.Models;
 using Academix.Application.Features.Teachers.Query.GetAll;
 using Academix.Domain.DTOs;
 using Academix.Domain.Interfaces;
+using Academix.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -40,9 +41,17 @@ namespace Academix.Application.Features.Dashboard.Query.Teacher.GetTeachers
                 if (request.PageSize > 100)
                     request.PageSize = 100;
 
-                var teachers = await _unitOfWork.Teachers
+                var teachers = await _unitOfWork.Repository<Domain.Entities.Teacher>()
                     .GetAllAsync();
-                teachers = teachers.Include(x => x.User);
+                teachers = teachers.Include(x => x.User)
+                    .Include(t=>t.Skills)
+                        .ThenInclude(ts => ts.Skill)
+                    .Include(t=>t.Certificates)
+                    .Include(t => t.TeacherTeachingAreas)
+                        .ThenInclude(tta => tta.TeachingArea)
+                    .Include(t=>t.Educations);
+
+
                 // Apply status filtering
                 var filteredTeachers = teachers.Where(t => t.Status == request.Status).ToList();
 
@@ -73,10 +82,26 @@ namespace Academix.Application.Features.Dashboard.Query.Teacher.GetTeachers
                     Bio = t.Bio,
                     ProfilePictureUrl = t.ProfilePictureUrl,
                     Salary = t.Salary,
-                    Skills = t.Skills.Select(s => new TeacherSkillDto
+                    Skills = t.Skills?.Select(s => new TeacherSkillDto
                     {
-                        SkillName = s.Skill.NameEn
-                    }).ToList(),
+                        SkillId = s.SkillId,
+                        SkillName = s.Skill.NameAr
+                    }).ToList() ?? new List<TeacherSkillDto>(),
+                    Specialists = t.TeacherTeachingAreas?.Select(tta => new TeacherSpecialistDto
+                    {
+                        TeachingAreaId = tta.TeachingAreaId,
+                        NameAr = tta.TeachingArea.NameAr,
+                        NameEn = tta.TeachingArea.NameEn
+                    }).ToList() ?? new List<TeacherSpecialistDto>(),
+                    Certificates = t.Certificates?.Select(c => new CertificatesDto
+                    {
+                        Name = c.Name,
+                        CertificateUrl = c.CertificateUrl,
+                        ExamResult = c.ExamResult,
+                        IssuedBy = c.IssuedBy,
+                        IssuedDate = c.IssuedDate,
+                    }).ToList() ?? new List<CertificatesDto>(),
+                    teacherEducations = t.Educations?.ToList() ?? new List<TeacherEducation>(),
                     stutas = t.Status
                 }).ToList();
 

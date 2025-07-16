@@ -17,7 +17,11 @@ namespace Academix.Domain.DTOs
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public decimal Salary { get; set; }
         public List<TeacherSkillDto> Skills { get; set; } = new();
+        public List<CertificatesDto> Certificates { get; set; } = new();
+
         public List<TeacherSpecialistDto> Specialists { get; set; } = new();
+        public List<TeacherEducation> teacherEducations { get; set; } = new();
+
         public List<TeacherCommentDto> Comments { get; set; } = new();
         public TeacherRatingInfoDto Rating { get; set; } = new();
 
@@ -60,5 +64,14 @@ namespace Academix.Domain.DTOs
     {
         public double AverageRating { get; set; }
         public int TotalComments { get; set; }
+    }
+
+    public class CertificatesDto
+    {
+        public string Name { get; set; } = string.Empty;
+        public string CertificateUrl { get; set; } = string.Empty;
+        public string IssuedBy { get; set; } = string.Empty;
+        public DateTime IssuedDate { get; set; }
+        public string ExamResult { get; set; } = string.Empty;
     }
 }
