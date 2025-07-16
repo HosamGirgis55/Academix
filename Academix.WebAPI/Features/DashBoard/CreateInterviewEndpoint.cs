@@ -12,7 +12,7 @@ namespace Academix.WebAPI.Features.DashBoard
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/interview/Create", HandleAsync)
+            app.MapPost("/api/dashboard/interview/Create", HandleAsync)
                 .WithName("CreateInterview")
                 .WithTags("Dashboard")
                 .Accepts<CreateInterViewCommand>("application/json")
