@@ -208,6 +208,7 @@ namespace Academix.Application.Features.Students.Commands.RegisterStudent
 
                 // Generate JWT tokens for automatic login
                 var authResult = await _userManager.GenerateTokenAsync(user, _jwtSettings);
+                authResult.personId = student.Id;
 
                 return Result<AuthenticationResult>.Success(authResult, _localizationService.GetLocalizedString("StudentRegistrationSuccessful"));
             }

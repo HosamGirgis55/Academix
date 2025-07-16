@@ -9,5 +9,6 @@ public class AuthenticationResult
     public string Email { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+    public Guid personId {  get; set; } = Guid.Empty;
     public List<string> Roles { get; set; } = new();
 } 
