@@ -1,4 +1,5 @@
-﻿using Academix.Domain.DTOs;
+﻿using Academix.Application.Common.Models;
+using Academix.Domain.DTOs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Academix.Application.Features.Chat.Queries
 {
-    public class GetMessageQuery : IRequest<List<ChatMessageDto>>
+    public class GetChatMessageQuery : IRequest<Result<List<ChatMessageDto>>>
     {
         public string CurrentUserId { get; set; }
         public string OtherUserId { get; set; }

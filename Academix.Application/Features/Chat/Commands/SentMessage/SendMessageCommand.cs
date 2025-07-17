@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Chat.Commands
+namespace Academix.Application.Features.Chat.Commands.SentMessage
 {
     public class SendMessageCommand : IRequest<Result<Guid>>
     {

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Academix.Domain.Entities
 {
-    public class ChatMessage
+    public class ChatMessage : BaseEntity
     {
-        public Guid Id { get; set; }
 
         public string SenderId { get; set; } // FK to ApplicationUser
         public string ReceiverId { get; set; } // FK to ApplicationUser
