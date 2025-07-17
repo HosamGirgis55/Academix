@@ -12,14 +12,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher
+namespace Academix.Application.Features.Sessions.Queries.GetSessionRequestByStudentId
 {
-    internal class GetSessionRequestByTeacherIdQueryHandler : IRequestHandler<GetSessionRequestByTeacherIdQuery, Result<SessionRequestPageResult>>
+    internal class GetSessionRequestByStudentIdQueryHandler : IRequestHandler<GetSessionRequestByStudentIdQuery ,Result<SessionRequestPageResult>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILocalizationService _localizationService;
 
-        public GetSessionRequestByTeacherIdQueryHandler(
+        public GetSessionRequestByStudentIdQueryHandler(
             IUnitOfWork unitOfWork,
             ILocalizationService localizationService)
         {
@@ -27,7 +27,7 @@ namespace Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher
             _localizationService = localizationService;
         }
 
-        public async Task<Result<SessionRequestPageResult>> Handle(GetSessionRequestByTeacherIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<SessionRequestPageResult>> Handle(GetSessionRequestByStudentIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher
                     .Include(s => s.Teacher)
                     .Include(s => s.Student)
                         .ThenInclude(s => s.User)
-                    .Where(s => s.Status == Domain.Enums.SessionRequestStatus.Pending&& s.TeacherId == request.TeacherId);
+                    .Where(s => s.Status == Domain.Enums.SessionRequestStatus.Pending&& s.StudentId == request.StudentId);
 
                 // Get total count before pagination
                 var totalCount = await baseQuery.CountAsync(cancellationToken);

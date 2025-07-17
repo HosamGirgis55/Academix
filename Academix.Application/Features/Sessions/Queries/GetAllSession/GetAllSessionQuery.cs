@@ -1,6 +1,6 @@
 ﻿using Academix.Application.Common.Models;
+using Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher;
 using Academix.Domain.DTOs;
-using Academix.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,18 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher
+namespace Academix.Application.Features.Sessions.Queries.GetAllSession
 {
-    public class GetSessionRequestByTeacherIdQuery : IRequest<Result<SessionRequestPageResult>>
+    public class GetAllSessionQuery : IRequest<Result<SessionPageResult>>
     {
-        public Guid TeacherId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 
-    public class SessionRequestPageResult
+
+    public class SessionPageResult
     {
-        public List<SessionRequestDto> SessionRequest { get; set; } = new();
+        public List<SessionDto> Sessions { get; set; } = new();
         public int TotalCount { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
