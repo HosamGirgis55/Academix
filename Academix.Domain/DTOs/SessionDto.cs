@@ -9,6 +9,7 @@ namespace Academix.Domain.DTOs
 {
     public class SessionDto
     {
+        public Guid Id { get; set; }
         public Guid StudentId { get; set; }
         public Guid TeacherId { get; set; }
         public Guid SessionRequestId { get; set; }

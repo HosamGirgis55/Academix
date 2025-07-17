@@ -57,6 +57,8 @@ namespace Academix.Application.Features.Sessions.Queries.GetAllSession
                 {
                     var dto = new SessionDto
                     {
+                        Id = session.Id,
+
                         StudentId = session.StudentId,
                         TeacherId = session.TeacherId,
                         SessionRequestId = session.SessionRequestId,
