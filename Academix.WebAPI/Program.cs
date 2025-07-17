@@ -2,6 +2,7 @@ using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
 using Academix.Application.SignalR;
 using Academix.Domain.Entities;
+using Academix.Domain.Interfaces;
 using Academix.Helpers;
 using Academix.Infrastructure;
 using Academix.Infrastructure.Data;
@@ -84,6 +85,8 @@ builder.Services.AddSwaggerGen(c =>
 
 // Add Infrastructure Services
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddScoped<IChatHubService, ChatHubService>();
+
 
 // Add ResponseHelper
 builder.Services.AddScoped<ResponseHelper>();
@@ -112,7 +115,7 @@ builder.Services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-
+builder.Services.AddSignalR();
 // Add JWT Configuration
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
 
@@ -216,7 +219,7 @@ app.UseAuthorization();
 app.MapEndpoints();
 app.MapHub<ChatHub>("/chatHub");
 
-builder.Services.AddSingleton<IUserIdProvider, NameIdentifierUserIdProvider>();
+//builder.Services.AddSingleton<IUserIdProvider, NameIdentifierUserIdProvider>();
 
 
 // Map controllers

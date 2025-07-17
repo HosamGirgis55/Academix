@@ -29,6 +29,7 @@ namespace Academix.Infrastructure
             services.AddScoped<ILocalizationService, LocalizationService>();
             services.AddScoped<IPayPalService, PayPalService>();
             services.AddScoped<IPointsService, PointsService>();
+
             services.AddScoped<SeedDataService>();
 
             // Background Services
