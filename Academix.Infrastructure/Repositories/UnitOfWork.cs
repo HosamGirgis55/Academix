@@ -35,6 +35,7 @@ namespace Academix.Infrastructure.Repositories
 
         public IGenericRepository<Interview> Interviews => GetRepository<Interview>();
 
+        public IGenericRepository<ChatMessage> ChatMessage => GetRepository<ChatMessage>();
 
         public IGenericRepository<T> Repository<T>() where T : BaseEntity
         {

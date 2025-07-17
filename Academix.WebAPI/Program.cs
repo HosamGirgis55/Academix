@@ -1,23 +1,26 @@
 using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
+using Academix.Application.SignalR;
 using Academix.Domain.Entities;
+using Academix.Helpers;
 using Academix.Infrastructure;
 using Academix.Infrastructure.Data;
 using Academix.Infrastructure.Services;
 using Academix.WebAPI.Common;
 using Academix.WebAPI.Common.Middleware;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Academix.Helpers;
+using Academix.WebAPI.Hubs;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -140,7 +143,21 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key)),
         ClockSkew = TimeSpan.Zero
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
+
 
 // Add Authorization
 builder.Services.AddAuthorization();
@@ -197,6 +214,10 @@ app.UseAuthorization();
 
 // Map endpoints
 app.MapEndpoints();
+app.MapHub<ChatHub>("/chatHub");
+
+builder.Services.AddSingleton<IUserIdProvider, NameIdentifierUserIdProvider>();
+
 
 // Map controllers
 app.MapControllers();

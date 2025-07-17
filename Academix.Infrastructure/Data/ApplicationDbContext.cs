@@ -48,6 +48,9 @@ namespace Academix.Infrastructure.Data
         // Payment Management
         public DbSet<Payment> Payments { get; set; } = null!;
 
+        //Chat
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
