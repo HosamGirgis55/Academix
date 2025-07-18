@@ -79,6 +79,7 @@ namespace Academix.Application.Features.Teachers.Query.GetAll
                     var teacherDto = new TeacherDto
                     {
                         Id = teacher.Id,
+                        userId = teacher.UserId,
                         FirstName = teacher.User.FirstName,
                         LastName = teacher.User.LastName,
                         Bio = teacher.Bio,

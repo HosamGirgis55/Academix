@@ -52,6 +52,7 @@ namespace Academix.Application.Features.Students.Query.GetById
                 var dto = new StudentDto
                 {
                     Id = student.Id,
+                    UserId = student.UserId,
                     FirstName = student.User.FirstName,
                     LastName = student.User.LastName,
                     ProfilePictureUrl = student.ProfilePictureUrl,

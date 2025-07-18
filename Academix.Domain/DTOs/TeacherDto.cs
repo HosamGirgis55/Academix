@@ -11,6 +11,7 @@ namespace Academix.Domain.DTOs
     public class TeacherDto
     {
         public Guid Id { get; set; }
+        public string userId { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Bio { get; set; } = string.Empty;

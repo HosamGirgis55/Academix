@@ -77,6 +77,7 @@ namespace Academix.Application.Features.Dashboard.Query.Teacher.GetTeachers
                 var teacherDtos = paginatedTeachers.Select(t => new TeacherDto
                 {
                     Id = t.Id,
+                    userId = t.UserId,
                     FirstName = t.User.FirstName,
                     LastName = t.User.LastName,
                     Bio = t.Bio,

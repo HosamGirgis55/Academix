@@ -35,6 +35,10 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                 
                 var teacher = await teacherQuery
                     .Include(t => t.User)
+                    .Include(t => t.Skills)
+                        .ThenInclude(ts => ts.Skill)
+                    .Include(t => t.TeacherTeachingAreas)
+                        .ThenInclude(tta => tta.TeachingArea)
                     .FirstOrDefaultAsync(t => t.Id == request.Id);
 
                 if (teacher == null)
@@ -72,19 +76,34 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                     }
                 }).ToList();
 
-                var dto = new TeacherDto
+                var teacherDto = new TeacherDto
                 {
                     Id = teacher.Id,
+                    userId = teacher.UserId,
                     FirstName = teacher.User.FirstName,
                     LastName = teacher.User.LastName,
                     Bio = teacher.Bio,
                     ProfilePictureUrl = teacher.ProfilePictureUrl,
-                    Comments = commentDtos,
-                    Rating = teacherRating
-                    //Skills = teacher.Skills.Select(s => s.Name).ToList()
+                    Salary = teacher.Salary,
+                    Skills = teacher.Skills?.Select(s => new TeacherSkillDto
+                    {
+                        SkillId = s.SkillId,
+                        SkillName = s.Skill.NameAr
+                    }).ToList() ?? new List<TeacherSkillDto>(),
+                    Specialists = teacher.TeacherTeachingAreas?.Select(tta => new TeacherSpecialistDto
+                    {
+                        TeachingAreaId = tta.TeachingAreaId,
+                        NameAr = tta.TeachingArea.NameAr,
+                        NameEn = tta.TeachingArea.NameEn
+                    }).ToList() ?? new List<TeacherSpecialistDto>(),
+                    Rating = new TeacherRatingInfoDto
+                    {
+                        AverageRating = Math.Round(averageRating, 1),
+                        TotalComments = totalComments
+                    }
                 };
 
-                return Result<TeacherDto>.Success(dto);
+                return Result<TeacherDto>.Success(teacherDto);
             }
             catch (Exception ex)
             {

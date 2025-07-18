@@ -71,6 +71,7 @@ namespace Academix.Application.Features.Dashboard.Query.Student.GetAllStudents
                 var studentDtos = paginatedStudents.Select(s => new StudentDto
                 {
                     Id = s.Id,
+                    UserId = s.UserId,
                     FirstName = s?.User?.FirstName,
                     LastName = s?.User?.LastName,
                     Email = s.User.Email,
