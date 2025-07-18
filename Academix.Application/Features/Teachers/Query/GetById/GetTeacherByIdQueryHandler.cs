@@ -39,6 +39,9 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                         .ThenInclude(ts => ts.Skill)
                     .Include(t => t.TeacherTeachingAreas)
                         .ThenInclude(tta => tta.TeachingArea)
+                    .Include(t => t.Comments)
+                    .Include(t => t.Educations)
+                    .Include(t => t.Certificates)
                     .FirstOrDefaultAsync(t => t.Id == request.Id);
 
                 if (teacher == null)
@@ -54,7 +57,7 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                 var averageRating = await _commentRepository.GetAverageRatingForTeacherAsync(request.Id);
                 var totalComments = await _commentRepository.GetCommentCountForTeacherAsync(request.Id);
 
-                var teacherRating = new TeacherRatingInfoDto
+                 var teacherRating = new TeacherRatingDto
                 {
                     AverageRating = Math.Round(averageRating, 1),
                     TotalComments = totalComments
@@ -90,12 +93,34 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                         SkillId = s.SkillId,
                         SkillName = s.Skill.NameAr
                     }).ToList() ?? new List<TeacherSkillDto>(),
+                    Certificates = teacher.Certificates?.Select(c => new CertificatesDto
+                    {
+                        Name = c.Name,
+                        CertificateUrl = c.CertificateUrl,
+                        IssuedBy = c.IssuedBy,
+                        IssuedDate = c.IssuedDate,
+                        ExamResult = c.ExamResult
+                    }).ToList() ?? new List<CertificatesDto>(),
                     Specialists = teacher.TeacherTeachingAreas?.Select(tta => new TeacherSpecialistDto
                     {
                         TeachingAreaId = tta.TeachingAreaId,
                         NameAr = tta.TeachingArea.NameAr,
                         NameEn = tta.TeachingArea.NameEn
                     }).ToList() ?? new List<TeacherSpecialistDto>(),
+                    Comments = teacher.Comments?.Select(comment => new TeacherCommentDto
+                    {
+                        Id = comment.Id,
+                        Content = comment.Content,
+                        Rating = comment.Rating,
+                        CreatedAt = comment.CreatedAt,
+                        Student = new TeacherStudentInfoDto
+                        {
+                            Id = comment.Student.Id,
+                            FirstName = comment.Student.User.FirstName,
+                            LastName = comment.Student.User.LastName,
+                            ProfilePictureUrl = comment.Student.User.ProfilePictureUrl ?? ""
+                        }
+                    }).ToList() ?? new List<TeacherCommentDto>(),
                     Rating = new TeacherRatingInfoDto
                     {
                         AverageRating = Math.Round(averageRating, 1),
