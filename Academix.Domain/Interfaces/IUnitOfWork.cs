@@ -19,6 +19,7 @@ namespace Academix.Domain.Interfaces
         IGenericRepository<StudentExperience> StudentExperiences { get; }
         IGenericRepository<TeacherSkill> TeacherSkills { get; }
         IGenericRepository<Interview> Interviews { get; }
+        IGenericRepository<ChatMessage> ChatMessage { get; }
 
         IGenericRepository<T> Repository<T>() where T : BaseEntity;
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
