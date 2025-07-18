@@ -33,6 +33,8 @@ namespace Academix.Application.Features.Chat.Commands.MakeMessageAsReadCommand
             {
                 message.IsRead = true;
                 message.ReadAt = DateTime.UtcNow;
+                _unitOfWork.ChatMessage.Update(message);
+
             }
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
