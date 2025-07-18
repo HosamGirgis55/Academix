@@ -9,9 +9,12 @@ namespace Academix.Domain.DTOs
 {
     public class SessionDto
     {
-        public Guid StudentId { get; set; }
-        public Guid TeacherId { get; set; }
         public Guid SessionRequestId { get; set; }
+
+        public Guid StudentId { get; set; }
+        public string StudentName { get; set; } = string.Empty;
+        public Guid TeacherId { get; set; }
+        public string TeacherName { get; set; }
 
         // Session Details
         public string Subject { get; set; } = string.Empty;
@@ -20,20 +23,11 @@ namespace Academix.Domain.DTOs
 
         // Timing
         public DateTime ScheduledStartTime { get; set; }
-        public DateTime? ActualStartTime { get; set; }
-        public DateTime? ActualEndTime { get; set; }
+     
         public int PlannedDurationMinutes { get; set; }
-        public int? ActualDurationMinutes { get; set; }
+      
 
-        // Session Status and Progress
-        public SessionStatus Status { get; set; } = SessionStatus.Scheduled;
-        public bool IsPointsTransferred { get; set; } = false;
-        public DateTime? PointsTransferredAt { get; set; }
-
-        // Session Notes and Feedback
-        public string? TeacherNotes { get; set; }
-        public string? StudentNotes { get; set; }
-        public int? StudentRating { get; set; } // 1-5 stars
-        public int? TeacherRating { get; set; } // 1-5 stars
+      
+      
     }
 }

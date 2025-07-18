@@ -37,6 +37,7 @@ namespace Academix.Application.Features.Sessions.Queries.GetSessionRequestByStud
 
                 var baseQuery = sessionRequestQuery
                     .Include(s => s.Teacher)
+                     .ThenInclude(s=>s.User)
                     .Include(s => s.Student)
                         .ThenInclude(s => s.User)
                     .Where(s => s.Status == Domain.Enums.SessionRequestStatus.Pending&& s.StudentId == request.StudentId);
