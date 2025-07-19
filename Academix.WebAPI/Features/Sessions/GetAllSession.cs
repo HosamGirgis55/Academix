@@ -16,8 +16,8 @@ namespace Academix.WebAPI.Features.Sessions
                 .WithName("GetAllSessions")
                 .WithTags("Sessions")
                 .Produces<ResponseHelper>(200)
-                .Produces<ResponseHelper>(400);
-            //.RequireAuthorization();
+                .Produces<ResponseHelper>(400)
+            .RequireAuthorization();
         }
 
         private static async Task<IResult> HandleAsync(

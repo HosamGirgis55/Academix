@@ -2,6 +2,7 @@
 using Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher;
 using Academix.Application.Features.Teachers.Query.GetAll;
 using Academix.Domain.Entities;
+using Academix.Domain.Enums;
 using Academix.Helpers;
 using Academix.WebAPI.Common;
 using MediatR;
@@ -17,8 +18,8 @@ namespace Academix.WebAPI.Features.Sessions
                 .WithName("GetSessionRequestByTeacherId")
                 .WithTags("Sessions")
                 .Produces<ResponseHelper>(200)
-                .Produces<ResponseHelper>(400);
-                //.RequireAuthorization();
+                .Produces<ResponseHelper>(400)
+                .RequireAuthorization();
         }
 
         private static async Task<IResult> HandleAsync(
@@ -28,6 +29,7 @@ namespace Academix.WebAPI.Features.Sessions
         [FromQuery] Guid teacherId,
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10,
+        [FromQuery] SessionRequestStatus sessionRequestStatus = SessionRequestStatus.Pending,
         CancellationToken cancellationToken = default)
         {
             try
@@ -41,7 +43,8 @@ namespace Academix.WebAPI.Features.Sessions
                 {
                     TeacherId = teacherId,
                     PageNumber = pageNumber,
-                    PageSize = pageSize
+                    PageSize = pageSize,
+                    sessionRequestStatus = sessionRequestStatus
                 };
 
                 var result = await mediator.Send(query, cancellationToken);

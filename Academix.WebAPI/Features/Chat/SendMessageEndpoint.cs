@@ -11,7 +11,7 @@ namespace Academix.WebAPI.Features.Chat
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/chat/sendMessage", HandleAsync)
+            app.MapPost("/api/chat/sendMessage", HandleAsync)
                 .WithName("SendMessage")
                 .WithTags("Chat")
                 .Produces<ResponseHelper>(200)

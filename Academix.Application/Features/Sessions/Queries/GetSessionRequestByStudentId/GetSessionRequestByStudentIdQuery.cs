@@ -1,6 +1,7 @@
 ﻿using Academix.Application.Common.Models;
 using Academix.Domain.DTOs;
 using Academix.Domain.Entities;
+using Academix.Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Academix.Application.Features.Sessions.Queries.GetSessionRequestByStud
         public Guid StudentId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
+        public SessionRequestStatus sessionRequestStatus { get; set; } = SessionRequestStatus.Pending;
+
     }
 
     public class SessionRequestPageResult
