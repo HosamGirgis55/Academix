@@ -6,12 +6,7 @@ using Academix.Domain.Entities;
 using Academix.Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+ 
 namespace Academix.Application.Features.Sessions.Queries.GetSessionRequestByStudentId
 {
     internal class GetSessionRequestByStudentIdQueryHandler : IRequestHandler<GetSessionRequestByStudentIdQuery ,Result<SessionRequestPageResult>>
@@ -37,9 +32,10 @@ namespace Academix.Application.Features.Sessions.Queries.GetSessionRequestByStud
 
                 var baseQuery = sessionRequestQuery
                     .Include(s => s.Teacher)
+                     .ThenInclude(s=>s.User)
                     .Include(s => s.Student)
                         .ThenInclude(s => s.User)
-                    .Where(s => s.Status == request.sessionRequestStatus && s.StudentId == request.StudentId);
+                    .Where(s =>  s.StudentId == request.StudentId);
 
                 // Get total count before pagination
                 var totalCount = await baseQuery.CountAsync(cancellationToken);
@@ -58,7 +54,7 @@ namespace Academix.Application.Features.Sessions.Queries.GetSessionRequestByStud
                 {
                     var dto = new SessionRequestDto
                     {
-                        Id = sessionRequest.Id,
+                        SessionId = sessionRequest.Id,
                         StudentId = sessionRequest.StudentId,
                         StudentName = $"{sessionRequest.Student.User.FirstName} {sessionRequest.Student.User.LastName}",
                         TeacherId = sessionRequest.TeacherId,

@@ -34,10 +34,7 @@ namespace Academix.Application.Features.Sessions.Commands.AcceptSessionRequest
                 // Get session request with related entities
                 var sessionRequestQuery = await _unitOfWork.Repository<SessionRequest>().GetAllAsync();
                 var sessionRequest = await sessionRequestQuery
-                    .Include(sr => sr.Student)
-                        .ThenInclude(s => s.User)
-                    .Include(sr => sr.Teacher)
-                        .ThenInclude(t => t.User)
+                   
                     .FirstOrDefaultAsync(sr => sr.Id == request.SessionRequestId, cancellationToken);
 
                 if (sessionRequest == null)
@@ -76,29 +73,32 @@ namespace Academix.Application.Features.Sessions.Commands.AcceptSessionRequest
                         Subject = sessionRequest.Subject,
                         Description = sessionRequest.Description,
                         PointsAmount = sessionRequest.PointsAmount,
-                        ScheduledStartTime = request.ScheduledStartTime,
+                        ScheduledStartTime = sessionRequest.RequestedDateTime,
                         PlannedDurationMinutes = sessionRequest.EstimatedDurationMinutes,
                         Status = SessionStatus.Scheduled,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.UtcNow,
+                        SessionRequest = sessionRequest
+
+
                     };
 
                     await _unitOfWork.Repository<Session>().AddAsync(session);
 
-                    // Link session to request
-                    sessionRequest.SessionId = session.Id;
-                    _unitOfWork.Repository<SessionRequest>().Update(sessionRequest);
+                    //// Link session to request
+                    //sessionRequest.SessionId = session.Id;
+                    //_unitOfWork.Repository<SessionRequest>().Update(sessionRequest);
 
                     await _unitOfWork.SaveChangesAsync();
 
-                    // Send notification to student
-                    if (!string.IsNullOrEmpty(sessionRequest.Student.User.DeviceToken))
-                    {
-                        var teacherName = $"{sessionRequest.Teacher.User.FirstName} {sessionRequest.Teacher.User.LastName}";
-                        await _firebaseService.SendSessionAcceptedNotificationAsync(
-                            sessionRequest.Student.User.DeviceToken,
-                            teacherName,
-                            request.ScheduledStartTime);
-                    }
+                    //// Send notification to student
+                    //if (!string.IsNullOrEmpty(sessionRequest.Student.User.DeviceToken))
+                    //{
+                    //    var teacherName = $"{sessionRequest.Teacher.User.FirstName} {sessionRequest.Teacher.User.LastName}";
+                    //    await _firebaseService.SendSessionAcceptedNotificationAsync(
+                    //        sessionRequest.Student.User.DeviceToken,
+                    //        teacherName,
+                    //        request.ScheduledStartTime);
+                    //}
 
                     await _unitOfWork.CommitTransactionAsync();
 

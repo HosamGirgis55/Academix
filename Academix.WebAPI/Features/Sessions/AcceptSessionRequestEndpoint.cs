@@ -19,8 +19,8 @@ namespace Academix.WebAPI.Features.Sessions
                 .WithTags("Sessions")
                 .Accepts<AcceptSessionRequestDto>("application/json")
                 .Produces<ResponseHelper>(200)
-                .Produces<ResponseHelper>(400)
-                .RequireAuthorization();
+                .Produces<ResponseHelper>(400);
+              //  .RequireAuthorization();
         }
 
         private static async Task<IResult> HandleAsync(
@@ -34,11 +34,11 @@ namespace Academix.WebAPI.Features.Sessions
             try
             {
                 // Get the authenticated user's ID
-                var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    return Results.Unauthorized();
-                }
+                //var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                //if (string.IsNullOrEmpty(userId))
+                //{
+                //    return Results.Unauthorized();
+                //}
 
                 // Create command
                 var command = new AcceptSessionRequestCommand
