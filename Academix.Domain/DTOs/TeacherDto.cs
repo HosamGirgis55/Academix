@@ -27,6 +27,7 @@ namespace Academix.Domain.DTOs
         public TeacherRatingInfoDto Rating { get; set; } = new();
 
         public Status stutas { get; set; } = new();
+        public string Email { get; set; }
     }
 
     public class TeacherSkillDto
