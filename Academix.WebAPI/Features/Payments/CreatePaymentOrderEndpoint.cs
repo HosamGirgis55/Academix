@@ -92,4 +92,6 @@ public class CreatePaymentOrderRequest
     public string? Currency { get; set; } = "USD";
     public string? Description { get; set; }
     public string? Reference { get; set; }
+    public string SuccessUrl { get; set; }
+    public string CancleUrl { get; set; }
 } 
