@@ -78,6 +78,7 @@ namespace Academix.Application.Features.Dashboard.Query.Teacher.GetTeachers
                 {
                     Id = t.Id,
                     userId = t.UserId,
+                    Email = t.User.Email,
                     FirstName = t.User.FirstName,
                     LastName = t.User.LastName,
                     Bio = t.Bio,
