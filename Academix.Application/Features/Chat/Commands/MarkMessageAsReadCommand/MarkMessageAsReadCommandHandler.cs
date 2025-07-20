@@ -40,6 +40,7 @@ namespace Academix.Application.Features.Chat.Commands.MakeMessageAsReadCommand
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             await _chatHubService.NotifyMessagesReadAsync(request.OtherUserId, request.CurrentUserId);
+            await _chatHubService.MarkMessagesAsRead(request.CurrentUserId, request.OtherUserId);
 
             return Result.Success();
         }

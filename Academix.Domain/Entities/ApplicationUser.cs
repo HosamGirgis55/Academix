@@ -28,5 +28,9 @@ namespace Academix.Domain.Entities
         
         // Points system for all users
         public int Points { get; set; } = 0;
+
+
+        //public Teacher? Teacher { get; set; }
+        //public Student? student { get; set; } 
     }
 }

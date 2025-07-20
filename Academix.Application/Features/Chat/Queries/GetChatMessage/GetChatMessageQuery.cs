@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Chat.Queries
+namespace Academix.Application.Features.Chat.Queries.GetChatMessage
 {
     public class GetChatMessageQuery : IRequest<Result<List<ChatMessageDto>>>
     {

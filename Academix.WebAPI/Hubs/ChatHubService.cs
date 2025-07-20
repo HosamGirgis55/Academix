@@ -1,15 +1,19 @@
 ﻿using Academix.Domain.Interfaces;
+using Academix.Infrastructure.Data;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Academix.WebAPI.Hubs
 {
     public class ChatHubService : IChatHubService
     {
         private readonly IHubContext<ChatHub> _hubContext;
+        private readonly ApplicationDbContext _context;
 
-        public ChatHubService(IHubContext<ChatHub> hubContext)
+        public ChatHubService(IHubContext<ChatHub> hubContext, ApplicationDbContext context)
         {
             _hubContext = hubContext;
+            _context = context;
         }
 
         public async Task NotifyMessagesReadAsync(string userId, string byUserId)
@@ -22,6 +26,47 @@ namespace Academix.WebAPI.Hubs
                     at = DateTime.UtcNow
                 });
         }
-    }
 
+        public async Task SendMessage(string receiverId, string senderId, string message)
+        {
+            var sentAt = DateTime.UtcNow;
+
+            await _hubContext.Clients.User(receiverId).SendAsync("ReceiveMessage", new
+            {
+                SenderId = senderId,
+                Content = message,
+                SentAt = sentAt
+            });
+
+            await _hubContext.Clients.User(senderId).SendAsync("MessageSent", new
+            {
+                ReceiverId = receiverId,
+                Content = message,
+                SentAt = sentAt
+            });
+        }
+
+        public async Task MarkMessagesAsRead(string currentUserId, string otherUserId)
+        {
+            var messages = await _context.ChatMessages
+                .Where(m =>
+                    m.SenderId == otherUserId &&
+                    m.ReceiverId == currentUserId &&
+                    !m.IsRead)
+                .ToListAsync();
+
+            if (messages.Any())
+            {
+                foreach (var msg in messages)
+                {
+                    msg.IsRead = true;
+                    msg.ReadAt = DateTime.UtcNow;
+                }
+
+                await _context.SaveChangesAsync();
+
+                await _hubContext.Clients.User(otherUserId).SendAsync("MessagesMarkedAsRead", currentUserId);
+            }
+        }
+    }
 }

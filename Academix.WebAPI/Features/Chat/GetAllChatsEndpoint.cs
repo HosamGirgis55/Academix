@@ -1,4 +1,4 @@
-﻿using Academix.Application.Features.Chat.Queries;
+﻿using Academix.Application.Features.Chat.Queries.GetAllChats;
 using Academix.Application.Features.Chat.Queries.GetChatMessage;
 using Academix.Helpers;
 using Academix.WebAPI.Common;
@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Academix.WebAPI.Features.Chat
 {
-    public class GetChatMessagesEndpoint : IEndpoint
+    public class GetAllChatsEndpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/chat/messages", HandleAsync)
-                .WithName("GetChatMessages")
+            app.MapGet("/api/chat/AllChats", HandleAsync)
+                .WithName("GetAllChats")
                 .WithTags("Chat")
                 .Produces<ResponseHelper>(200)
                 .Produces<ResponseHelper>(400);
@@ -20,17 +20,15 @@ namespace Academix.WebAPI.Features.Chat
 
         private static async Task<IResult> HandleAsync(
             [FromQuery] string currentUserId,
-            [FromQuery] string otherUserId,
             [FromServices] ISender sender,
             [FromServices] ResponseHelper response,
             CancellationToken cancellationToken)
         {
             try
             {
-                var result = await sender.Send(new GetChatMessageQuery
+                var result = await sender.Send(new GetAllChatsQuery
                 {
-                    CurrentUserId = currentUserId,
-                    OtherUserId = otherUserId
+                    UserId = currentUserId
                 }, cancellationToken);
 
                 return Results.Ok(response.Success(result));
@@ -45,6 +43,8 @@ namespace Academix.WebAPI.Features.Chat
                 );
             }
         }
-    }
 
+
+
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using Academix.Application.Common.Models;
-using Academix.Application.Features.Chat.Queries;
 using Academix.Domain.DTOs;
 using Academix.Domain.Entities;
 using Academix.Domain.Interfaces;
@@ -11,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Academix.Application.Features.Chat.Handlers
+namespace Academix.Application.Features.Chat.Queries.GetChatMessage
 {
     public class GetChatMessageQueryHandler : IRequestHandler<GetChatMessageQuery, Result<List<ChatMessageDto>>>
     {
@@ -30,8 +29,8 @@ namespace Academix.Application.Features.Chat.Handlers
 
                 var filteredMessages = await messages
                     .Where(m =>
-                        (m.SenderId == request.CurrentUserId && m.ReceiverId == request.OtherUserId) ||
-                        (m.SenderId == request.OtherUserId && m.ReceiverId == request.CurrentUserId))
+                        m.SenderId == request.CurrentUserId && m.ReceiverId == request.OtherUserId ||
+                        m.SenderId == request.OtherUserId && m.ReceiverId == request.CurrentUserId)
                     .OrderBy(m => m.SentAt)
                     .Select(m => new ChatMessageDto
                     {
