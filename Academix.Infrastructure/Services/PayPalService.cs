@@ -29,7 +29,7 @@ namespace Academix.Infrastructure.Services
             _baseUrl = _configuration["PayPal:BaseUrl"] ?? "https://api-m.sandbox.paypal.com";
         }
 
-        public async Task<PayPalCreateOrderResult> CreateOrderAsync(decimal amount, string currency = "USD", string? description = null)
+        public async Task<PayPalCreateOrderResult> CreateOrderAsync(decimal amount, string currency = "USD", string? description = null,string succesUrl = null,string cancleUrl=null)
         {
             try
             {
@@ -44,7 +44,18 @@ namespace Academix.Infrastructure.Services
                 }
 
                 // Build dynamic URLs based on current request context
-                var (returnUrl, cancelUrl) = GetDynamicUrls();
+                var (returnUrl, cancelUrl) =  GetDynamicUrls();
+
+                if (succesUrl is  null || cancleUrl  is null)
+                {
+                    (returnUrl, cancelUrl) = GetDynamicUrls();
+                }
+                else
+                {
+                    returnUrl = succesUrl;
+                    cancelUrl = cancleUrl;
+                }
+                  
 
                 var orderRequest = new
                 {
@@ -328,5 +339,8 @@ namespace Academix.Infrastructure.Services
 
             return (returnUrl, cancelUrl);
         }
+   
+    
+    
     }
 } 

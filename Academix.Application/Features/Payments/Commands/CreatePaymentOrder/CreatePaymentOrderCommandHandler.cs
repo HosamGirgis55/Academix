@@ -47,7 +47,9 @@ namespace Academix.Application.Features.Payments.Commands.CreatePaymentOrder
                 var payPalResult = await _payPalService.CreateOrderAsync(
                     request.Amount, 
                     request.Currency, 
-                    request.Description);
+                    request.Description,
+                    request.successUrl,
+                    request.cancleUrl);
 
                 if (!payPalResult.IsSuccess || string.IsNullOrEmpty(payPalResult.OrderId))
                 {

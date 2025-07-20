@@ -14,6 +14,9 @@ namespace Academix.Application.Features.Payments.Commands.CreatePaymentOrder
         
         // Calculated property
         public decimal Amount => PointsAmount * PointPrice;
+
+        public string successUrl { get; set; }
+        public string cancleUrl { get; set; }
     }
 
     public class CreatePaymentOrderResult

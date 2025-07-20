@@ -2,7 +2,7 @@ namespace Academix.Application.Common.Interfaces
 {
     public interface IPayPalService
     {
-        Task<PayPalCreateOrderResult> CreateOrderAsync(decimal amount, string currency = "USD", string? description = null);
+        Task<PayPalCreateOrderResult> CreateOrderAsync(decimal amount, string currency = "USD", string? description = null, string succesUrl = "", string cancleUrl = "");
         Task<PayPalCaptureResult> CaptureOrderAsync(string orderId);
         Task<PayPalOrderDetails> GetOrderDetailsAsync(string orderId);
     }
