@@ -83,6 +83,7 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                 {
                     Id = teacher.Id,
                     userId = teacher.UserId,
+                    Email = teacher.User.Email,
                     FirstName = teacher.User.FirstName,
                     LastName = teacher.User.LastName,
                     Bio = teacher.Bio,
