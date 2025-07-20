@@ -44,24 +44,24 @@ namespace Academix.Application.Features.Chat.Queries.GetAllChats
 
                 List<AllChatsDto> chats = new List<AllChatsDto>();
 
-                foreach (var Id in lastMessagesPerUser)
+                foreach (var chat in lastMessagesPerUser)
                 {
+                    var dto = new AllChatsDto
+                    {
+                        SenderId = request.UserId,
+                        ReceiverId = chat.SenderId == request.UserId ? chat.ReceiverId : chat.SenderId,
+                        SenderName = chat.SenderId == request.UserId ? $"{chat.Sender.FirstName} {chat.Sender.LastName}" : $"{chat.Receiver.FirstName} {chat.Receiver.LastName}", // Use the current user's name if available
+                        ReceiverName = chat.SenderId == request.UserId
+                            ? $"{chat.Receiver.FirstName} {chat.Receiver.LastName}"
+                            : $"{chat.Sender.FirstName} {chat.Sender.LastName}",
+                        LastMessage = chat.MessageText,
+                        SentAt = chat.CreatedAt,
+                        ProfilePictureUrl = chat.SenderId == request.UserId
+                            ? chat.Receiver.ProfilePictureUrl ?? ""
+                            : chat.Sender.ProfilePictureUrl ?? ""
+                    };
 
-                          
-                        var x = new AllChatsDto 
-                        {
-                            SenderId = Id.SenderId,
-                            ReceiverId = Id.ReceiverId,
-                            SenderName = Id.Sender.FirstName + " " + Id.Sender.LastName,
-                            ReceiverName = Id.Receiver.FirstName + " " + Id.Receiver.LastName,
-                            LastMessage = Id.MessageText,
-                            SentAt = Id.CreatedAt,
-                            ProfilePictureUrl = request.UserId == Id.SenderId? Id.Receiver.ProfilePictureUrl: Id.Sender.ProfilePictureUrl ?? "",
-                        };
-
-                
-                        chats.Add(x);
-
+                    chats.Add(dto);
                 }
                 return Result<List<AllChatsDto>>.Success(chats);
 
