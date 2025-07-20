@@ -39,7 +39,7 @@ namespace Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher
                     .Include(s => s.Teacher)
                     .Include(s => s.Student)
                         .ThenInclude(s => s.User)
-                    .Where(s => s.Status == request.sessionRequestStatus&& s.TeacherId == request.TeacherId);
+                    .Where(s =>  s.TeacherId == request.TeacherId);
 
                 // Get total count before pagination
                 var totalCount = await baseQuery.CountAsync(cancellationToken);
@@ -58,7 +58,7 @@ namespace Academix.Application.Features.Sessions.Queries.GetAllSessionForTeacher
                 {
                     var dto = new SessionRequestDto
                     {
-                        Id = sessionRequest.Id,
+                        SessionId = sessionRequest.Id,
                         StudentId = sessionRequest.StudentId,
                         StudentName = $"{sessionRequest.Student.User.FirstName} {sessionRequest.Student.User.LastName}",
                         TeacherId = sessionRequest.TeacherId,

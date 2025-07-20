@@ -32,11 +32,12 @@ namespace Academix.Application.Features.Sessions.Queries.GetAllSession
             try
             {
                 // Get base query for teachers with includes
-                var sessionQuery = await _unitOfWork.Repository<Session>()
+                var sessionQuery = await _unitOfWork.Repository<SessionRequest>()
                     .GetAllAsync();
-
+              var x =  sessionQuery.ToList();
                 var baseQuery = sessionQuery
                     .Include(s => s.Teacher)
+                        .ThenInclude(s=>s.User)
                     .Include(s => s.Student)
                         .ThenInclude(s => s.User);
 
@@ -57,30 +58,22 @@ namespace Academix.Application.Features.Sessions.Queries.GetAllSession
                 {
                     var dto = new SessionDto
                     {
-                        Id = session.Id,
-
+                        //se = session.Id,
+                       
                         StudentId = session.StudentId,
                         TeacherId = session.TeacherId,
-                        SessionRequestId = session.SessionRequestId,
-
+                        SessionRequestId = session.Id,
+                        StudentName = session.Student.User.FirstName + " " + session.Student.User.LastName,
+                        TeacherName = session.Teacher.User.FirstName + " " + session.Teacher.User.LastName,
                         Subject = session.Subject,
                         Description = session.Description,
                         PointsAmount = session.PointsAmount,
 
-                        ScheduledStartTime = session.ScheduledStartTime,
-                        ActualStartTime = session.ActualStartTime,
-                        ActualEndTime = session.ActualEndTime,
-                        PlannedDurationMinutes = session.PlannedDurationMinutes,
-                        ActualDurationMinutes = session.ActualDurationMinutes,
+                        ScheduledStartTime = session.RequestedDateTime,
+                        PlannedDurationMinutes = session.EstimatedDurationMinutes,
+                       
 
-                        Status = session.Status,
-                        IsPointsTransferred = session.IsPointsTransferred,
-                        PointsTransferredAt = session.PointsTransferredAt,
-
-                        TeacherNotes = session.TeacherNotes,
-                        StudentNotes = session.StudentNotes,
-                        StudentRating = session.StudentRating,
-                        TeacherRating = session.TeacherRating
+                        
                     };
 
                     sessionDtos.Add(dto);
