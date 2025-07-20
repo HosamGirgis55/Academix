@@ -18,6 +18,11 @@ namespace Academix.WebAPI.Hubs
             _context = context;
         }
 
+        public override Task OnConnectedAsync()
+        {
+            Console.WriteLine("hello");
+            return base.OnConnectedAsync();
+        }
         public async Task SendMessage(string receiverId, string message)
         {
             var senderId = Context.UserIdentifier;

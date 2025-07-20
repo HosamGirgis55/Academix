@@ -1,4 +1,4 @@
-using Academix.Application.Common.Interfaces;
+﻿using Academix.Application.Common.Interfaces;
 using Academix.Application.Common.Models;
 using Academix.Application.SignalR;
 using Academix.Domain.Entities;
@@ -39,9 +39,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://127.0.0.1:5500", "http://127.0.0.1:5173") // ضع هنا الـ Origin الصحيح فقط
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials(); // مهم عند وجود الكوكيز أو المصادقة
     });
 });
 
