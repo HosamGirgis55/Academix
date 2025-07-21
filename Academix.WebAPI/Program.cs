@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:5500", "http://127.0.0.1:5173") // ضع هنا الـ Origin الصحيح فقط
+        policy.WithOrigins("http://127.0.0.1:5500", "http://127.0.0.1:5173", "http://localhost:5173") // ضع هنا الـ Origin الصحيح فقط
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // مهم عند وجود الكوكيز أو المصادقة

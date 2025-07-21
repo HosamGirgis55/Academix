@@ -32,17 +32,20 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                 // Use generic repository to get teacher with User navigation property
                 var teacherQuery = await _unitOfWork.Repository<Teacher>()
                     .GetAllAsync();
-                
+
                 var teacher = await teacherQuery
-                    .Include(t => t.User)
-                    .Include(t => t.Skills)
-                        .ThenInclude(ts => ts.Skill)
-                    .Include(t => t.TeacherTeachingAreas)
-                        .ThenInclude(tta => tta.TeachingArea)
-                    .Include(t => t.Comments)
-                    .Include(t => t.Educations)
-                    .Include(t => t.Certificates)
-                    .FirstOrDefaultAsync(t => t.Id == request.Id);
+     .Include(t => t.User)
+     .Include(t => t.Skills)
+         .ThenInclude(ts => ts.Skill)
+     .Include(t => t.TeacherTeachingAreas)
+         .ThenInclude(tta => tta.TeachingArea)
+     .Include(t => t.Comments)
+         .ThenInclude(c => c.Student)
+             .ThenInclude(s => s.User)
+     .Include(t => t.Educations)
+     .Include(t => t.Certificates)
+     .FirstOrDefaultAsync(t => t.Id == request.Id);
+
 
                 if (teacher == null)
                 {
@@ -52,32 +55,33 @@ namespace Academix.Application.Features.Teachers.Query.GetById
 
                 // Get comments for the teacher
                 var comments = await _commentRepository.GetCommentsByTeacherIdAsync(request.Id);
-                
+
                 // Get teacher rating statistics
                 var averageRating = await _commentRepository.GetAverageRatingForTeacherAsync(request.Id);
                 var totalComments = await _commentRepository.GetCommentCountForTeacherAsync(request.Id);
 
-                 var teacherRating = new TeacherRatingDto
+                var teacherRating = new TeacherRatingDto
                 {
                     AverageRating = Math.Round(averageRating, 1),
                     TotalComments = totalComments
                 };
 
                 // Map comments to DTOs (safe even if comments list is empty)
-                var commentDtos = comments.Select(comment => new TeacherCommentDto
-                {
-                    Id = comment.Id,
-                    Content = comment.Content,
-                    Rating = comment.Rating,
-                    CreatedAt = comment.CreatedAt,
-                    Student = new TeacherStudentInfoDto
+                var commentDtos = comments
+                    .Select(comment => new TeacherCommentDto
                     {
-                        Id = comment.Student.Id,
-                        FirstName = comment.Student.User.FirstName,
-                        LastName = comment.Student.User.LastName,
-                        ProfilePictureUrl = comment.Student.User.ProfilePictureUrl ?? ""
-                    }
-                }).ToList();
+                        Id = comment.Id,
+                        Content = comment.Content,
+                        Rating = comment.Rating,
+                        CreatedAt = comment.CreatedAt,
+                        Student = new TeacherStudentInfoDto
+                        {
+                            Id = comment.Student.Id,
+                            FirstName = comment.Student.User.FirstName,
+                            LastName = comment.Student.User.LastName,
+                            ProfilePictureUrl = comment.Student.User.ProfilePictureUrl ?? ""
+                        }
+                    }).ToList();
 
                 var teacherDto = new TeacherDto
                 {
@@ -108,6 +112,7 @@ namespace Academix.Application.Features.Teachers.Query.GetById
                         NameAr = tta.TeachingArea.NameAr,
                         NameEn = tta.TeachingArea.NameEn
                     }).ToList() ?? new List<TeacherSpecialistDto>(),
+
                     Comments = teacher.Comments?.Select(comment => new TeacherCommentDto
                     {
                         Id = comment.Id,
