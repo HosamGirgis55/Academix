@@ -39,7 +39,7 @@ namespace Academix.WebAPI.Hubs
                 SentAt = sentAt
             });
 
-            await _hubContext.Clients.User(sendrConnectionId.ConnectionId).SendAsync("MessageSent", new
+            await _hubContext.Clients.Client(sendrConnectionId.ConnectionId).SendAsync("MessageSent", new
             {
                 ReceiverId = receiverId,
                 Content = message,
