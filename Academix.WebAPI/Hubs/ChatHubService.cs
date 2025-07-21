@@ -30,15 +30,16 @@ namespace Academix.WebAPI.Hubs
         public async Task SendMessage(string receiverId, string senderId, string message)
         {
             var sentAt = DateTime.UtcNow;
-
-            await _hubContext.Clients.User(receiverId).SendAsync("ReceiveMessage", new
+            var sendrConnectionId = await _context.connections.FirstOrDefaultAsync(x => x.UserId == receiverId);
+            var receiverConnectionId = await _context.connections.FirstOrDefaultAsync(x => x.UserId == senderId);
+            await _hubContext.Clients.Client(receiverConnectionId.ConnectionId).SendAsync("ReceiveMessage", new
             {
                 SenderId = senderId,
                 Content = message,
                 SentAt = sentAt
             });
 
-            await _hubContext.Clients.User(senderId).SendAsync("MessageSent", new
+            await _hubContext.Clients.User(sendrConnectionId.ConnectionId).SendAsync("MessageSent", new
             {
                 ReceiverId = receiverId,
                 Content = message,

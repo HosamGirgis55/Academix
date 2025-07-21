@@ -4,6 +4,7 @@ using Academix.Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Academix.WebAPI.Hubs
 {
@@ -20,7 +21,14 @@ namespace Academix.WebAPI.Hubs
 
         public override Task OnConnectedAsync()
         {
+            var connectionId = Context.ConnectionId;
+            var x = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             Console.WriteLine("hello");
+            _context.connections.AddAsync(new Domain.Entities.Connections{
+              ConnectionId = connectionId,
+              UserId = x
+            });
             return base.OnConnectedAsync();
         }
         public async Task SendMessage(string receiverId, string message)

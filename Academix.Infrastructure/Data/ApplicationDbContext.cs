@@ -12,6 +12,7 @@ namespace Academix.Infrastructure.Data
         {
         }
 
+        public DbSet<Connections> connections { get; set; }
         public DbSet<Country> Countries { get; set; } = null!;
         public DbSet<Experience> Experiences { get; set; } = null!;
         public DbSet<Field> Fields { get; set; } = null!;

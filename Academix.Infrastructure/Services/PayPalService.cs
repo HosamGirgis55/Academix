@@ -43,18 +43,18 @@ namespace Academix.Infrastructure.Services
                     };
                 }
 
-                // Build dynamic URLs based on current request context
-                var (returnUrl, cancelUrl) =  GetDynamicUrls();
+                //// Build dynamic URLs based on current request context
+                //var (returnUrl, cancelUrl) =  GetDynamicUrls();
 
-                if (succesUrl is  null || cancleUrl  is null)
-                {
-                    (returnUrl, cancelUrl) = GetDynamicUrls();
-                }
-                else
-                {
-                    returnUrl = succesUrl;
-                    cancelUrl = cancleUrl;
-                }
+                //if (succesUrl is  null || cancleUrl  is null)
+                //{
+                //    (returnUrl, cancelUrl) = GetDynamicUrls();
+                //}
+                //else
+                //{
+                  var  returnUrl = succesUrl;
+                var    cancelUrl = cancleUrl;
+               // }
                   
 
                 var orderRequest = new
